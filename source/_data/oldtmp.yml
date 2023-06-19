@@ -1,0 +1,23 @@
+- class_name: friend link
+  class_desc: some link
+  link_list:
+    - name: Hello
+      link: https://hexo.io/zh
+      avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
+      descr: fase, simple and strong blog frame
+    - name: MyList
+      link: https://github.com/Guaderxx
+      avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
+      descr: A good guy's github
+
+- class_name: Websites
+  class_desc: websiter for recommended
+  link_list:
+    - name: Youtube
+      link: https://www.youtube.com/
+      avatar: https://i.loli.net/2020/05/14/9ZkGg8v3azHJfM1.png
+      descr: A good video website
+    - name: Weibo
+      link: https://useless.com
+      avatar: https://i.loli.net/2020/05/14/9ZkGg8v3azHJfM1.png
+      descr: A tmp file
