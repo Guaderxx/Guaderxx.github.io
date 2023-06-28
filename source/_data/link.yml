@@ -17,3 +17,15 @@
       link: https://www.ecma-international.org/publications-and-standards/standards/ecma-262/
       avatar: https://www.ecma-international.org/wp-content/uploads/ecma-favicon@2x-300x300.png
       descr: ECMAScript is a programming language based on several technologies like JavaScript.
+
+- class_name: Machine Learning
+  class_desc:
+  link_list:
+    - name: Kaggle
+      link: https://www.kaggle.com/
+      avatar: https://www.kaggle.com/static/images/site-logo.svg
+      descr: "Explore and run machine learning code with Kaggle Notebooks | Using data from multiple data sources"
+    - name: Pandas Doc
+      link: https://pandas.pydata.org/docs/index.html
+      avatar: https://pandas.pydata.org/docs/_static/favicon.ico
+      descr: "pandas documentation — pandas 2.0.2 documentation"
