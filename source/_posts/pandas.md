@@ -2,9 +2,10 @@
 title: pandas
 date: 2023-06-25 16:37:56
 tags:
+- Python
 - Pandas
 categories:
-- Python
+- Intro
 keywords:
 copyright: Guader
 copyright_author_href:
