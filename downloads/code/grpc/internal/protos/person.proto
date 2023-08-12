@@ -1,0 +1,48 @@
+syntax = "proto3";
+package tutorial;
+
+option go_package = "github.com/Guaderxx/grpc-demo/pkg/protos";
+
+message SearchRequest {
+    string query = 1;
+    int32 page_number = 2;
+    int32 results_per_page = 3;
+}
+
+enum PhoneType {
+    UNSPECIFIED = 0;
+    MOBILE = 1;
+    HOME = 2;
+    WORK = 3;
+}
+
+message PhoneNumber {
+    string number = 1;
+    PhoneType type = 2;
+}
+
+message Person {
+    string name = 1;
+    int32 id = 2;
+    string email = 3;
+
+    repeated PhoneNumber phones = 4;
+}
+
+message AddressBook {
+    repeated Person people = 1;
+}
+
+message Status {
+    bool ok = 1;
+}
+
+message ListReq {
+    int32 listnum = 1;
+}
+
+service AddressBookService {
+    rpc AddPerson(Person) returns (Status);
+    rpc ListPeople(ListReq) returns (stream AddressBook);
+    rpc AddPeople(stream Person) returns (stream Status);
+}
