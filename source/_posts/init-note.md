@@ -2,7 +2,6 @@
 title: init-note
 date: 2023-06-20 00:08:32
 tags:
-- english-practise
 categories:
 - 杂记
 keywords:
