@@ -146,3 +146,12 @@ func DeleteBST(t *BSTree, v int) *BSTree {
 > 我想着根据前序，中序解析就完了，没想到这么差，明天再换个解法
 
 {% asset_img photo.png %}
+
+
+## After
+
+原来前序就可以了，不过空间复杂度没有降下来。
+
+> 过两天给`fmt.Sprintf`和`strings.Builfer`做个基准测试看看吧，解法一样除了这部分了。
+
+{% asset_img photo2.png %}
