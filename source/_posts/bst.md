@@ -152,6 +152,21 @@ func DeleteBST(t *BSTree, v int) *BSTree {
 
 原来前序就可以了，不过空间复杂度没有降下来。
 
-> 过两天给`fmt.Sprintf`和`strings.Builfer`做个基准测试看看吧，解法一样除了这部分了。
+> 过两天给`fmt.Sprintf`和`strings.Builder`做个基准测试看看吧，解法一样除了这部分了。
 
 {% asset_img photo2.png %}
+
+
+---
+
+
+## After change the plain concatenation
+
+性能确实有了明显提升，但是内存占用还没有降下来
+
+{% asset_img photo3.png %}
+
+
+我想想应该是调用前序函数不停的新建`strings.Builder`，改成内联函数后发现确实好了。
+
+{% asset_img photo4.png %}
