@@ -8,7 +8,7 @@
 <meta property="og:image" content="https://guaderxx.github.io/img/avatar.png">
 <meta property="article:author" content="Guader">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://guaderxx.github.io/img/avatar.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://guaderxx.github.io/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-9ZF8XKZV7M"></script><script>window.dataLayer = window.dataLayer || [];
+<meta name="twitter:image" content="https://guaderxx.github.io/img/avatar.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://guaderxx.github.io/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-9ZF8XKZV7M"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-9ZF8XKZV7M');
@@ -18,11 +18,11 @@ gtag('config', 'G-9ZF8XKZV7M');
   localSearch: undefined,
   translate: undefined,
   noticeOutdate: {"limitDay":90,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":800},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":800},
   copy: {
-    success: 'Copy successfully',
-    error: 'Copy error',
-    noSupport: 'The browser does not support'
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
   },
   relativeDate: {
     homepage: false,
@@ -30,7 +30,7 @@ gtag('config', 'G-9ZF8XKZV7M');
   },
   runtime: 'days',
   dateSuffix: {
-    just: 'Just',
+    just: 'Just now',
     min: 'minutes ago',
     hour: 'hours ago',
     day: 'days ago',
@@ -38,12 +38,10 @@ gtag('config', 'G-9ZF8XKZV7M');
   },
   copyright: undefined,
   lightbox: 'fancybox',
-  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
   },
   isPhotoFigcaption: false,
   islazyload: false,
@@ -59,85 +57,78 @@ gtag('config', 'G-9ZF8XKZV7M');
   isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2024-01-29 18:06:39'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
-
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
+  postUpdate: '2024-02-10 20:01:25'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
         }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
         }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
 
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
         }
-        return item.value
-      }
-    }
-  
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
-  
-    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
-      const link = document.createElement('link')
-      link.rel = 'stylesheet'
-      link.href = url
-      if (id) link.id = id
-      link.onerror = reject
-      link.onload = link.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        link.onload = link.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(link)
-    })
-  
-      win.activateDarkMode = function () {
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
         document.documentElement.setAttribute('data-theme', 'dark')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
         }
       }
-      win.activateLightMode = function () {
+      win.activateLightMode = () => {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
           document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
@@ -145,16 +136,44 @@ gtag('config', 'G-9ZF8XKZV7M');
       }
       const t = saveToLocal.get('theme')
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
-        
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
       }
-    }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Guader's Blog"><span class="site-name">Guader's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/01/29/sd-notify/" title="sd_notify">sd_notify</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-01-29T08:27:20.000Z" title="Created 2024-01-29 16:27:20">2024-01-29</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-01-29T10:04:07.665Z" title="Updated 2024-01-29 18:04:07">2024-01-29</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/man-pages/">man-pages</a></span></div><div class="content">new-source
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Guader's Blog"><span class="site-name">Guader's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/02/10/setup-emacs/" title="setup emacs">setup emacs</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-02-10T06:58:27.000Z" title="Created 2024-02-10 14:58:27">2024-02-10</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-02-10T11:51:51.411Z" title="Updated 2024-02-10 19:51:51">2024-02-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/doc/">doc</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/emacs/">emacs</a></span></div><div class="content">
+前一阵子 Emacs 抽风了打不开，我用着 vscode 也凑合就没管。今天正得闲，重新配置一遍。
+
+
+首先，下载
+
+进入 GNU Emacs download 页。根据自己的系统选择合适的下载方式即可。
+比如我是用的 ubuntu，就是：
+1sudo apt-get install emacs
+
+
+
+配置
+
+下载完正常就可以打开了，不过这时候都是默认配置。方便起见，我 fork 了 purcell 的 emacs.d。然后进入根目录下载即可：
+123cd git clone https://github.com/Guaderxx/emacs.d.git .emacs.d
+
+然后打开 Emacs GUI，运行 M-x package-refresh-contents
+这个配置是没有包含 golang 的配置的
+下载需要的包通过 melpa，也就是在 Emacs 中运行： M-x package-install [package-name]
+所以重启一下再下载： 
+
+go-mode
+gopls
+go install golang.org/x/tools/gopls@latest
+
+
+
+ ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/01/29/sd-notify/" title="sd_notify">sd_notify</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-01-29T08:27:20.000Z" title="Created 2024-01-29 16:27:20">2024-01-29</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-01-29T10:04:07.665Z" title="Updated 2024-01-29 18:04:07">2024-01-29</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/man-pages/">man-pages</a></span></div><div class="content">new-source
 名称sd_notify, sd_notifyf, sd_pid_notify, sd_pid_notifyf, sd_pid_notify_with_fds, sd_pid_notifyf_with_fds, sd_notify_barrier, sd_pid_notify_barrier – 通知服务管理器关于启动完成以及其他服务状态变化。
 概述12345678910111213141516171819202122232425262728293031323334int sd_notify(int unset_environment, const char *state);int sd_notifyf( int unset_environment,     const char *format,     …);int sd_pid_notify( pid_t pid,     int unset_environment,     const char *state);int sd_pid_notifyf( pid_t pid,     int unset_envi ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/01/03/cgroup-v2-%E8%AF%91%E6%96%87/" title="cgroup-v2 译文">cgroup-v2 译文</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-01-03T12:38:15.000Z" title="Created 2024-01-03 20:38:15">2024-01-03</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-01-05T09:27:50.558Z" title="Updated 2024-01-05 17:27:50">2024-01-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/kernel-doc/">kernel doc</a><i class="fas fa-angle-right article-meta-link"></i><a class="article-meta__categories" href="/categories/kernel-doc/cgroup-v2/">cgroup-v2</a></span></div><div class="content">原文
 这是关于cgroup v2的设计、接口和约定的权威文档。它描述了 cgroup 的所有用户可见的方面，包括核心和特定控制器行为。未来的所有变更都必须反映在本文件中。v1 的文档可在 Documentation&#x2F;cgroup-v1&#x2F; 下找到。
@@ -231,28 +250,15 @@ Example在Golang中，可以使用接口和匿名函数来实现。
 
 
 </div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/09/10/string-concatenation-benchmark/" title="string-concatenation-benchmark">string-concatenation-benchmark</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-09-10T04:14:46.000Z" title="Created 2023-09-10 12:14:46">2023-09-10</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-09-10T04:34:35.099Z" title="Updated 2023-09-10 12:34:35">2023-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Benchmark/">Benchmark</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Golang/">Golang</a></span></div><div class="content">字符串拼接的基准测试结果很明显，只有两个字符串时直接相加+还不错，数量到10个开始基本都是strings.Builder了。
-123456789101112131415161718192021222324252627282930goos: linuxgoarch: amd64pkg: github.com/Guaderxx/goproj/pkg/teststrcpu: AMD Ryzen 7 5800H with Radeon Graphics         BenchmarkStringCombine2/Plain-16  	                47900655	        25.91 ns/op	       2 B/op	       1 allocs/opBenchmarkStringCombine2/bytes.Buffer-16         	20379310	       100.1 ns/op	      66 B/op	       2 allocs/opBenchmarkStringCombine2/fmt.Sprintf-16         ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/09/08/generics/" title="generics">generics</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-09-08T14:56:53.000Z" title="Created 2023-09-08 22:56:53">2023-09-08</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-09-08T17:14:26.011Z" title="Updated 2023-09-09 01:14:26">2023-09-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Intro/">Intro</a><i class="fas fa-angle-right article-meta-link"></i><a class="article-meta__categories" href="/categories/Intro/Generics/">Generics</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Golang/">Golang</a></span></div><div class="content">泛型的介绍
-突然想起来这部分其实一直没系统的看下。今天的每日一题又很简单，整理下。原文
-
-介绍Go 1.18增加了泛型的支持。泛型是Go开源发布依赖的最大变化。这篇文章会介绍新的语言特性。不会覆盖到所有细节，但会触及到所有重要的点。对于更细节，更长描述，包含很多示例的文章，参见推荐文档。对于语言变化更精确的描述，见更新后的语言规范。（注意，实际的1.18实现对提案文件所允许的内容施加了一些限制；规范应准确无误，未来的版本可能会取消部分限制。（现在都1.21.1了，直接看新的就行。）
-泛型是一种编写独立于所使用的特定类型的代码的方法。现在可以写函数和类型来使用一组类型中的任何一个。
-泛型在语言中增加了三个新的大事：
-
-函数和类型的类型参数
-定义接口类型作为类型集，包括没有方法的类型
-类型推断，在很多情况下允许调用函数时省略类型参数
-
-类型参数函数和类型现在可以有类型参数。一个类型参数列表就像普通的参数列表，只不过使用方括号包含[].
-为了更清楚，让我们从一个无泛型的计算浮点数值最小值的Min函数开始：
-123456func Min(x, y float64) float64 &#123; ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="page-number" href="/page/3/#content-inner">3</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Guader</div><div class="author-info__description">Stay Hungry. Stay Foolish.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">19</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Guaderxx" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:guaderxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/29/sd-notify/" title="sd_notify">sd_notify</a><time datetime="2024-01-29T08:27:20.000Z" title="Created 2024-01-29 16:27:20">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/03/cgroup-v2-%E8%AF%91%E6%96%87/" title="cgroup-v2 译文">cgroup-v2 译文</a><time datetime="2024-01-03T12:38:15.000Z" title="Created 2024-01-03 20:38:15">2024-01-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/03/cgroups-v1-%E8%AF%91%E6%96%87/" title="cgroups-v1 译文">cgroups-v1 译文</a><time datetime="2024-01-03T07:00:10.000Z" title="Created 2024-01-03 15:00:10">2024-01-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/26/memory-%E8%AF%91%E6%96%87/" title="memory 译文">memory 译文</a><time datetime="2023-12-26T14:03:03.000Z" title="Created 2023-12-26 22:03:03">2023-12-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/26/cpuset-%E8%AF%91%E6%96%87/" title="cpuset 译文">cpuset 译文</a><time datetime="2023-12-26T08:58:00.000Z" title="Created 2023-12-26 16:58:00">2023-12-26</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+123456789101112131415161718192021222324252627282930goos: linuxgoarch: amd64pkg: github.com/Guaderxx/goproj/pkg/teststrcpu: AMD Ryzen 7 5800H with Radeon Graphics         BenchmarkStringCombine2/Plain-16  	                47900655	        25.91 ns/op	       2 B/op	       1 allocs/opBenchmarkStringCombine2/bytes.Buffer-16         	20379310	       100.1 ns/op	      66 B/op	       2 allocs/opBenchmarkStringCombine2/fmt.Sprintf-16         ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="page-number" href="/page/3/#content-inner">3</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Guader</div><div class="author-info__description">Stay Hungry. Stay Foolish.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">20</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Guaderxx" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:guaderxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/10/setup-emacs/" title="setup emacs">setup emacs</a><time datetime="2024-02-10T06:58:27.000Z" title="Created 2024-02-10 14:58:27">2024-02-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/29/sd-notify/" title="sd_notify">sd_notify</a><time datetime="2024-01-29T08:27:20.000Z" title="Created 2024-01-29 16:27:20">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/03/cgroup-v2-%E8%AF%91%E6%96%87/" title="cgroup-v2 译文">cgroup-v2 译文</a><time datetime="2024-01-03T12:38:15.000Z" title="Created 2024-01-03 20:38:15">2024-01-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/03/cgroups-v1-%E8%AF%91%E6%96%87/" title="cgroups-v1 译文">cgroups-v1 译文</a><time datetime="2024-01-03T07:00:10.000Z" title="Created 2024-01-03 15:00:10">2024-01-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/26/memory-%E8%AF%91%E6%96%87/" title="memory 译文">memory 译文</a><time datetime="2023-12-26T14:03:03.000Z" title="Created 2023-12-26 22:03:03">2023-12-26</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
             <i class="fas fa-folder-open"></i>
             <span>Categories</span>
-            <a class="card-more-btn" href="/categories/" title="More">
+            <a class="card-more-btn" href="/categories/" title="View More">
     <i class="fas fa-angle-right"></i></a>
             </div>
             <ul class="card-category-list" id="aside-cat-list">
             <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Algorithm/"><span class="card-category-list-name">Algorithm</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Benchmark/"><span class="card-category-list-name">Benchmark</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Data-Structure/"><span class="card-category-list-name">Data Structure</span><span class="card-category-list-count">1</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Data-Structure/Algorithm/"><span class="card-category-list-name">Algorithm</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Design-Pattern/"><span class="card-category-list-name">Design Pattern</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Intro/"><span class="card-category-list-name">Intro</span><span class="card-category-list-count">6</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Intro/Generics/"><span class="card-category-list-name">Generics</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Intro/gRPC/"><span class="card-category-list-name">gRPC</span><span class="card-category-list-count">1</span></a></li></ul></li>
-            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>Tags</span></div><div class="card-tag-cloud"><a href="/tags/Tree/" style="font-size: 1.15em; color: rgb(12, 72, 165)">Tree</a><a href="/tags/Golang/" style="font-size: 1.45em; color: rgb(31, 89, 58)">Golang</a><a href="/tags/HTML/" style="font-size: 1.15em; color: rgb(37, 12, 37)">HTML</a><a href="/tags/CSS/" style="font-size: 1.15em; color: rgb(35, 24, 175)">CSS</a><a href="/tags/JS/" style="font-size: 1.15em; color: rgb(170, 35, 77)">JS</a><a href="/tags/doc/" style="font-size: 1.15em; color: rgb(50, 112, 15)">doc</a><a href="/tags/Python/" style="font-size: 1.3em; color: rgb(99, 91, 61)">Python</a><a href="/tags/ML/" style="font-size: 1.15em; color: rgb(46, 101, 76)">ML</a><a href="/tags/Pandas/" style="font-size: 1.15em; color: rgb(94, 54, 171)">Pandas</a><a href="/tags/C/" style="font-size: 1.15em; color: rgb(123, 123, 44)">C</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">January 2024</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">December 2023</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">September 2023</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/08/"><span class="card-archive-list-date">August 2023</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">June 2023</span><span class="card-archive-list-count">5</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">22</div></div><div class="webinfo-item"><div class="item-name">Run time :</div><div class="item-count" id="runtimeshow" data-publishDate="2023-06-18T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Total Count :</div><div class="item-count">69.7k</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Push :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-01-29T10:06:39.063Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Guader</div><div class="footer_custom_text">The best time to plant a tree was twenty years ago. The second best time is now :)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>Tags</span></div><div class="card-tag-cloud"><a href="/tags/Tree/" style="font-size: 1.15em; color: rgb(163, 169, 199)">Tree</a><a href="/tags/Golang/" style="font-size: 1.45em; color: rgb(69, 184, 147)">Golang</a><a href="/tags/HTML/" style="font-size: 1.15em; color: rgb(142, 100, 128)">HTML</a><a href="/tags/CSS/" style="font-size: 1.15em; color: rgb(50, 170, 37)">CSS</a><a href="/tags/JS/" style="font-size: 1.15em; color: rgb(165, 137, 128)">JS</a><a href="/tags/doc/" style="font-size: 1.15em; color: rgb(34, 190, 22)">doc</a><a href="/tags/Python/" style="font-size: 1.3em; color: rgb(47, 61, 175)">Python</a><a href="/tags/ML/" style="font-size: 1.15em; color: rgb(114, 34, 64)">ML</a><a href="/tags/Pandas/" style="font-size: 1.15em; color: rgb(102, 185, 48)">Pandas</a><a href="/tags/emacs/" style="font-size: 1.15em; color: rgb(198, 172, 196)">emacs</a><a href="/tags/C/" style="font-size: 1.15em; color: rgb(153, 7, 74)">C</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/02/"><span class="card-archive-list-date">February 2024</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">January 2024</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">December 2023</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">September 2023</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/08/"><span class="card-archive-list-date">August 2023</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">June 2023</span><span class="card-archive-list-count">5</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">23</div></div><div class="webinfo-item"><div class="item-name">Runtime :</div><div class="item-count" id="runtimeshow" data-publishDate="2023-06-18T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Total Count :</div><div class="item-count">69.9k</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-02-10T12:01:24.831Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Guader</div><div class="footer_custom_text">The best time to plant a tree was twenty years ago. The second best time is now :)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
   if (typeof pangu === 'object') pangu.autoSpacingPage()
   else {
     getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
