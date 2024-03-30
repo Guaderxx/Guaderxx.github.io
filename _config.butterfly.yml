@@ -40,7 +40,7 @@ social:
 # --------------------------------------
 
 # Favicon（網站圖標）
-favicon: /img/favicon.png
+favicon: /img/fav.png
 
 # Avatar (頭像)
 avatar:
@@ -913,19 +913,19 @@ CDN:
   # The CDN provider of internal scripts (主題內部 js 的 cdn 配置)
   # option: local/jsdelivr/unpkg/cdnjs/custom
   # Dev version can only choose. ( dev版的主題只能設置為 local )
-  internal_provider: local
+  internal_provider: custom
 
   # The CDN provider of third party scripts (第三方 js 的 cdn 配置)
   # option: local/jsdelivr/unpkg/cdnjs/custom
   # when set it to local, you need to install hexo-butterfly-extjs
-  third_party_provider: jsdelivr
+  third_party_provider: custom
 
   # Add version number to url, true or false
-  version: false
+  version: true
 
   # Custom format
   # For example: https://cdn.staticfile.org/${cdnjs_name}/${version}/${min_cdnjs_file}
-  custom_format:
+  custom_format: https://jsd.012700.xyz/npm/${name}@${version}/${min_file}
 
   option:
     # main_css:
@@ -982,5 +982,5 @@ CDN:
     # prismjs_autoloader:
     # artalk_js:
     # artalk_css:
-    # busuanzi:
+    busuanzi: https://jsd.012700.xyz/npm/busuanzi@2.3.0/bsz.pure.mini.min.js
     # abcjs_basic_js:
