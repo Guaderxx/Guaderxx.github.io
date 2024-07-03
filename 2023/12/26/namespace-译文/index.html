@@ -1,0 +1,347 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>namespace 译文 | Guader's Blog</title><meta name="author" content="Guader"><meta name="copyright" content="Guader"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="原文 名称namespaces - Linux命名空间概述 描述命名空间将全局系统资源封装在一个抽象概念中。在命名空间内的进程来看，它们拥有各自独立的全局资源实例。全局资源的更改对该命名空间内的其他进程可见，但对其他的进程不可见。命名空间的一个用途就是实现容器。 本页提供了有关各种命名空间类型信息的指针，描述了相关的 &#x2F;proc 文件，并总结了用于处理命名空间的API。 命名空间类型下表列出了Li">
+<meta property="og:type" content="article">
+<meta property="og:title" content="namespace 译文">
+<meta property="og:url" content="https://guaderxx.github.io/2023/12/26/namespace-%E8%AF%91%E6%96%87/index.html">
+<meta property="og:site_name" content="Guader&#39;s Blog">
+<meta property="og:description" content="原文 名称namespaces - Linux命名空间概述 描述命名空间将全局系统资源封装在一个抽象概念中。在命名空间内的进程来看，它们拥有各自独立的全局资源实例。全局资源的更改对该命名空间内的其他进程可见，但对其他的进程不可见。命名空间的一个用途就是实现容器。 本页提供了有关各种命名空间类型信息的指针，描述了相关的 &#x2F;proc 文件，并总结了用于处理命名空间的API。 命名空间类型下表列出了Li">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://guaderxx.github.io/img/avatar.png">
+<meta property="article:published_time" content="2023-12-26T06:13:26.000Z">
+<meta property="article:modified_time" content="2024-07-03T02:48:53.517Z">
+<meta property="article:author" content="Guader">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://guaderxx.github.io/img/avatar.png"><link rel="shortcut icon" href="/img/fav.png"><link rel="canonical" href="https://guaderxx.github.io/2023/12/26/namespace-%E8%AF%91%E6%96%87/index.html"><link rel="preconnect" href="https://jsd.012700.xyz"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-9ZF8XKZV7M"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9ZF8XKZV7M');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":90,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":800},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://jsd.012700.xyz/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'namespace 译文',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-03 10:48:53'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">28</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Guader's Blog"><span class="site-name">Guader's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">namespace 译文</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-12-26T06:13:26.000Z" title="Created 2023-12-26 14:13:26">2023-12-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-07-03T02:48:53.517Z" title="Updated 2024-07-03 10:48:53">2024-07-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/man-pages/">man-pages</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>8mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="namespace 译文"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p><a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man7/namespaces.7.html">原文</a></p>
+<h2 id="名称"><a href="#名称" class="headerlink" title="名称"></a>名称</h2><p>namespaces - Linux命名空间概述</p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>命名空间将全局系统资源封装在一个抽象概念中。在命名空间内的进程来看，它们拥有各自独立的全局资源实例。全局资源的更改对该命名空间内的其他进程可见，但对其他的进程不可见。命名空间的一个用途就是实现容器。</p>
+<p>本页提供了有关各种命名空间类型信息的指针，描述了相关的 <code>/proc</code> 文件，并总结了用于处理命名空间的API。</p>
+<h3 id="命名空间类型"><a href="#命名空间类型" class="headerlink" title="命名空间类型"></a>命名空间类型</h3><p>下表列出了Linux上可用的命名空间类型。表中第二列展示了在各种API中用于指定命名空间类型的标志值。第三列标识了提供命名空间类型详细信息的手册页面。最后一列是按命名空间类型隔离的资源摘要。</p>
+<table>
+<thead>
+<tr>
+<th>命名空间</th>
+<th>标志</th>
+<th>man page</th>
+<th>隔离</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CGroup</td>
+<td><code>CLONE_NEWCGROUP</code></td>
+<td><code>cgroup_namespaces(7)</code></td>
+<td>Cgroup root directory</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td><code>CLONE_NEWIPC</code></td>
+<td><code>ipc_namespaces(7)</code></td>
+<td>System V IPC, POSIX message queues</td>
+</tr>
+<tr>
+<td>Network</td>
+<td><code>CLONE_NEWNET</code></td>
+<td><code>network_namespaces(7)</code></td>
+<td>Network devices, stacks, ports, etc.</td>
+</tr>
+<tr>
+<td>Mount</td>
+<td><code>CLONE_NEWNS</code></td>
+<td><code>mount_namespaces(7)</code></td>
+<td>Mount points</td>
+</tr>
+<tr>
+<td>PID</td>
+<td><code>CLONE_NEWPID</code></td>
+<td><code>pid_namespaces(7)</code></td>
+<td>Process IDs</td>
+</tr>
+<tr>
+<td>Time</td>
+<td><code>CLONE_NEWTIME</code></td>
+<td><code>time_namespaces(7)</code></td>
+<td>Boot and monotonic clocks</td>
+</tr>
+<tr>
+<td>User</td>
+<td><code>CLONE_NEWUSER</code></td>
+<td><code>user_namespaces(7)</code></td>
+<td>User and group IDs</td>
+</tr>
+<tr>
+<td>UTS</td>
+<td><code>CLONE_NEWUTS</code></td>
+<td><code>uts_namespaces(7)</code></td>
+<td>Hostname and NIS domain name</td>
+</tr>
+</tbody></table>
+<h3 id="命名空间API"><a href="#命名空间API" class="headerlink" title="命名空间API"></a>命名空间API</h3><p>除了下面描述的各种 <code>/proc</code> 文件外，命名空间API包括以下系统调用：</p>
+<ul>
+<li><strong><code>clone(2)</code></strong>  <code>clone(2)</code> 系统调用用于创建一个新的进程。如果调用的参数<code>flags</code>指定了上述的一个或多个<code>CLONE_NEW*</code>标志，那么将为每个标志创新新的命名空间，且子进程将成为这些命名空间的成员。（这个系统调用同时实现了一些与命名空间无关的功能。）</li>
+<li><strong><code>setns(2)</code></strong>  <code>setns(2)</code> 系统调用允许调用的进程加入到现有的命名空间。要加入的命名空间通过下面要说的 <code>/proc/pid/ns</code> 文件的文件描述符指定。</li>
+<li><strong><code>unshare(2)</code></strong>  <code>unshare(2)</code>系统调用将调用的进程移动到一个新的命名空间。如果调用的参数<code>flags</code>指定了上出的<code>CLONE_NEW*</code>的标志中的一个或多个，那么会为每个标志创建新的命名空间，同时调用的进程也会是这些命名空间的成员。（这个系统调用同时实现了一些与命名空间无关的功能。）</li>
+<li><strong><code>ioctl(2)</code></strong>  各种<code>ioctl(2)</code>操作可用于发现命名空间的信息。这些操作在<code>ioctl_ns(2)</code>中有描述。</li>
+</ul>
+<p>大多数情况下，使用<code>clone(2)</code>和<code>unshare(2)</code>创建新的命名空间需要 <strong><code>CAP_SYS_ADMIN</code></strong> 能力，因为在新命名空间中，创建者有权更改对随后创建或加入到该命名空间的进程可见的全局资源。用户命名空间是个例外：自 Linux 3.8 起，创建用户命名空间不需要权限。</p>
+<h3 id="proc-pid-ns-文件夹"><a href="#proc-pid-ns-文件夹" class="headerlink" title="/proc/pid/ns/ 文件夹"></a><code>/proc/pid/ns/</code> 文件夹</h3><p>每个进程都有一个 <code>/proc/pid/ns/</code> 子文件夹，其中包含一个由<code>setns(2)</code>操作的命名空间的条目。</p>
+<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ls -l /proc/$$/ns | awk <span class="string">&#x27;&#123;print $1, $9, $10, $11&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">total   </span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> cgroup -&gt;</span> cgroup:[<span class="number">4026531835</span>]</span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> ipc -&gt;</span> ipc:[<span class="number">4026531839</span>]</span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> mnt -&gt;</span> mnt:[<span class="number">4026531841</span>]</span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> net -&gt;</span> net:[<span class="number">4026531840</span>]</span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> pid -&gt;</span> pid:[<span class="number">4026531836</span>]</span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> pid_for_children -&gt;</span> pid:[<span class="number">4026531836</span>]</span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> <span class="built_in">time</span> -&gt;</span> <span class="built_in">time</span>:[<span class="number">4026531834</span>]</span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> time_for_children -&gt;</span> <span class="built_in">time</span>:[<span class="number">4026531834</span>]</span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> user -&gt;</span> user:[<span class="number">4026531837</span>]</span><br><span class="line"><span class="function"><span class="title">lrwxrwxrwx</span> uts -&gt;</span> uts:[<span class="number">4026531838</span>]</span><br></pre></td></tr></table></figure>
+
+<p>将该目录中的一个文件绑定挂载(见 <code>mount(2)</code>) 到文件系统中的其他地方，即使当前在该命名空间中的所有进程都已终止，也能保持pid 指定的进程的相应命名空间继续存在。</p>
+<p>打开该文件夹中的一个文件（或绑定挂载到这些文件中的一个文件），将返回 pid 指定进程的相应命名空间的文件句柄。只要该文件描述符保持打开状态，即使命名空间中的所有进程都已终止，命名空间也将保持存活。 文件描述符可以传递给 <code>setns(2)</code>。</p>
+<p>在 Linux 3.7 及更早版本中，这些文件以硬链接的形式显示。自 Linux 3.8 起，它们显示为符号链接。如果两个进程处于同一命名空间，那么它们的<code>/proc/pid/ns/xxx</code> 符号链接的设备 <code>ID</code> 和 <code>inode</code> 编号将是相同的；应用程序可以使用 <code>stat(2)</code> 返回的 <code>stat.st_dev</code> 和 <code>stat.st_ino</code> 字段检查这一点。 该符号链接的内容是一个包含命名空间类型和 inode 编号的字符串，如下例所示的字符串：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">readlink <span class="regexp">/proc/</span>$$<span class="regexp">/ns/</span>nts</span><br><span class="line"></span><br><span class="line">uts:[<span class="number">4026531838</span>]</span><br></pre></td></tr></table></figure>
+
+<p>该子文件夹中的符号链接如下：</p>
+<ul>
+<li><code>/proc/pid/ns/cgroup</code> 自 Linux 4.6 起。 该文件是cgroup命名空间进程的句柄。</li>
+<li><code>/proc/pid/ns/ipc</code> 自 Linux 3.0 起。 该文件是IPC命名空间进程的句柄。</li>
+<li><code>/proc/pid/ns/mnt</code> 自 Linux 3.8 起。 该文件是mount命名空间进程的句柄。</li>
+<li><code>/proc/pid/ns/net</code> 自 Linux 3.0 起。 该文件是network命名空间进程的句柄。</li>
+<li><code>/proc/pid/ns/pid</code> 自 Linux 3.8 起。 该文件是PID命名空间的句柄。该句柄在进程的生命周期内永久有效（即进程的PID命名空间成员资格永不改变）</li>
+<li><code>/proc/pid/ns/pid_for_children</code> 自 Linux 4.12 起。该文件是这个进程创建的子进程的PID命名空间的句柄。这可能会因调用 <code>unshare(2)</code> 和 <code>setns(2)</code> 而发生变化（参见 <code>pid_namespaces(7)</code>）,因此文件可能与 <code>/proc/pid/ns/pid</code> 不同。只有在命名空间中创建了第一个子进程后，符号链接才会获得值。(在此之前，符号链接的 <code>readlink(2)</code> 将返回一个空缓冲区）。</li>
+<li><code>/proc/pid/ns/time</code> 自 Linux 5.6 起。 该文件是time命名空间进程的句柄。</li>
+<li><code>/proc/pid/ns/time_for_children</code> 自 Linux 5.6 起。 该文件是该进程创建的子进程的time命名空间的句柄。 调用 <code>unshare(2)</code> 和 <code>setns(2)</code> 后，time命名空间可能会发生变化（参见 <code>time_namespaces(7)</code>），因此该文件可能与 <code>/proc/pid/ns/time</code> 不同。</li>
+<li><code>/proc/pid/ns/user</code> 自 Linux 3.8 起。 该文件是user命名空间进程的句柄。</li>
+<li><code>/proc/pid/ns/nts</code> 自 Linux 3.0 起。该文件是UTS命名空间进程的句柄。</li>
+</ul>
+<p>取消引用或读取（<code>readlink(2)</code>） 这些符号链接的权限受 <code>ptrace</code> 访问模式 <strong><code>PTRACE_MODE_READ_FSCREDS</code></strong> 检查的制约；请参阅 <code>ptrace(2)</code>。</p>
+<h3 id="proc-sys-user-文件夹"><a href="#proc-sys-user-文件夹" class="headerlink" title="/proc/sys/user 文件夹"></a><code>/proc/sys/user</code> 文件夹</h3><p><code>/proc/sys/user</code> 文件夹中的文件（自 Linux 4.9 起就存在）暴露了对可创建的各种命名空间数量的限制。 这些文件如下</p>
+<ul>
+<li><code>max_cgroup_namespaces</code>  该文件中的值定义了每个用户在用户命名空间中创建的 cgroup 命名空间的数量限制。</li>
+<li><code>max_ipc_namespaces</code>  该文件中的值定义了每个用户在用户命名空间中创建 ipc 命名空间的数量限制。</li>
+<li><code>max_mnt_namespaces</code>  该文件中的值定义了每个用户在用户命名空间中创建的mount命名空间的数量限制。</li>
+<li><code>max_net_namespaces</code>  该文件中的值定义了每个用户在用户命名空间中创建network命名空间的数量限制。</li>
+<li><code>max_pid_namespaces</code>  该文件中的值定义了每个用户在用户命名空间中创建 PID 命名空间的数量限制。</li>
+<li><code>max_time_namespaces</code> （自 Linux 5.7 起） 该文件中的值定义了每个用户在用户命名空间中创建time命名空间的数量限制。</li>
+<li><code>max_user_namespaces</code>  该文件中的值定义了在用户命名空间中创建的每个user命名空间的数量限制。</li>
+<li><code>max_uts_namespaces</code>  该文件中的值定义了每个用户在用户命名空间中创建 uts 命名空间的数量限制。</li>
+</ul>
+<p>请注意这些文件的以下详细信息:</p>
+<ul>
+<li>权限进程可以修改这些文件中的值。</li>
+<li>这些文件显示的值是打开进程所在用户命名空间的限制。</li>
+<li>这些限制以用户为单位。 同一用户命名空间中的每个用户可创建的命名空间不超过所定义的限制。</li>
+<li>这些限制适用于所有用户，包括 UID 0。</li>
+<li>这些限制除了适用于任何其他每个命名空间的的限制（如 PID 和用户命名空间的限制）之外，这些限制还可能被强制执行。</li>
+<li>遇到这些限制时，<code>clone(2)</code> 和 <code>unshare(2)</code> 将失败，并显示错误 <strong><code>ENOSPC</code></strong> 。</li>
+<li>对于初始用户命名空间，每个文件中的默认值为可创建线程数限制（<code>/proc/sys/kernel/threads-max</code>）的一半。 在所有后代用户命名空间中，每个文件的默认值都是 <code>MAXINT</code>。</li>
+<li>在创建命名空间时，该对象也会与祖先命名空间进行比较。更准确地说;<ul>
+<li>每个user命名空间都有创建者UID。</li>
+<li>当创建一个命名空间时，将根据每个祖先用户命名空间中的创建者 UID 进行核算, 内核会确保不超过祖先命名空间中创建者 UID 的相应命名空间限制。</li>
+<li>上述要点确保了创建新用户命名空间不能被用作逃避当前用户命名空间中有效限制的手段</li>
+</ul>
+</li>
+</ul>
+<h3 id="命名空间寿命"><a href="#命名空间寿命" class="headerlink" title="命名空间寿命"></a>命名空间寿命</h3><p>如果没有其他因素，当命名空间中的最后一个进程终止或离开命名空间时，命名空间就会被自动删除。不过，还有一些其他因素可能会使命名空间在没有成员进程的情况下仍然存在。 这些因素包括：</p>
+<ul>
+<li>相应的 <code>/proc/pid/ns/*</code> 文件存在打开的文件描述符或绑定挂载。</li>
+<li>命名空间是分层的（即 PID 或用户命名空间），并有一个子命名空间。</li>
+<li>用户命名空间拥有一个或多个非用户命名空间。</li>
+<li>这是一个 PID 命名空间，有一个进程通过 <code>/proc/pid/ns/pid_for_children</code> 符号链接指向该命名空间。</li>
+<li>这是一个时间命名空间，有一个进程通过 <code>/proc/pid/ns/time_for_children</code> 符号链接引用该命名空间。</li>
+<li>这是一个 IPC 命名空间，mqueue 文件系统（参见 <code>mq_overview(7)</code>）的相应挂载指向该命名空间。</li>
+<li>这是一个 PID 命名空间，<code>proc(5)</code> 文件系统的相应挂载会指向该命名空间。</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>参见 <code>clone(2)</code>和 <code>user_namespaces(7)</code></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><code>nsenter(1)</code>, <code>readlink(1)</code>, <code>unshare(1)</code>, <code>clone(2)</code>, <code>ioctl_ns(2)</code>, <code>setns(2)</code>, <code>unshare(2)</code>, <code>proc(5)</code>, <code>capabilities(7)</code>, <code>cgroup_namespaces(7)</code>, <code>cgroups(7)</code>, <code>credentials(7)</code>, <code>ipc_namespaces(7)</code>, <code>network_namespaces(7)</code>, <code>pid_namespaces(7)</code>,<code>user_namespaces(7)</code>, <code>uts_namespaces(7)</code>, <code>lsns(8)</code>, <code>switch_root(8)</code></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://github.com/Guaderxx">Guader</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://guaderxx.github.io/2023/12/26/namespace-%E8%AF%91%E6%96%87/">https://guaderxx.github.io/2023/12/26/namespace-%E8%AF%91%E6%96%87/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="addtoany"><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_wechat"></a><a class="a2a_button_facebook_messenger"></a><a class="a2a_button_email"></a><a class="a2a_button_copy_link"></a><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a></div></div><script async="async" src="https://static.addtoany.com/menu/page.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/12/15/Decorator-Pattern/" title="Decorator Pattern"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">Decorator Pattern</div></div></a></div><div class="next-post pull-right"><a href="/2023/12/26/cpuset-%E8%AF%91%E6%96%87/" title="cpuset 译文"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">cpuset 译文</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8D%E7%A7%B0"><span class="toc-number">1.</span> <span class="toc-text">名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">命名空间类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4API"><span class="toc-number">2.2.</span> <span class="toc-text">命名空间API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proc-pid-ns-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">2.3.</span> <span class="toc-text">&#x2F;proc&#x2F;pid&#x2F;ns&#x2F; 文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proc-sys-user-%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">2.4.</span> <span class="toc-text">&#x2F;proc&#x2F;sys&#x2F;user 文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%AF%BF%E5%91%BD"><span class="toc-number">2.5.</span> <span class="toc-text">命名空间寿命</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">3.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Guader</div><div class="footer_custom_text">The best time to plant a tree was twenty years ago. The second best time is now :)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/utils.min.js"></script><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/main.min.js"></script><script src="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://jsd.012700.xyz/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://jsd.012700.xyz/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(()=>{
+  const getGiscusTheme = theme => {
+    return theme === 'dark' ? 'dark' : 'light'
+  }
+
+  const loadGiscus = () => {
+    const config = Object.assign({
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Guaderxx/Guaderxx.github.io',
+      'data-repo-id': 'R_kgDOJxPT0Q',
+      'data-category-id': 'DIC_kwDOJxPT0c4CXUYG',
+      'data-mapping': 'pathname',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true
+    },null)
+
+    const ele = document.createElement('script')
+    for (let key in config) {
+      ele.setAttribute(key, config[key])
+    }
+    document.getElementById('giscus-wrap').appendChild(ele)
+  }
+
+  const changeGiscusTheme = theme => {
+    const sendMessage = message => {
+      const iframe = document.querySelector('iframe.giscus-frame')
+      if (!iframe) return
+      iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app')
+    }
+
+    sendMessage({
+      setConfig: {
+        theme: getGiscusTheme(theme)
+      }
+    });
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment= loadGiscus
+  }
+})()</script></div><script defer="defer" id="ribbon" src="https://jsd.012700.xyz/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="https://jsd.012700.xyz/npm/busuanzi@2.3.0/bsz.pure.mini.min.js"></script></div></body></html>

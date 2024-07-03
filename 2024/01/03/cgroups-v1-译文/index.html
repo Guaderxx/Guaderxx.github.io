@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>cgroups-v1 译文 | Guader's Blog</title><meta name="author" content="Guader"><meta name="copyright" content="Guader"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="原文 1. Control Groups1.1 What are cgroups ?控制组提供了一种聚合&#x2F;分区任务及其所有后续子任务集的机制，按专门的行为以等级分组。 定义： cgroup 将一组任务与一个或多个子系统的一组参数相关联。 子系统 是一个模块，它利用 cgroup 提供的任务分组功能以特定方式处理任务组。子系统通常是一个“资源控制器”，用于调度资源或应用每个 cgroup">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cgroups-v1 译文">
+<meta property="og:url" content="https://guaderxx.github.io/2024/01/03/cgroups-v1-%E8%AF%91%E6%96%87/index.html">
+<meta property="og:site_name" content="Guader&#39;s Blog">
+<meta property="og:description" content="原文 1. Control Groups1.1 What are cgroups ?控制组提供了一种聚合&#x2F;分区任务及其所有后续子任务集的机制，按专门的行为以等级分组。 定义： cgroup 将一组任务与一个或多个子系统的一组参数相关联。 子系统 是一个模块，它利用 cgroup 提供的任务分组功能以特定方式处理任务组。子系统通常是一个“资源控制器”，用于调度资源或应用每个 cgroup">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://guaderxx.github.io/img/avatar.png">
+<meta property="article:published_time" content="2024-01-03T07:00:10.000Z">
+<meta property="article:modified_time" content="2024-07-03T02:48:53.499Z">
+<meta property="article:author" content="Guader">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://guaderxx.github.io/img/avatar.png"><link rel="shortcut icon" href="/img/fav.png"><link rel="canonical" href="https://guaderxx.github.io/2024/01/03/cgroups-v1-%E8%AF%91%E6%96%87/index.html"><link rel="preconnect" href="https://jsd.012700.xyz"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-9ZF8XKZV7M"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9ZF8XKZV7M');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":90,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":800},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://jsd.012700.xyz/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'cgroups-v1 译文',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-03 10:48:53'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">28</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Guader's Blog"><span class="site-name">Guader's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">cgroups-v1 译文</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-01-03T07:00:10.000Z" title="Created 2024-01-03 15:00:10">2024-01-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-07-03T02:48:53.499Z" title="Updated 2024-07-03 10:48:53">2024-07-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/kernel-doc/">kernel doc</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/kernel-doc/cgroup-v1/">cgroup-v1</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>20mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="cgroups-v1 译文"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt">原文</a></p>
+<h1 id="1-Control-Groups"><a href="#1-Control-Groups" class="headerlink" title="1. Control Groups"></a>1. Control Groups</h1><h2 id="1-1-What-are-cgroups"><a href="#1-1-What-are-cgroups" class="headerlink" title="1.1 What are cgroups ?"></a>1.1 What are cgroups ?</h2><p>控制组提供了一种聚合&#x2F;分区任务及其所有后续子任务集的机制，按专门的行为以等级分组。</p>
+<p>定义：</p>
+<p><em>cgroup</em> 将一组任务与一个或多个子系统的一组参数相关联。</p>
+<p><em>子系统</em> 是一个模块，它利用 cgroup 提供的任务分组功能以特定方式处理任务组。<br>子系统通常是一个“资源控制器”，用于调度资源或应用每个 cgroup 的限制，但它也可以是任何想要对一组进程执行操作的东西，例如 虚拟化子系统。</p>
+<p><em>hierarchy</em> 是一组排列在树中的 cgroup，这样系统中的每个任务都恰好位于层次结构中的一个 cgroup 中，并且是一组子系统； 每个子系统都具有附加到层次结构中每个 cgroup 的系统特定状态。<br>每个层次结构都有一个与其关联的 cgroup 虚拟文件系统实例。</p>
+<p>在任一时刻，可能存在多个活动的任务 cgroup 层次结构。<br>每个层次结构是系统中所有任务的一个分区。</p>
+<p>用户级代码可以在cgroup虚拟文件系统的实例中按名称创建和销毁cgroup，指定和查询任务被分配到哪个cgroup，并列出分配给cgroup的任务PID。<br>这些创建和分配仅影响与该 cgroup 文件系统实例关联的层次结构。</p>
+<p>就其本身而言，cgroup 的唯一用途是进行简单的工作跟踪。<br>目的是让其他子系统接入通用 cgroup 支持，为 cgroup 提供新属性，例如记账&#x2F;限制 cgroup 中的进程可以访问的资源。<br>例如，cpuset（请参阅 Documentation&#x2F;cgroup-v1&#x2F;cpusets.txt）允许您将一组 CPU 和一组内存节点与每个 cgroup 中的任务关联起来。</p>
+<h2 id="1-2-Why-are-cgroups-needed"><a href="#1-2-Why-are-cgroups-needed" class="headerlink" title="1.2 Why are cgroups needed ?"></a>1.2 Why are cgroups needed ?</h2><p>为了在 Linux 内核中提供进程聚合，人们做出了多种努力，主要是为了资源跟踪的目的。<br>此类工作包括 <code>cpuset</code>、<code>CKRM/ResGroups</code>、<code>UserBeanCounters</code> 和虚拟服务器命名空间。<br>这些都需要进程分组&#x2F;分区的基本概念，新分叉的进程最终位于与其父进程相同的组 (cgroup) 中。</p>
+<p>内核 cgroup 补丁提供了有效实现此类组所需的最低限度的基本内核机制。<br>它对系统快速路径的影响最小，并为特定子系统（例如 cpuset）提供钩子，以根据需要提供其他行为。</p>
+<p>提供多层次结构支持，以允许不同子系统将任务划分为 cgroup 明显不同的情况 -<br>具有并行层次结构允许每个层次结构成为任务的自然划分，而不必处理在以下情况下出现的复杂任务组合：<br>需要将几个不相关的子系统强制放入同一 cgroup 树中。</p>
+<p>在一种极端情况下，每个资源控制器或子系统可以位于单独的层次结构中；<br>在另一个极端，所有子系统都将附属于同一层次结构。</p>
+<p>作为可以从多个层次结构中受益的场景（最初由 <code>vatsa@in.ibm.com</code> 提出）的示例，请考虑具有各种用户（学生、教授、系统任务等）的大型大学服务器。<br>该服务器的资源规划可以遵循以下原则：</p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CPU             <span class="string">&quot;Top cpuset&quot;</span></span><br><span class="line">                /          \</span><br><span class="line">            CPUSet1       CPUSet2</span><br><span class="line">               |             |</span><br><span class="line">            (Professors)  (Students)</span><br><span class="line"></span><br><span class="line">            此外（系统任务）附加到topcpuset（以便它们可以在任何地方运行），限制为<span class="number">20</span>%</span><br><span class="line"></span><br><span class="line">Memory:  Professors (<span class="number">50</span>%), Students (<span class="number">30</span>%), <span class="keyword">system</span> (<span class="number">20</span>%)</span><br><span class="line">Disk:  Professors (<span class="number">50</span>%), Students (<span class="number">30</span>%), <span class="keyword">system</span> (<span class="number">20</span>%)</span><br><span class="line">Network: WWW browsing (<span class="number">20</span>%), Network File System (<span class="number">60</span>%), others (<span class="number">20</span>%)</span><br><span class="line">                       / \</span><br><span class="line">       Professors (<span class="number">15</span>%)   Students (<span class="number">5</span>%)</span><br></pre></td></tr></table></figure>
+
+<p>像 <code>Firefox/Lynx</code> 这样的浏览器进入 <code>WWW</code> 网络类，而 <code>(k)nfsd</code> 进入 <code>NFS</code> 网络类。</p>
+<p>同时，<code>Firefox/Lynx</code> 将根据启动者（教授&#x2F;学生）共享适当的 CPU&#x2F;内存类别。</p>
+<p>由于能够针对不同的资源对任务进行不同的分类（通过将这些资源子系统放在不同的层次结构中），管理员可以轻松设置一个接收执行通知的脚本，并且根据谁启动浏览器，他可以:</p>
+<p><code>echo browser_pid &gt; /sys/fs/cgroup/&lt;restype&gt;/&lt;userclass&gt;/tasks</code></p>
+<p>由于只有一个层次结构，他现在可能必须为每个启动的浏览器创建一个单独的 cgroup，并将其与适当的网络和其他资源类相关联。<br>这可能会导致此类 cgroup 的扩散。</p>
+<p>另外，假设管理员希望临时为学生的浏览器提供增强的网络访问权限<br>（因为现在是晚上，并且用户想要进行在线游戏:) ），<br>或者为学生的其中一个模拟应用程序提供增强的 CPU 能力。</p>
+<p>能够将 PID 直接写入资源类，只需执行以下操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> pid &gt; /sys/fs/cgroup/network/&lt;new_class&gt;/tasks</span><br><span class="line"><span class="comment"># (after some time)</span></span><br><span class="line"><span class="built_in">echo</span> pid &gt; sys/fs/cgroup/network/&lt;orig_class&gt;/tasks</span><br></pre></td></tr></table></figure>
+
+<p>如果没有这种能力，管理员就必须将 cgroup 拆分为多个单独的 cgroup，然后将新的 cgroup 与新的资源类相关联。</p>
+<h2 id="1-3-How-are-cgroups-implemented"><a href="#1-3-How-are-cgroups-implemented" class="headerlink" title="1.3 How are cgroups implemented ?"></a>1.3 How are cgroups implemented ?</h2><p>控制组对内核进行了如下扩展：</p>
+<ul>
+<li>系统中的每个任务都有一个指向 <code>css_set</code> 的引用计数指针。</li>
+<li><code>css_set</code> 包含一组指向 <code>cgroup_subsys_state</code> 对象的引用计数指针，每个 cgroup 子系统对应一个在系统中注册的子系统。<br>  从任务到它在每个层次结构中所属的 cgroup 之间没有直接链接，但这可以通过跟踪 <code>cgroup_subsys_state</code> 对象的指针来确定。<br>  这是因为访问子系统状态是在性能关键型代码中经常发生的事情，而需要任务的实际 cgroup 分配（特别是在 cgroup 之间移动）的操作不太常见。<br>  链表使用 <code>css_set</code> 贯穿每个 <code>task_struct</code> 的 <code>cg_list</code> 字段，锚定在 <code>css_set-&gt;tasks</code> 处。</li>
+<li>可以安装 cgroup 层次结构文件系统，以便从用户空间进行浏览和操作。</li>
+<li>您可以列出附加到任何 cgroup 的所有任务（按 PID ）。</li>
+</ul>
+<p>cgroups 的实现需要一些简单的钩子到内核的其余部分，在性能关键路径中没有：</p>
+<ul>
+<li>在 <code>init/main.c</code> 中，在系统启动时初始化根 cgroup 和初始 <code>css_set</code>。</li>
+<li>在 fork 和 exit 中，从其 <code>css_set</code> 附加和分离任务。</li>
+</ul>
+<p>此外，可以挂载 “cgroup” 类型的新文件系统，以允许浏览和修改内核当前已知的 cgroup。<br>挂载 cgroup 层次结构时，您可以指定要挂载的子系统的逗号分隔列表作为文件系统挂载选项。<br>默认情况下，挂载 cgroup 文件系统会尝试挂载包含所有已注册子系统的层次结构。</p>
+<p>如果已存在具有完全相同的子系统集的活动层次结构，则它将被重新用于新挂载。<br>如果现有层次结构不匹配，并且任何请求的子系统正在现有层次结构中使用，则挂载将失败并显示 - <code>EBUSY</code>。<br>否则，将激活与所请求的子系统相关联的新层次结构。</p>
+<p>目前无法将新子系统绑定到活动 cgroup 层次结构，或从活动 cgroup 层次结构取消子系统的绑定。<br>这在未来可能是可能的，但充满了令人讨厌的错误恢复问题。</p>
+<p>当 cgroup 文件系统被卸载时，如果在顶级 cgroup 下创建了任何子 cgroup，则即使已卸载，该层次结构仍将保持活动状态； 如果没有子 cgroup，则层次结构将被停用。</p>
+<p>没有为 cgroup 添加新的系统调用 - 对查询和修改 cgroup 的所有支持都是通过此 cgroup 文件系统。</p>
+<p><code>/proc</code> 下的每个任务都有一个名为 “cgroup” 的添加文件，为每个活动层次结构显示子系统名称和 cgroup 名称作为相对于 cgroup 文件系统根的路径。</p>
+<p>每个 cgroup 由 cgroup 文件系统中的一个目录表示，其中包含描述该 cgroup 的以下文件：</p>
+<ul>
+<li><code>tasks</code>: 附加到该 cgroup 的任务列表（按 PID）。 不保证此列表已排序。<br>  将线程 ID 写入此文件会将线程移动到此 cgroup 中。</li>
+<li><code>cgroup.procs</code>: cgroup 中的线程组 ID 列表。<br>  不保证此列表已排序或没有重复的 <code>TGID</code>，并且如果需要此属性，用户空间应对该列表进行排序&#x2F;唯一化。<br>  将线程组 ID 写入此文件会将该组中的所有线程移动到此 cgroup 中。</li>
+<li><code>notify_on_release</code>: 退出时运行 <code>release agent</code> ?</li>
+<li><code>release_agent</code>： 用于发布通知的路径（此文件仅存在于顶级 cgroup 中）</li>
+</ul>
+<p>其他子系统（例如 cpuset）可能会在每个 cgroup 目录中添加其他文件。</p>
+<p>使用 <code>mkdir</code> 系统调用或 <code>shell</code> 命令创建新的 cgroup。<br>cgroup 的属性（例如其标志）可通过写入该 cgroups 目录中的相应文件来修改，如上面所列。</p>
+<p>嵌套 cgroup 的命名分层结构允许将大型系统划分为嵌套的、动态可更改的 “软分区”。</p>
+<p>每个任务（由该任务的任何子任务在 fork 时自动继承）附加到 cgroup 允许将系统上的工作负载组织成相关的任务集。<br>如果必要的 cgroup 文件系统目录的权限允许，任务可以重新附加到任何其他 cgroup。</p>
+<p>当任务从一个 cgroup 移动到另一个 cgroup 时，它会获得一个新的 <code>css_set</code> 指针 - 如果已经存在具有所需 cgroup 集合的 <code>css_set</code>，则该组将被重用，否则会分配一个新的 <code>css_set</code>。<br>通过查看哈希表来找到适当的现有 <code>css_set</code>。</p>
+<p>为了允许从 cgroup 访问组成它的 <code>css_sets</code>（以及任务），一组 <code>cg_cgroup_link</code> 对象形成一个网格；<br>每个 <code>cg_cgroup_link</code> 都链接到其 <code>cgrp_link_list</code> 字段上的单个 cgroup 的 <code>cg_cgroup_links</code> 列表，以及其 <code>cg_link_list</code> 上的单个 <code>css_set</code> 的 <code>cg_cgroup_links</code> 列表。</p>
+<p>因此，可以通过迭代引用该 cgroup 的每个 <code>css_set</code> 以及对每个 <code>css_set</code> 的任务集进行子迭代来列出 cgroup 中的任务集。</p>
+<p>使用 Linux 虚拟文件系统 (vfs) 来表示 cgroup 层次结构为 cgroup 提供了熟悉的权限和名称空间，并且需要最少的附加内核代码。</p>
+<h2 id="1-4-What-does-notify-on-release-do"><a href="#1-4-What-does-notify-on-release-do" class="headerlink" title="1.4 What does notify_on_release do ?"></a>1.4 What does <code>notify_on_release</code> do ?</h2><p>如果在cgroup中启用了 <code>notify_on_release</code> 标志(<code>1</code>)，则每当cgroup中的最后一个任务离开（退出或附加到某个其他 cgroup ）并且该cgroup的最后一个子 cgroup 被删除时，<br>然后内核运行该层次结构根目录中 <code>release_agent</code> 文件内容指定的命令，提供废弃 cgroup 的路径名（相对于 cgroup 文件系统的挂载点）。<br>这可以自动删除废弃的 cgroup。<br>系统启动时 root cgroup 中的 <code>notification_on_release</code> 的默认值是禁用的 (<code>0</code>)。<br>其他 cgroup 在创建时的默认值是其父级的 <code>notify_on_release</code> 设置的当前值。<br>cgroup 层次结构的 <code>release_agent</code> 路径的默认值为空。</p>
+<h2 id="1-5-What-does-clone-children-do"><a href="#1-5-What-does-clone-children-do" class="headerlink" title="1.5 What does clone_children do ?"></a>1.5 What does <code>clone_children</code> do ?</h2><p>该标志仅影响 cpuset 控制器。<br>如果在 cgroup 中启用了 <code>clone_children</code> 标志 (<code>1</code>)，则新的 cpuset cgroup 将在初始化期间从父级复制其配置。</p>
+<h2 id="1-6-How-do-I-use-cgroups"><a href="#1-6-How-do-I-use-cgroups" class="headerlink" title="1.6 How do I use cgroups ?"></a>1.6 How do I use cgroups ?</h2><p>要使用 “cpuset” cgroup 子系统启动包含在 cgroup 中的新工作，步骤如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mount -t tmpfs cgroup_root /sys/fs/cgroup</span><br><span class="line"><span class="built_in">mkdir</span> /sys/fs/cgroup/cpuset</span><br><span class="line">mount -t cgroup -ocpuset cpuset /sys/fs/cgroup/cpuset</span><br><span class="line"><span class="comment"># 通过在 /sys/fs/cgroup/cpuset 虚拟文件系统中使用 mkdir 和 write (或 echo) 创建新的 cgroup</span></span><br><span class="line"><span class="comment"># 启动一项任务，该任务将成为新工作的“奠基人”</span></span><br><span class="line"><span class="comment"># 通过将该任务的 PID 写入该 cgroup 的 /sys/fs/cgroup/cpuset 任务文件，将该任务附加到新的 cgroup。</span></span><br><span class="line"><span class="comment"># fork, 执行或克隆该创始任务的工作任务</span></span><br></pre></td></tr></table></figure>
+
+<p>例如，以下命令序列将设置一个名为“Charlie”的 cgroup，仅包含 CPU 2 和 3 以及内存节点 1，然后在该 cgroup 中启动一个子 shell ‘sh’：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mount -t tmpfs cgroup_root /sys/fs/cgroup</span><br><span class="line"><span class="built_in">mkdir</span> /sys/fs/cgroup/cpuset</span><br><span class="line">mount -t cgroup cpuset -ocpuset /sys/fs/cgroup/cpuset</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /sys/fs/cgroup/cpuset</span><br><span class="line"><span class="built_in">mkdir</span> Charlie</span><br><span class="line">/bin/echo 2-3 &gt; cpuset.cpus</span><br><span class="line">/bin/echo 1 &gt; cpuset.mems</span><br><span class="line">/bin/echo $$ &gt; tasks</span><br><span class="line">sh</span><br><span class="line"><span class="comment"># 子shell `sh` 现在运行在 Charlie 控制组中</span></span><br><span class="line"><span class="built_in">cat</span> /proc/self/cgroup</span><br><span class="line"><span class="comment"># output: &#x27;/Charlie&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="2-Usage-Examples-and-Syntax"><a href="#2-Usage-Examples-and-Syntax" class="headerlink" title="2. Usage Examples and Syntax"></a>2. Usage Examples and Syntax</h1><h2 id="2-1-Basic-Usage"><a href="#2-1-Basic-Usage" class="headerlink" title="2.1 Basic Usage"></a>2.1 Basic Usage</h2><p>创建、修改、使用 cgroup 可以通过 cgroup 虚拟文件系统来完成。</p>
+<p>要挂载包含所有可用子系统的 cgroup 层次结构，输入：</p>
+<p><code>mount -t cgroup xxx /sys/fs/cgroup</code></p>
+<p>“xxx” 不由 cgroup 代码解释，但会出现在 <code>/proc/mounts</code> 中，因此可能是您喜欢的任何有用的标识字符串。</p>
+<p>注意：如果没有一些用户输入，某些子系统将无法工作。<br>例如，如果启用了 cpuset，则用户必须先为创建的每个新 cgroup 填充 <code>cpus</code> 和 <code>mems</code> 文件，然后才能使用该组。</p>
+<p>正如 “1.2 为什么需要 cgroup？” 一节中所解释的,您应该为要控制的每个资源或资源组创建不同的 cgroup 层次结构。<br>因此，您应该在 <code>/sys/fs/cgroup</code> 上挂载 tmpfs 并为每个 cgroup 资源或资源组创建目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mount -t tmpfs cgroup_root /sys/fs/cgroup</span><br><span class="line"><span class="built_in">mkdir</span> /sys/fs/cgroup/rg1</span><br></pre></td></tr></table></figure>
+
+<p>要安装仅包含 cpuset 和内存子系统的 cgroup 层次结构，输入：</p>
+<p><code>mount -t cgroup -o cpuset,memory hier1 /sys/fs/cgroup/rg1</code></p>
+<p>虽然目前支持重新挂载 cgroup，但不建议使用它。<br>重新挂载允许更改绑定的子系统和 <code>release_agent</code>。<br>重新绑定几乎没有用，因为它仅在层次结构为空且 <code>release_agent</code> 本身应替换为传统的 <code>fsnotify</code> 时才有效。<br>未来将取消对重新安装的支持。</p>
+<p>指定层次结构的 <code>release_agent</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mount -t cgroup -o cpuset,release_agent=<span class="string">&quot;/sbin/cpuset_release_agent&quot;</span> \</span><br><span class="line">    xxx /sys/fs/cgroup/rg1</span><br></pre></td></tr></table></figure>
+
+<p>请注意，多次指定 <code>release_agent</code> 将返回失败。</p>
+<p>请注意，当前仅当层次结构由单个（根）cgroup 组成时才支持更改子系统集。<br>支持从现有 cgroup 层次结构中任意绑定&#x2F;取消绑定子系统的能力预计将在未来实现。</p>
+<p>然后在 <code>/sys/fs/cgroup/rg1</code> 下你可以找到一棵与系统中cgroup的树相对应的树。<br>例如，<code>/sys/fs/cgroup/rg1</code> 是保存整个系统的 cgroup。</p>
+<p>如果要更改 <code>release_agent</code> 的值：</p>
+<p><code>echo &quot;/sbin/new_release_agent&quot; &gt; /sys/fs/cgroup/rg1/release_agent</code></p>
+<p>也可以通过重新挂载来更改。</p>
+<p>如果要在 <code>/sys/fs/cgroup/rg1</code> 下创建一个新的 cgroup：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /sys/fs/cgroup/rg1</span><br><span class="line"><span class="built_in">mkdir</span> my_cgroup</span><br></pre></td></tr></table></figure>
+
+<p>现在可以操作这个 <code>cgroup</code>。</p>
+<p><code>cd my_cgroup</code></p>
+<p>在该目录下可以发现以下几个文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line">cgroup.procs notify_on_release tasks</span><br><span class="line"><span class="comment"># (加上附加子系统添加的任何文件）。</span></span><br></pre></td></tr></table></figure>
+
+<p>现在将 shell 连接到 cgroup：</p>
+<p><code>/bin/echo $$ &gt; tasks</code></p>
+<p>在此目录中还可以使用 mkdir 在你的 cgroup 中创建 cgroup。</p>
+<p><code>mkdir my_sub_cs</code></p>
+<p>要移除一个 cgroup, 用 <code>rmdir</code> 就可以：</p>
+<p><code>rmdir my_sub_cs</code></p>
+<p>如果 cgroup 正在使用（内部有 cgroup，或附加了进程，或由其他子系统特定的引用保持活动状态），则此操作将会失败。</p>
+<h2 id="2-2-Attaching-processes"><a href="#2-2-Attaching-processes" class="headerlink" title="2.2 Attaching processes"></a>2.2 Attaching processes</h2><p><code>/bin/echo PID &gt; tasks</code></p>
+<p>注意，是PID，而不是PIDs。 您一次只能附加一项任务。<br>如果您有多个任务要附加，则必须一个接一个地执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/bin/echo PID1 &gt; tasks</span><br><span class="line">/bin/echo PID2 &gt; tasks</span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line">/bin/echo PIDn &gt; tasks</span><br></pre></td></tr></table></figure>
+
+<p>您可以通过<code>echo 0</code> 来附加当前的 shell 任务：</p>
+<p><code>echo 0 &gt; tasks</code></p>
+<p>您可以使用 <code>cgroup.procs</code> 文件而不是任务文件来一次移动线程组中的所有线程。<br>将线程组中任何任务的 PID 回显到 <code>cgroup.procs</code> 会导致该线程组中的所有任务都附加到 cgroup。<br>将 0 写入 <code>cgroup.procs</code> 会移动写入任务的线程组中的所有任务。</p>
+<p>注意：由于每个任务始终是每个已安装层次结构中一个 cgroup 的成员，因此要从当前 cgroup 中删除任务，您必须通过写入新 cgroup 的任务文件将其移至新 cgroup（可能是根 cgroup）。</p>
+<p>注意：由于某些 cgroup 子系统强制执行的一些限制，将进程移动到另一个 cgroup 可能会失败。</p>
+<h2 id="2-3-Mounting-hierarchies-by-name"><a href="#2-3-Mounting-hierarchies-by-name" class="headerlink" title="2.3 Mounting hierarchies by name"></a>2.3 Mounting hierarchies by name</h2><p>挂载 cgroups 层次结构时传递 <code>name=&lt;x&gt;</code> 选项会将给定名称与层次结构关联起来。<br>这可以在安装预先存在的层次结构时使用，以便通过名称而不是通过其活动子系统集来引用它。<br>每个层次结构要么是无名的，要么具有唯一的名称。</p>
+<p>名称应匹配 <code>[\w.-]+</code></p>
+<p>当为新层次结构传递 <code>name=&lt;x&gt;</code> 选项时，您需要手动指定子系统；<br>当您为子系统命名时，不支持在未显式指定任何子系统时安装所有子系统的旧行为。</p>
+<p>子系统的名称作为层次结构描述的一部分出现在 <code>/proc/mounts</code> 和 <code>/proc/&lt;pid&gt;/cgroups</code> 中。</p>
+<h1 id="3-Kernel-API"><a href="#3-Kernel-API" class="headerlink" title="3. Kernel API"></a>3. Kernel API</h1><h2 id="3-1-Overview"><a href="#3-1-Overview" class="headerlink" title="3.1 Overview"></a>3.1 Overview</h2><p>每个想要挂接到通用 cgroup 系统的内核子系统都需要创建一个 <code>cgroup_subsys</code> 对象。<br>其中包含各种方法，这些方法是来自 cgroup 系统的回调，以及将由 cgroup 系统分配的子系统 ID。</p>
+<p><code>cgroup_subsys</code> 对象中的其他字段包括：</p>
+<ul>
+<li><code>subsys_id</code> 子系统的唯一数组索引，指示该子系统应管理 <code>cgroup-&gt;subsys[]</code> 中的哪个条目。</li>
+<li><code>name</code>  应初始化为唯一的子系统名称。<br>  长度不得超过 <code>MAX_CGROUP_TYPE_NAMELEN</code></li>
+<li><code>early_init</code>  指示子系统是否需要在系统启动时提前初始化。</li>
+</ul>
+<p>系统创建的每个cgroup对象都有一个指针数组，以子系统ID为索引； 该指针完全由子系统管理； 通用 cgroup 代码永远不会触及该指针。</p>
+<h2 id="3-2-Synchronization"><a href="#3-2-Synchronization" class="headerlink" title="3.2 Synchronization"></a>3.2 Synchronization</h2><p>有一个全局互斥体 <code>cgroup_mutex</code>，由 cgroup 系统使用。<br>任何想要修改 cgroup 的人都应该采取此操作。<br>也可以采取措施防止 cgroup 被修改，但在这种情况下更具体的锁定可能更合适。</p>
+<p>查阅 [kernel&#x2F;cgroup.c][] 了解更多。</p>
+<p>子系统可以通过函数 <code>cgroup_lock()</code>&#x2F;<code>cgroup_unlock()</code> 获取&#x2F;释放 <code>cgroup_mutex</code>。</p>
+<p>访问任务的 cgroup 指针可以通过以下方式完成：</p>
+<ul>
+<li>持有 <code>cgroup_mutex</code> 时</li>
+<li>同时持有任务的 <code>alloc_lock</code>（通过 <code>task_lock()</code> ）。</li>
+<li>通过 <code>rcu_dereference()</code> 在 <code>rcu_read_lock()</code> 部分内</li>
+</ul>
+<h2 id="3-3-Subsystem-API"><a href="#3-3-Subsystem-API" class="headerlink" title="3.3 Subsystem API"></a>3.3 Subsystem API</h2><p>每个子系统应该：</p>
+<ul>
+<li>在 <code>linux/cgroup_subsys.h</code> 中添加条目</li>
+<li>定义名为 <code>&lt;name&gt;_cgrp_subsys</code> 的 <code>cgroup_subsys</code> 对象</li>
+</ul>
+<p>每个子系统可以导出以下方法。<br>唯一的强制方法是 <code>css_alloc/free</code>。<br>任何其他为空的操作都被认为是成功的空操作。</p>
+<p><code>struct cgroup_subsys_state *css_alloc(struct cgroup *cgrp)</code><br>（<code>cgroup_mutex</code> 由调用者持有）</p>
+<p>调用为 cgroup 分配子系统状态对象。<br>子系统应该为传递的 cgroup 分配其子系统状态对象，成功时返回指向新对象的指针或 <code>ERR_PTR()</code> 值。<br>成功后，子系统指针应指向 <code>cgroup_subsys_state</code> 类型的结构（通常嵌入到较大的子系统特定对象中），该结构将由 cgroup 系统初始化。<br>请注意，这将在初始化时被调用，以为此子系统创建根子系统状态；<br>这种情况可以通过传递的具有 NULL 父级的 cgroup 对象来识别（因为它是层次结构的根），并且可能是初始化代码的适当位置。</p>
+<p><code>int css_online(struct cgroup *cgrp)</code><br>（<code>cgroup_mutex</code> 由调用者持有）</p>
+<p>在 @cgrp 成功完成所有分配并对 <code>cgroup_for_each_child/descendant_*()</code> 迭代器可见后调用。<br>子系统可以通过返回 -errno 选择创建失败。<br>此回调可用于实现沿层次结构的可靠状态共享和传播。<br>有关详细信息，请参阅 <code>cgroup_for_each_descendant_pre()</code> 上的注释。</p>
+<p><code>void css_offline(struct cgroup *cgrp);</code><br>（<code>cgroup_mutex</code> 由调用者持有）</p>
+<p>这是 <code>css_online()</code> 的对应部分，当且仅当 <code>css_online()</code> 在 @cgrp 上成功时调用。<br>这标志着@cgrp结束的开始。<br>@cgrp 正在被删除，子系统应该开始删除它在 @cgrp 上持有的所有引用。<br>当所有引用都被删除后，cgroup 删除将继续进行下一步 - <code>css_free()</code>。<br>在此回调之后，@cgrp 对于子系统来说应该被视为死亡。</p>
+<p><code>void css_free(struct cgroup *cgrp)</code><br>（<code>cgroup_mutex</code> 由调用者持有）</p>
+<p>cgroup系统即将释放@cgrp； 子系统应该释放其子系统状态对象。<br>当这个方法被调用的时候，@cgrp已经完全没有被使用了； <code>@cgrp-&gt;parent</code> 仍然有效。<br>（注意 - 如果在为新 cgroup 调用该子系统的 <code>create()</code> 方法后发生错误，也可以为新创建的 cgroup 调用该方法）。</p>
+<p><code>int can_attach(struct cgroup *cgrp, struct cgroup_taskset *tset)</code><br>（<code>cgroup_mutex</code> 由调用者持有）</p>
+<p>在将一项或多项任务移入 cgroup 之前调用； 如果子系统返回错误，这将中止附加操作。<br>@tset 包含要附加的任务，并保证其中至少有一个任务。</p>
+<p>如果任务集中有多个任务，则：</p>
+<ul>
+<li>保证所有线程都来自同一个线程组</li>
+<li>@tset 包含线程组中的所有任务，无论它们是否正在切换 cgroup</li>
+<li>第一个任务是领导者</li>
+</ul>
+<p>每个 @tset 条目还包含任务的旧 cgroup，并且可以使用 <code>cgroup_taskset_for_each()</code> 迭代器轻松跳过不切换 cgroup 的任务。<br>请注意，这不是在 fork 上调用的。<br>如果此方法返回 0（成功），那么当调用者持有 <code>cgroup_mutex</code> 时，该方法应该保持有效，并确保将来调用 <code>Attach()</code> 或 <code>cancel_attach()</code> 。</p>
+<p><code>void css_reset(struct cgroup_subsys_state *css)</code><br>（<code>cgroup_mutex</code> 由调用者持有）</p>
+<p>一个可选操作，应将 <code>@css</code> 的配置恢复到初始状态。<br>当前仅在通过 <code>cgroup.subtree_control</code> 在 cgroup 上禁用子系统时在统一层次结构上使用，但应保持启用状态，因为其他子系统依赖于它。<br>cgroup core 通过删除关联的界面文件来使此类 css 不可见，并调用此回调，以便隐藏子系统可以返回到初始中性状态。<br>这可以防止来自隐藏 CSS 的意外资源控制，并确保配置在稍后再次可见时处于初始状态。</p>
+<p><code>void cancel_attach(struct cgroup *cgrp, struct cgroup_taskset *tset)</code><br>（<code>cgroup_mutex</code> 由调用者持有）</p>
+<p>当 <code>can_attach()</code> 成功后任务附加操作失败时调用。<br>一个 <code>can_attach()</code> 有副作用的子系统应该提供这个函数，以便子系统可以实现回滚。 如果没有，则没有必要。<br>仅当子系统的 <code>can_attach()</code> 操作成功时才会调用此方法。<br>参数与 <code>can_attach()</code> 相同。</p>
+<p><code>void attach(struct cgroup *cgrp, struct cgroup_taskset *tset)</code><br>（<code>cgroup_mutex</code> 由调用者持有）</p>
+<p>在任务附加到 cgroup 后调用，以允许任何需要内存分配或阻塞的附加后活动。<br>参数与 <code>can_attach()</code> 相同。</p>
+<p><code>void fork(struct task_struct *task)</code></p>
+<p>当任务被分叉到 cgroup 时调用。</p>
+<p><code>void exit(struct task_struct *task)</code></p>
+<p>在任务退出期间调用。</p>
+<p><code>void free(struct task_struct *task)</code></p>
+<p>当<code>task_struct</code> 被释放时调用。</p>
+<p><code>void bind(struct cgroup *root)</code><br>（<code>cgroup_mutex</code> 由调用者持有）</p>
+<p>当 cgroup 子系统重新绑定到不同的层次结构和根 cgroup 时调用。<br>目前，这只涉及默认层次结构（从不具有子 cgroup）和正在创建&#x2F;销毁的层次结构（因此没有子 cgroup）之间的移动。</p>
+<h1 id="4-Extended-attributes-usage"><a href="#4-Extended-attributes-usage" class="headerlink" title="4. Extended attributes usage"></a>4. Extended attributes usage</h1><p>cgroup 文件系统在其目录和文件中支持某些类型的扩展属性。<br>目前支持的类型有：</p>
+<ul>
+<li><code>Trusted (XATTR_TRUSTED)</code></li>
+<li><code>Security (XATTR_SECURITY)</code></li>
+</ul>
+<p>两者都需要 <code>CAP_SYS_ADMIN</code> 功能来设置。</p>
+<p>与 tmpfs 一样，cgroup 文件系统中的扩展属性是使用内核内存存储的，建议将使用量保持在最低限度。<br>这就是不支持用户定义的扩展属性的原因，因为任何用户都可以执行此操作，并且值大小没有限制。</p>
+<p>当前使用此功能的已知用户是 SELinux，用于限制容器中 cgroup 的使用，以及 systemd 用于存储各种元数据，例如 cgroup 中的主 PID（systemd 为每个服务创建一个 cgroup）。</p>
+<h1 id="5-Questions"><a href="#5-Questions" class="headerlink" title="5. Questions"></a>5. Questions</h1><p>Q: 为什么是用 <code>/bin/echo</code>?<br>A: bash 的内置“echo”命令不会检查对 write() 的调用是否有错误。<br>如果您在 cgroup 文件系统中使用它，您将无法判断命令是成功还是失败。</p>
+<p>Q: 当我附加进程时，只有第一行真正附加！<br>A: 每次调用 write() 只能返回一个错误代码。所以你也应该只输入一个 PID。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://github.com/Guaderxx">Guader</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://guaderxx.github.io/2024/01/03/cgroups-v1-%E8%AF%91%E6%96%87/">https://guaderxx.github.io/2024/01/03/cgroups-v1-%E8%AF%91%E6%96%87/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="addtoany"><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_wechat"></a><a class="a2a_button_facebook_messenger"></a><a class="a2a_button_email"></a><a class="a2a_button_copy_link"></a><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a></div></div><script async="async" src="https://static.addtoany.com/menu/page.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/12/26/memory-%E8%AF%91%E6%96%87/" title="memory 译文"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">memory 译文</div></div></a></div><div class="next-post pull-right"><a href="/2024/01/03/cgroup-v2-%E8%AF%91%E6%96%87/" title="cgroup-v2 译文"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">cgroup-v2 译文</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Control-Groups"><span class="toc-number">1.</span> <span class="toc-text">1. Control Groups</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-What-are-cgroups"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 What are cgroups ?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-Why-are-cgroups-needed"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 Why are cgroups needed ?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-How-are-cgroups-implemented"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 How are cgroups implemented ?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-What-does-notify-on-release-do"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 What does notify_on_release do ?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-What-does-clone-children-do"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 What does clone_children do ?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6-How-do-I-use-cgroups"><span class="toc-number">1.6.</span> <span class="toc-text">1.6 How do I use cgroups ?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Usage-Examples-and-Syntax"><span class="toc-number">2.</span> <span class="toc-text">2. Usage Examples and Syntax</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Basic-Usage"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 Basic Usage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Attaching-processes"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 Attaching processes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Mounting-hierarchies-by-name"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 Mounting hierarchies by name</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Kernel-API"><span class="toc-number">3.</span> <span class="toc-text">3. Kernel API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Overview"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 Overview</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Synchronization"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 Synchronization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-Subsystem-API"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 Subsystem API</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Extended-attributes-usage"><span class="toc-number">4.</span> <span class="toc-text">4. Extended attributes usage</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Questions"><span class="toc-number">5.</span> <span class="toc-text">5. Questions</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Guader</div><div class="footer_custom_text">The best time to plant a tree was twenty years ago. The second best time is now :)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/utils.min.js"></script><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/main.min.js"></script><script src="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://jsd.012700.xyz/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://jsd.012700.xyz/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(()=>{
+  const getGiscusTheme = theme => {
+    return theme === 'dark' ? 'dark' : 'light'
+  }
+
+  const loadGiscus = () => {
+    const config = Object.assign({
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Guaderxx/Guaderxx.github.io',
+      'data-repo-id': 'R_kgDOJxPT0Q',
+      'data-category-id': 'DIC_kwDOJxPT0c4CXUYG',
+      'data-mapping': 'pathname',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true
+    },null)
+
+    const ele = document.createElement('script')
+    for (let key in config) {
+      ele.setAttribute(key, config[key])
+    }
+    document.getElementById('giscus-wrap').appendChild(ele)
+  }
+
+  const changeGiscusTheme = theme => {
+    const sendMessage = message => {
+      const iframe = document.querySelector('iframe.giscus-frame')
+      if (!iframe) return
+      iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app')
+    }
+
+    sendMessage({
+      setConfig: {
+        theme: getGiscusTheme(theme)
+      }
+    });
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment= loadGiscus
+  }
+})()</script></div><script defer="defer" id="ribbon" src="https://jsd.012700.xyz/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="https://jsd.012700.xyz/npm/busuanzi@2.3.0/bsz.pure.mini.min.js"></script></div></body></html>

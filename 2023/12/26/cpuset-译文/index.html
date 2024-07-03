@@ -1,0 +1,441 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>cpuset 译文 | Guader's Blog</title><meta name="author" content="Guader"><meta name="copyright" content="Guader"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="原文 Cpusets什么是 cpusetsCpusets 提供了一种将一组 CPU 和内存节点分配给一组任务的机制。在本文中，”内存节点 “是指包含内存的联机节点。 Cpuset 将任务的 CPU 和内存位置限制在任务当前 cpuset 的资源范围内。 它们形成了虚拟文件系统中可见的嵌套层次结构。这些都是在大型系统上管理动态任务分配所需的基本钩子，超出了已有的钩子范围。 Cpusets 使用文档c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpuset 译文">
+<meta property="og:url" content="https://guaderxx.github.io/2023/12/26/cpuset-%E8%AF%91%E6%96%87/index.html">
+<meta property="og:site_name" content="Guader&#39;s Blog">
+<meta property="og:description" content="原文 Cpusets什么是 cpusetsCpusets 提供了一种将一组 CPU 和内存节点分配给一组任务的机制。在本文中，”内存节点 “是指包含内存的联机节点。 Cpuset 将任务的 CPU 和内存位置限制在任务当前 cpuset 的资源范围内。 它们形成了虚拟文件系统中可见的嵌套层次结构。这些都是在大型系统上管理动态任务分配所需的基本钩子，超出了已有的钩子范围。 Cpusets 使用文档c">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://guaderxx.github.io/img/avatar.png">
+<meta property="article:published_time" content="2023-12-26T08:58:00.000Z">
+<meta property="article:modified_time" content="2024-07-03T02:48:53.500Z">
+<meta property="article:author" content="Guader">
+<meta property="article:tag" content="doc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://guaderxx.github.io/img/avatar.png"><link rel="shortcut icon" href="/img/fav.png"><link rel="canonical" href="https://guaderxx.github.io/2023/12/26/cpuset-%E8%AF%91%E6%96%87/index.html"><link rel="preconnect" href="https://jsd.012700.xyz"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-9ZF8XKZV7M"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9ZF8XKZV7M');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":90,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":800},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://jsd.012700.xyz/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'cpuset 译文',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-03 10:48:53'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">28</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Guader's Blog"><span class="site-name">Guader's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">cpuset 译文</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-12-26T08:58:00.000Z" title="Created 2023-12-26 16:58:00">2023-12-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-07-03T02:48:53.500Z" title="Updated 2024-07-03 10:48:53">2024-07-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/kernel-doc/">kernel doc</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/kernel-doc/cpusets/">cpusets</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">8.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>28mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="cpuset 译文"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.txt">原文</a></p>
+<h2 id="Cpusets"><a href="#Cpusets" class="headerlink" title="Cpusets"></a>Cpusets</h2><h3 id="什么是-cpusets"><a href="#什么是-cpusets" class="headerlink" title="什么是 cpusets"></a>什么是 cpusets</h3><p>Cpusets 提供了一种将一组 CPU 和内存节点分配给一组任务的机制。在本文中，”内存节点 “是指包含内存的联机节点。</p>
+<p>Cpuset 将任务的 CPU 和内存位置限制在任务当前 cpuset 的资源范围内。 它们形成了虚拟文件系统中可见的嵌套层次结构。这些都是在大型系统上管理动态任务分配所需的基本钩子，超出了已有的钩子范围。</p>
+<p>Cpusets 使用文档<a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt">cgroups.txt</a> 中描述的通用 cgroup 子系统。</p>
+<p>使用 <code>sched_setaffinity(2)</code> 系统调用将 CPU 纳入 CPU 亲和性掩码(CPU affinity mask)，以及使用 <code>mbind(2)</code> 和 <code>set_mempolicy(2)</code> 系统调用将内存节点纳入内存策略的任务请求，都会通过该任务的 cpuset 过滤，过滤掉不在该 cpuset 中的 CPU 或内存节点。<br>调度程序不会在 CPU 的 <code>cpus_allowed</code> 向量中不允许的 CPU 上调度任务，内核页分配器也不会在请求任务的 <code>mems_allowed</code> 向量中不允许的节点上分配页面。</p>
+<p>用户级代码可以在 cgroup 虚拟文件系统中按名称创建和销毁 cpuset，管理这些 cpuset 的属性和权限以及为每个 cpuset 分配哪些 CPU 和内存节点，指定和查询任务分配到哪个 cpuset，并列出分配给 cpuset 的任务 pid。</p>
+<h3 id="为什么需要-cpusets"><a href="#为什么需要-cpusets" class="headerlink" title="为什么需要 cpusets"></a>为什么需要 cpusets</h3><p>具有许多处理器 (CPUs)、复杂的内存缓存层次结构和具有非均匀访问时间 (NUMA, non-uniform access times) 的多个内存节点的大型计算机系统的管理给进程的高效调度和内存布局带来了额外的挑战。</p>
+<p>通常，只需让操作系统在请求任务间自动共享可用的 CPU 和内存资源，就可以以足够的效率运行较小规模的系统。</p>
+<p>但是，较大的系统可以从细致的处理器和内存布局中获益更多，以减少内存访问时间和争用，并且通常代表客户的更大投资，可以通过将工作明确地放置在系统的适当大小的子集上而受益。</p>
+<p>这对于以下方面尤其有价值：</p>
+<ul>
+<li>运行同一 Web 应用程序多个实例的 Web 服务器，</li>
+<li>运行不同应用的服务器（例如，Web 服务器和数据库），或者</li>
+<li>运行具有要求性能特征的大型 HPC 应用的 NUMA 系统。</li>
+</ul>
+<p>这些子集或 “软分区(soft partitions)” 必须能够随着工作组合的变化而动态调整，而不影响其他并发执行的工作。当内存位置改变时，正在运行的工作页面的位置也可能被移动。</p>
+<p>内核 cpuset 补丁提供了有效实现此类子集所需的最低限度的基本内核机制。它利用 Linux 内核中现有的 CPU 和内存布局设施，以避免对关键调度程序或内存分配器代码产生任何额外影响。</p>
+<h3 id="cpusets-是如何实现的"><a href="#cpusets-是如何实现的" class="headerlink" title="cpusets 是如何实现的"></a>cpusets 是如何实现的</h3><p>Cpuset 提供了一种 Linux 内核机制来限制一个进程或一组进程使用哪些 CPU 和内存节点。</p>
+<p>Linux 内核已经有一对机制来指定任务可以在哪些 CPU 上调度（<code>sched_setaffinity</code>）以及任务可以在哪些内存节点上获取内存（<code>mbind、set_mempolicy</code>）。</p>
+<p>Cpuset 对这两种机制进行了如下扩展：</p>
+<ul>
+<li>Cpuset 是内核已知的，允许的 CPU 和内存节点的集合。</li>
+<li>系统中的每个任务都通过任务结构中指向引用计数 cgroup 结构的指针附加到一个 cpuset。</li>
+<li>对 <code>sched_setaffinity</code> 的调用将被过滤到该任务的 cpuset 中允许的那些 CPU。</li>
+<li>对 <code>mbind</code> 和 <code>set_mempolicy</code> 的调用将被过滤到该任务的 cpuset 中允许的那些内存节点。</li>
+<li>根 cpuset 包含所有系统 CPU 和内存节点。</li>
+<li>对于任何 cpuset，都可以定义包含父 CPU 和内存节点资源的子集的子 cpuset。</li>
+<li>cpuset 的层次结构可以挂载在 <code>/dev/cpuset</code> 中，以便从用户空间进行浏览和操作。</li>
+<li>cpuset可以被标记为独占的，这确保没有其他cpuset（除了直接祖先和后代）可以包含任何重叠的CPU或内存节点。</li>
+<li>您可以列出附加到任何 cpuset 上的所有任务（按 pid ）。</li>
+</ul>
+<p>Cpuset 的实现需要一些简单的钩子到内核的其余部分，而不是性能关键路径：</p>
+<ul>
+<li>在 <code>init/main.c</code> 中，在系统启动时初始化根 cpuset。</li>
+<li>在 <code>fork</code> 和 <code>exit</code> 中，从其 cpuset 附加和分离任务。</li>
+<li>在 <code>sched_setaffinity</code> 中，根据该任务的 cpuset 中允许的内容来屏蔽请求的 CPU。</li>
+<li>在 <code>sched.c migrate_live_tasks()</code> 中，如果可能的话，在其 cpuset 允许的 CPU 内保留迁移任务。</li>
+<li>在 <code>mbind</code> 和 <code>set_mempolicy</code> 系统调用中，根据该任务的 cpuset 中允许的内容来屏蔽所请求的内存节点。</li>
+<li>在 <code>page_alloc.c</code> 中，将内存限制到允许的节点。</li>
+<li>在 <code>vmscan.c</code> 中，将页面恢复限制为当前 cpuset。</li>
+</ul>
+<p>您应该挂载“cgroup”文件系统类型，以便能够浏览和修改内核当前已知的 cpuset。 没有为 cpuset 添加新的系统调用 - 对查询和修改 cpuset 的所有支持都是通过此 cpuset 文件系统实现的。</p>
+<p>每个任务的 <code>/proc/&lt;pid&gt;/status</code> 文件添加了四行，显示任务的 <code>cpus_allowed</code>（可以在哪些 CPU 上调度）和 <code>mems_allowed</code>（可以在哪些内存节点上获取内存），两种格式见下面的例子：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Cpus_allowed</span>:   ffffffff,ffffffff,ffffffff,ffffffff</span><br><span class="line"><span class="attribute">Cpus_allowed_list</span>:      <span class="number">0</span>-<span class="number">127</span></span><br><span class="line"><span class="attribute">Mems_allowed</span>:   ffffffff,ffffffff</span><br><span class="line"><span class="attribute">Mems_allowed_list</span>:      <span class="number">0</span>-<span class="number">63</span></span><br></pre></td></tr></table></figure>
+
+<p>每个 cpuset 由 cgroup 文件系统中的一个文件夹表示，其中包含（在标准 cgroup 文件之上）描述该 cpuset 的以下文件：</p>
+<ul>
+<li><code>cpuset.cpus</code>：该 cpuset 中的 CPU 列表</li>
+<li><code>cpuset.mems</code>：该 cpuset 中的内存节点列表</li>
+<li><code>cpuset.memory_migrate</code> 标志：如果设置，则将页面移动到 cpusets 节点</li>
+<li><code>cpuset.cpu_exclusive</code> 标志：CPU 布局是否独占？</li>
+<li><code>cpuset.mem_exclusive</code> 标志：内存布局是否独占？</li>
+<li><code>cpuset.mem_hardwall</code> 标志：内存分配是否是硬墙的 hardwalled</li>
+<li><code>cpuset.memory_pressure</code>：衡量cpuset中分页压力的大小</li>
+<li><code>cpuset.memory_spread_page</code> 标志：如果设置，则在允许的节点上均匀分布页面缓存</li>
+<li><code>cpuset.memory_spread_slab</code> 标志：如果设置，则将slab缓存均匀地分布在允许的节点上</li>
+<li><code>cpuset.sched_load_balance</code> 标志：如果设置，则该 cpuset 上的 CPU 内的负载平衡</li>
+<li><code>cpuset.sched_relax_domain_level</code>：迁移任务时的搜索范围</li>
+</ul>
+<p>另外，只有根 cpuset 有以下文件：</p>
+<ul>
+<li><code>cpuset.memory_pressure_enabled</code> 标志：计算内存压力</li>
+</ul>
+<p>使用 mkdir 系统调用或 shell 命令创建新的 cpuset。 cpuset 的属性（例如其标志、允许的 CPU 和内存节点以及附加任务）可通过写入该 cpusets 文件夹中的相应文件来修改，如上所列。</p>
+<p>嵌套 cpuset 的命名分层结构允许将大型系统划分为嵌套的、可动态更改的，“软分区”。</p>
+<p>每个任务（由该任务的任何子任务在 fork 时自动继承）附加到 cpuset，允许将系统上的工作负载组织到相关的任务集中，这样每个任务集都被限制为使用特定 cpuset 的 CPU 和内存节点。如果必要的 cpuset 文件系统文件夹的权限允许，任务可以重新附加到任何其他 cpuset。</p>
+<p>“大型”系统的这种管理与使用 <code>sched_setaffinity</code>、<code>mbind</code> 和 <code>set_mempolicy</code> 系统调用在各个任务和内存区域上完成的详细放置顺利集成。</p>
+<p>以下规则适用于每个 cpuset：</p>
+<ul>
+<li>它的 CPU 和内存节点必须是其父节点的子集。</li>
+<li>除非它的父级是独占的，否则它不能被标记为独占。</li>
+<li>如果它的 cpu 或内存是独占的，它们可能不会与任何同级重叠。</li>
+</ul>
+<p>这些规则以及 cpuset 的自然层次结构可以有效执行独占保证，而无需在每次 cpuset 发生任何更改时扫描所有 cpuset，以确保没有任何内容与独占 cpuset 重叠。 此外，使用 Linux 虚拟文件系统 (vfs) 来表示 cpuset 层次结构为 cpuset 提供了熟悉的权限和名称空间，并且需要最少的附加内核代码。</p>
+<p>根 (<code>top_cpuset</code>) cpuset 中的 cpus 和 mems 文件是只读的。cpus 文件使用 CPU 热插拔通知程序自动跟踪 <code>cpu_online_mask</code> 的值，而 mems 文件使用 <code>cpuset_track_online_nodes()</code> 钩子自动跟踪 <code>node_states[N_MEMORY]</code>（即具有内存的节点）的值。</p>
+<h3 id="什么是独占-cpusets"><a href="#什么是独占-cpusets" class="headerlink" title="什么是独占 cpusets"></a>什么是独占 cpusets</h3><p>如果某个 cpuset 是 cpu 或 mem 独占的，则只有直接祖先或后代，可以共享任何相同的CPU或内存节点。</p>
+<p><code>cpuset.mem_exclusive</code> <em>或</em> <code>cpuset.mem_hardwall</code> 的 cpuset 是 “hardwalled”(硬墙？)。<br>即它限制内核对页面、缓冲区和内核在多个用户之间共享的其他数据的分配。<br>所有 cpuset，无论是否有硬墙，都会限制用户空间的内存分配。<br>这样可以配置系统，以便多个独立工作中可以共享公共内核数据，例如文件系统页，同时隔离每个工作在其自己的 cpuset 中的用户分配。<br>为此，请构造一个大型 <code>mem_exclusive cpuset</code> 来容纳所有工作，并为每个独立工作构造子，非 <code>mem_exclusive</code> 的 cpuset。<br>即使是 <code>mem_exclusive</code> cpuset，也只允许将少量典型内核内存，例如来自中断处理程序的请求，取出。</p>
+<h3 id="什么是内存压力-memory-pressure"><a href="#什么是内存压力-memory-pressure" class="headerlink" title="什么是内存压力 memory_pressure"></a>什么是内存压力 <code>memory_pressure</code></h3><p>内存压力为每个 cpuset 提供了一个简单指标，用于衡量 cpuset 中的任务尝试释放 cpuset 节点上正在使用的内存以满足额外内存请求的速率。</p>
+<p>这使得批处理管理器能够监控在专用 CPU 组中运行的工作，从而有效地检测该工作造成的内存压力级别。</p>
+<p>这对于运行各种已提交作业的严格管理的系统很有用，这些系统可能会选择终止或重新确定尝试使用比分配给它们的节点上允许的内存更多的内存的作业，并且对于紧密耦合、长时间运行的情况，这非常有用。 大规模并行科学计算作业如果开始使用超过允许的内存，将严重无法满足所需的性能目标。</p>
+<p>此机制为批处理管理器提供了一种非常经济的方式来监视 cpuset 的内存压力迹象。 由批次管理器或其他用户代码来决定如何处理并采取行动。</p>
+<p><strong>除非通过向特殊文件 <code>/dev/cpuset/memory_pressure_enabled</code> 写入“1”来启用此功能，否则此指标的 <code>__alloc_pages()</code> 重新平衡代码中的钩子会简化为仅注意到 <code>cpuset_memory_pressure_enabled</code> 标志为零。 因此，只有启用此功能的系统才会计算该指标。</strong></p>
+<p>为什么要计算每个 cpuset 的运行平均值：</p>
+<p>由于此计量表是针对每个 cpuset 的，而不是针对每个任务或 mm，因此在大型系统上监视此指标的批处理调度程序所施加的系统负载会急剧减少，因为可以避免在每组查询上扫描任务列表。</p>
+<p>由于该计量表是运行平均值，而不是累积计数器，因此批处理调度程序可以通过单次读取来检测内存压力，而不必读取并累积一段时间的结果。</p>
+<p>由于此计量表是针对每个 cpuset 而不是针对每个任务或 mm，因此批处理调度程序可以通过单次读取来获取关键信息（cpuset 中的内存压力），而不必查询并累积所有（动态变化的）结果 cpuset 中的任务集。</p>
+<p>每个 cpuset 的简单数字过滤器(simple digital filter)（需要一个自旋锁和每个 cpuset 3 个字的数据）将被保留，并由附加到该 cpuset 的任何任务更新，如果它进入同步（直接）页回收代码。</p>
+<p>每个 cpuset 文件提供一个整数，表示最近由 cpuset 中的任务引起的直接页回收率（半衰期为 10 秒），以每秒尝试回收次数为单位，乘以 1000。</p>
+<h3 id="什么是内存分布-memory-spread"><a href="#什么是内存分布-memory-spread" class="headerlink" title="什么是内存分布 memory spread"></a>什么是内存分布 <code>memory spread</code></h3><p>每个 cpuset 有两个布尔标志文件，用于控制内核为文件系统缓冲区分配页的位置以及内核数据结构中的相关内容。它们被称为 <code>cpuset.memory_spread_page</code> 和 <code>cpuset.memory_spread_slab</code>。</p>
+<p>如果设置了每个 cpuset 布尔标志文件 <code>cpuset.memory_spread_page</code>，则内核会将文件系统缓冲区（页缓存）均匀地分布在允许故障任务使用的所有节点上，而不是优先放置这些页到任务正在运行的节点上。</p>
+<p>如果设置了每个 cpuset 布尔标志文件 <code>cpuset.memory_spread_slab</code>，那么内核将在允许故障任务使用的所有节点上均匀地分布一些与文件系统相关的 slab 缓存，例如索引节点和目录项，而不是更喜欢将这些页放在正在运行任务的节点上。</p>
+<p>这些标志的设置不会影响任务的匿名数据段或堆栈段页。</p>
+<p>默认情况下，这两种内存扩展都是关闭的，并且内存页分配在任务正在运行的本地节点上，除非任务的 NUMA mempolicy 或 cpuset 配置进行了修改，只要有足够的空闲内存页面可用。</p>
+<p>创建新 cpuset 时，它们会继承其父代的内存分布设置。</p>
+<p>设置内存扩展会导致受影响页或 slab 缓存的分配忽略任务的 NUMA 内存策略并进行扩展。使用 <code>mbind()</code> 或 <code>set_mempolicy()</code> 调用来设置 NUMA mempolicies 的任务不会注意到这些调用中的任何变化，因为它们包含任务的内存分布设置。如果关闭内存扩展，则当前指定的 NUMA mempolicy 再次应用于内存页面分配。</p>
+<p><code>cpuset.memory_spread_page</code> 和 <code>cpuset.memory_spread_slab</code> 都是布尔标志文件。 默认情况下，它们包含“0”，这意味着该 cpuset 的功能已关闭。 如果将“1”写入该文件，则会打开指定的功能。</p>
+<p>实现很简单。</p>
+<p>设置标志<code>cpuset.memory_spread_page</code>会为该 cpuset 中或随后加入该 cpuset 的每个任务打开每进程标志 <code>PFA_SPREAD_PAGE</code>。 页缓存的页分配调用被修改为对此 <code>PFA_SPREAD_PAGE</code> 任务标志执行内联检查，如果设置，对新例程 <code>cpuset_mem_spread_node()</code> 的调用将返回首选分配的节点。</p>
+<p>类似地，设置<code>cpuset.memory_spread_slab</code>会打开标志 <code>PFA_SPREAD_SLAB</code>，并且适当标记的 slab 缓存将从<code>cpuset_mem_spread_node()</code>返回的节点分配页。</p>
+<p><code>cpuset_mem_spread_node()</code> 例程也很简单。 它使用每个任务转子 <code>cpuset_mem_spread_rotor</code> 的值来选择当前任务的 <code>mems_allowed</code> 中的下一个节点以进行分配。</p>
+<p>这种内存放置策略也称为（在其他上下文中）循环(round-robin)或交错(interleave)。</p>
+<p>此策略可以为需要将线程本地数据放置在相应节点上的工作提供实质性改进，但需要访问需要分布在工作 cpuset 中的多个节点上的大型文件系统数据集才能适应。 如果没有这一策略，特别是对于可能有一个线程读取数据集的工作，工作 cpuset 中节点之间的内存分配可能会变得非常不均匀。</p>
+<h3 id="什么是-sched-load-balance"><a href="#什么是-sched-load-balance" class="headerlink" title="什么是 sched_load_balance"></a>什么是 <code>sched_load_balance</code></h3><p>内核调度程序（<code>kernel/sched/core.c</code>）自动对任务进行负载平衡。 如果一个 CPU 未得到充分利用，则在该 CPU 上运行的内核代码将在其他更过载的 CPU 上查找任务，并将这些任务在 cpusets 和 <code>sched_setaffinity</code> 等放置机制的限制内移动到自身。</p>
+<p>负载平衡的算法成本及其对关键共享内核数据结构（例如任务列表）的影响随着平衡的 CPU 数量呈线性以上增长。因此，调度程序支持将系统 CPU 划分为多个调度域，以便仅在每个调度域内进行负载平衡。每个调度域覆盖系统中 CPU 的一些子集；两个调度域不重叠；某些 CPU 可能不在任何调度域中，因此不会进行负载平衡。</p>
+<p>简而言之，在两个较小的调度域之间进行平衡的成本比在一个大的调度域之间进行平衡的成本要低，但这样做意味着两个域之一中的过载将不会负载平衡到另一个域。</p>
+<p>默认情况下，有一个调度域覆盖所有 CPU，包括那些使用内核启动时间<code>isolcpus=</code>参数标记为隔离的 CPU。但是，隔离的 CPU 将不会参与负载平衡，并且除非明确分配，否则不会有任务在其上运行。</p>
+<p>所有 CPU 之间的默认负载平衡不太适合以下两种情况：</p>
+<ol>
+<li>在大型系统上，跨多个 CPU 进行负载平衡的成本很高。 如果使用 cpuset 管理系统，将独立工作放置在不同的 CPU 组上，则不需要完全负载平衡。</li>
+<li>在某些 CPU 上支持实时的系统需要最大限度地减少这些 CPU 上的系统开销，包括避免任务负载平衡（如果不需要）。</li>
+</ol>
+<p>当启用每个 cpuset 标志<code>cpuset.sched_load_balance</code>（默认设置）时，它会请求该 cpuset 中允许<code>cpuset.cpus</code>的所有 CPU 包含在单个调度域中，以确保负载平衡可以移动任务 （不以其他方式固定，如通过 <code>sched_setaffinity</code>）从该 cpuset 中的任何 CPU 到任何其他 CPU。</p>
+<p>当每个 cpuset 标志<code>cpuset.sched_load_balance</code>被禁用时，调度程序将避免在该 cpuset 中的 CPU 之间进行负载平衡，除非有必要，因为某些重叠的 cpuset 启用了<code>sched_load_balance</code>。</p>
+<p>因此，例如，如果顶级 cpuset 启用了<code>cpuset.sched_load_balance</code>标志，那么调度程序将有一个覆盖所有 CPU 的调度域，并且任何其他 cpuset 中的<code>cpuset.sched_load_balance</code>标志的设置并不重要 ，因为我们已经完全负载平衡了。</p>
+<p>因此，在上述两种情况下，应该禁用顶级 cpuset 标志<code>cpuset.sched_load_balance</code>，并且只有一些较小的子 cpuset 启用此标志。</p>
+<p>执行此操作时，您通常不希望在可能使用大量 CPU 的顶级 cpuset 中留下任何未固定的任务，因为此类任务可能会人为地限制到某些 CPU 子集，具体取决于此标志设置的详细信息 在后代 cpu 组中。 即使此类任务可以使用某些其他 CPU 中的空闲 CPU 周期，内核调度程序也可能不会考虑将该任务负载平衡到未充分利用的 CPU 的可能性。</p>
+<p>当然，固定到特定 CPU 的任务可以保留在禁用<code>cpuset.sched_load_balance</code>的 cpuset 中，因为这些任务无论如何都不会去其他地方。</p>
+<p>这里 cpuset 和调度域之间存在阻抗不匹配。Cpuset 是分层和嵌套的。调度域是平坦的；它们不重叠，并且每个 CPU 最多位于一个调度域中。</p>
+<p>调度域必须是平坦的，因为部分重叠的 CPU 组之间的负载平衡会带来不稳定动态的风险，这超出了我们的理解。因此，如果两个部分重叠的 cpuset 中的每一个都启用标志<code>cpuset.sched_load_balance</code>，那么我们将形成一个单一的调度域，它是两者的超集。我们不会将任务移动到其 cpuset 之外的 CPU，但考虑到这种可能性，调度程序负载平衡代码可能会浪费一些计算周期。</p>
+<p>这种不匹配就是为什么启用了<code>cpuset.sched_load_balance</code>标志的 cpuset 与调度域配置之间不存在简单的一对一关系的原因。如果某个 cpuset 启用该标志，它将在其所有 CPU 之间实现平衡，但如果禁用该标志，则只有在没有其他重叠 cpuset 启用该标志的情况下，才能确保没有负载平衡。</p>
+<p>如果两个 cpuset 允许部分重叠的<code>cpuset.cpus</code>，并且只有其中一个启用了此标志，则另一个可能会发现其任务仅在重叠的 CPU 上部分负载平衡。 这只是上面几段给出的 top_cpuset 示例的一般情况。在一般情况下，如在 top cpuset 情况下，不要将可能使用大量 CPU 的任务留在此类部分负载平衡的 cpuset 中，因为它们可能被人为地限制为允许它们使用的某些 CPU 子集，例如 缺乏对其他 CPU 的负载平衡。</p>
+<p><code>cpuset.isolcpus</code>中的 CPU 被 <code>isolcpus=</code> 内核引导选项排除在负载平衡之外，并且无论任何 cpuset 中<code>cpuset.sched_load_balance</code> 的值如何，都永远不会进行负载平衡。</p>
+<h3 id="sched-setaffinity-实现细节"><a href="#sched-setaffinity-实现细节" class="headerlink" title="sched_setaffinity 实现细节"></a><code>sched_setaffinity</code> 实现细节</h3><p>每个 cpuset 标志<code>cpuset.sched_load_balance</code>默认为启用（与大多数 cpuset 标志相反）。当为某个 cpuset 启用时，内核将确保它可以在该 cpuset 中的所有 CPU 之间实现负载平衡（确保该 cpuset 的 <code>cpus_allowed</code> 的 CPU 位于同一调度域中。）</p>
+<p>如果两个重叠的 cpuset 都启用了<code>cpuset.sched_load_balance</code>，那么它们将（必须）位于同一个调度域中。</p>
+<p>如果按照默认情况，顶级 cpuset 启用了<code>cpuset.sched_load_balance</code>，那么根据上面的内容，这意味着有一个覆盖整个系统的调度域，而不管任何其他 cpuset 设置如何。</p>
+<p>内核向用户空间承诺，它将尽可能避免负载平衡。 它将尽可能精细地选择调度域的粒度分区，同时仍然为启用了<code>cpuset.sched_load_balance</code>的 cpuset 允许的任何 CPU 集提供负载平衡。</p>
+<p>内部内核 cpuset 到调度程序接口将系统中负载平衡 CPU 的分区从 cpuset 代码传递到调度程序代码。该分区是一组成对不相交的 CPU 子集（表示为 struct cpumask 数组），涵盖了必须进行负载平衡的所有 CPU。</p>
+<p>cpuset 代码会构建一个新的此类分区，并将其传递给调度程序调度域设置代码，以便在以下情况下根据需要重建调度域：</p>
+<ul>
+<li>具有非空 CPU 的 cpuset 的<code>cpuset.sched_load_balance</code>标志发生变化，</li>
+<li>或者 CPU 来自启用此标志的 cpuset，</li>
+<li>或具有非空 CPU 且启用此标志的 cpuset 的 <code>cpuset.sched_relax_domain_level</code> 值发生变化，</li>
+<li>或者删除具有非空 CPU 并启用此标志的 cpuset，</li>
+<li>或CPU 离线&#x2F;在线。</li>
+</ul>
+<p>该分区准确地定义了调度程序应设置的调度域 - 分区中的每个元素（struct cpumask）一个调度域。</p>
+<p>调度程序会记住当前活动的调度域分区。 当从 cpuset 代码调用调度程序例程 <code>partition_sched_domains()</code> 来更新这些调度域时，它会将请求的新分区与当前分区进行比较，并更新其调度域，对于每次更改，删除旧的并添加新的。</p>
+<h3 id="什么是-sched-relax-domain-level"><a href="#什么是-sched-relax-domain-level" class="headerlink" title="什么是 sched_relax_domain_level"></a>什么是 <code>sched_relax_domain_level</code></h3><p>在调度域中，调度程序以两种方式迁移任务；周期性负载均衡和某些计划事件发生时定期进行负载平衡。</p>
+<p>当任务被唤醒时，调度程序会尝试将任务移至空闲的 CPU 上。例如，如果在 CPU X 上运行的任务 A 激活了同一 CPU X 上的另一个任务 B，并且如果 CPU Y 是 X 的同级且处于空闲状态，则调度程序会将任务 B 迁移到 CPU Y，以便任务 B 可以在 CPU Y 上启动而无需 在 CPU X 上等待任务 A。</p>
+<p>如果某个 CPU 用完其运行队列中的任务，该 CPU 会尝试从其他繁忙的 CPU 中拉出额外的任务来帮助它们，然后再进入空闲状态。</p>
+<p>当然，寻找可移动任务和&#x2F;或空闲 CPU 需要一些搜索成本，调度程序可能不会每次都搜索域中的所有 CPU。事实上，在某些架构中，事件的搜索范围仅限于 CPU 所在的同一个 socket 或节点，而周期性的负载均衡则搜索全部。</p>
+<p>例如，假设 CPU Z 距离 CPU X 相对较远。即使 CPU Z 空闲而 CPU X 和同级 CPU 忙碌，调度程序也无法将唤醒的任务 B 从 X 迁移到 Z，因为它超出了其搜索范围。结果，CPU X 上的任务 B 需要等待任务 A 或等待下一个时钟周期的负载平衡。 对于某些特殊情况的应用程序，等待 1 个周期可能会太长。</p>
+<p><code>cpuset.sched_relax_domain_level</code>文件允许您根据需要请求更改此搜索范围。该文件采用 int 值，该值表示理想情况下级别搜索范围的大小，如下所示，否则初始值 -1 表示 cpuset 没有请求。</p>
+<ul>
+<li>-1：无请求。 使用系统默认或按照别人的要求。</li>
+<li>0：不搜索。</li>
+<li>1：搜索同级（核心中的超线程）。</li>
+<li>2：搜索包中的核心。</li>
+<li>3: 在节点中搜索 cpu [&#x3D; 非 NUMA 系统上的系统范围]</li>
+<li>4：在节点块中搜索节点[在NUMA系统上]</li>
+<li>5：搜索系统范围[在 NUMA 系统上]</li>
+</ul>
+<p>系统默认值取决于体系结构。 可以使用<code>relax_domain_level=</code>引导参数更改系统默认值。</p>
+<p>该文件是针对每个 cpuset 的，影响 cpuset 所属的调度域。因此，如果 cpuset 的标志<code>cpuset.sched_load_balance</code>被禁用，则<code>cpuset.sched_relax_domain_level</code>无效，因为没有属于该 cpuset 的调度域。</p>
+<p>如果多个 cpuset 重叠并因此形成单个调度域，则使用其中的最大值。请注意，如果一个请求 0，而其他请求 -1，则使用 0。</p>
+<p>注意，修改这个文件会有好有坏的影响，是否可以接受取决于你的情况。如果您不确定，请勿修改此文件。</p>
+<p>如果您的情况是：</p>
+<ul>
+<li>由于您的特殊应用程序的行为或对 CPU 缓存的特殊硬件支持等，每个 cpu 之间的迁移成本可以假设相当小（对您来说）。</li>
+<li>搜索成本不会对您产生影响，或者您可以通过管理 cpuset 进行压缩等来使搜索成本足够小。</li>
+<li>即使牺牲缓存命中率等，延迟也是必需的，然后增加<code>sched_relax_domain_level</code>将使您受益。</li>
+</ul>
+<h3 id="如何使用-cpusets"><a href="#如何使用-cpusets" class="headerlink" title="如何使用 cpusets"></a>如何使用 cpusets</h3><p>为了最大限度地减少 cpusets 对关键内核代码（例如调度程序）的影响，并且由于内核不支持一个任务直接更新另一个任务的内存布局，更改其 cpuset CPU 或内存节点放置，或者更改任务附加到哪个 cpuset 对任务的影响是微妙的。</p>
+<p>如果一个 cpuset 的内存节点被修改，那么对于附加到该 cpuset 的每个任务，下次内核尝试为该任务分配内存页时，内核将注意到该任务 cpuset 的变化，并更新其每个任务的内存节点。如果任务使用内存策略 <code>MPOL_BIND</code>，并且其绑定的节点与其新 cpuset 重叠，则该任务将继续使用新 cpuset 中仍允许的 <code>MPOL_BIND</code> 节点子集。如果任务使用 <code>MPOL_BIND</code> 并且现在新 cpuset 中不允许其任何 <code>MPOL_BIND</code> 节点，则该任务本质上将被视为绑定到新 cpuset 的 <code>MPOL_BIND</code>（即使其 NUMA 位置，如 <code>get_mempolicy()</code> 查询），不变）。如果一个任务从一个 cpuset 移动到另一个 cpuset，那么内核将在下次尝试为该任务分配内存页时调整该任务的内存布局，如上所述。</p>
+<p>如果某个 cpuset 的<code>cpuset.cpus</code>已修改，则该 cpuset 中的每个任务将立即更改其允许的 CPU 布局。类似地，如果一个任务的 pid 被写入另一个 cpuset 的<code>tasks</code>文件，那么其允许的 CPU 布局会立即更改。如果此类任务已使用 <code>sched_setaffinity()</code> 调用绑定到其 cpuset 的某个子集，则该任务将被允许在其新 cpuset 中允许的任何 CPU 上运行，从而消除先前 <code>sched_setaffinity()</code> 调用的效果。</p>
+<p>总之，cpuset 更改的任务的内存布局由内核在下次为该任务分配页时更新，并且处理器布局会立即更新。</p>
+<p>通常，一旦分配了一个页（给定主内存的物理页），那么该页就会保留在它分配的任何节点上，只要它保持分配状态，即使 cpusets 内存放置策略<code>cpuset.mems</code>随后发生变化。<br>如果 cpuset 标志文件<code>cpuset.memory_migrate</code>设置为 true，则当任务附加到该 cpuset 时，该任务在其先前 cpuset 中的节点上分配给它的任何页都将迁移到该任务的新 cpuset。如果可能的话，在这些迁移操作期间会保留页在 cpuset 中的相对位置。<br>例如，如果该页位于先前 cpuset 的第二个有效节点上，则该页面将被放置在新 cpuset 的第二个有效节点上。</p>
+<p>此外，如果<code>cpuset.memory_migrate</code>设置为 true，则如果该 cpuset 的<code>cpuset.mems</code>文件被修改，则分配给该 cpuset 中任务（位于之前<code>cpuset.mems</code>设置中的节点上）的页，将被移动到新设置<code>mems</code>中的节点。不在任务的先前 cpuset 中或不在 cpuset 的先前<code>cpuset.mems</code>设置中的页将不会被移动。</p>
+<p>上述情况有一个例外。如果使用热插拔功能删除当前分配给某个 cpuset 的所有 CPU，则该 cpuset 中的所有任务都将移动到具有非空 cpu 的最近祖先。但是，如果 cpuset 与另一个对任务附加有一些限制的 cgroup 子系统绑定，则某些（或全部）任务的移动可能会失败。在这种失败的情况下，这些任务将保留在原始 cpuset 中，并且内核将自动更新其 <code>cpus_allowed</code> 以允许所有在线 CPU。当用于删除内存节点的内存热插拔功能可用时，预计也会出现类似的异常。 一般来说，内核更喜欢违反 cpuset 放置，而不是让所有允许的 CPU 或内存节点脱机的任务挨饿。</p>
+<p>上述情况还有第二个例外。<code>GFP_ATOMIC</code> 请求是必须立即满足的内核内部分配。如果 <code>GFP_ATOMIC</code> 分配失败，内核可能会丢弃一些请求，在极少数情况下甚至会出现恐慌。如果当前任务的 cpuset 无法满足请求，那么我们会放松 cpuset，并在任何可以找到的地方寻找内存。侵犯 cpuset 比给内核施加压力要好。</p>
+<p>要启动包含在 cpuset 中的新工作，步骤如下:</p>
+<ol>
+<li><code>mkdir /sys/fs/cgroup/cpuset</code></li>
+<li><code>mount -t cgroup -ocpuset cpuset /sys/fs/cgroup/cpuset</code></li>
+<li>create the new cpuset by doing mkdir’s and write’s (or echo’s) in the <code>/sys/fs/cgroup/cpuset</code> virtual file system.</li>
+<li>start a task that will be the “founding father” of the new job</li>
+<li>attach that task to the new cpuset by writing its pid to the <code>/sys/fs/cgroup/cpuset</code> tasks file for that cpuset</li>
+<li>fork, exec or clone the job tasks from this founding father task.</li>
+</ol>
+<p>例如，以下命令序列将设置一个名为“Charlie”的 cpuset，仅包含 CPU 2 和 3 以及内存节点 1，然后在该 cpuset 中启动一个子 shell ‘sh’：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mount -t cgroup -ocpuset cpuset /sys/fs/cgroup/cpuset</span><br><span class="line"><span class="built_in">cd</span> /sys/fs/cgroup/cpuset</span><br><span class="line"><span class="built_in">mkdir</span> Charlie</span><br><span class="line"><span class="built_in">cd</span> Charlie</span><br><span class="line">/bin/echo 2-3 &gt; cpuset.cpus</span><br><span class="line">/bin/echo 1 &gt; cpuset.mems</span><br><span class="line">/bin/echo $$ &gt; tasks</span><br><span class="line">sh</span><br><span class="line"><span class="comment"># The subshell &#x27;sh&#x27; is now running in cpuset Charlie</span></span><br><span class="line"><span class="comment"># The next line should display &#x27;/Charlie&#x27;</span></span><br><span class="line"><span class="built_in">cat</span> /proc/self/cpuset</span><br></pre></td></tr></table></figure>
+
+<p>有多种方法可以查询或修改 cpusets：</p>
+<ul>
+<li>直接通过 cpuset 文件系统，使用 shell 中的各种 cd、mkdir、echo、cat、rmdir 命令或 C 中的等效命令。</li>
+<li>通过 C 库 libcpuset。</li>
+<li>通过 C 库 libcgroup。（<a target="_blank" rel="noopener" href="http://sourceforge.net/projects/libcg/%EF%BC%89">http://sourceforge.net/projects/libcg/）</a></li>
+<li>通过 python 应用程序 cset。（<a target="_blank" rel="noopener" href="http://code.google.com/p/cpuset/%EF%BC%89">http://code.google.com/p/cpuset/）</a></li>
+</ul>
+<p><code>sched_setaffinity</code> 调用也可以在 shell 提示符下使用 SGI 的 runon 或 Robert Love 的任务集来完成。 <code>mbind</code> 和 <code>set_mempolicy</code> 调用可以在 shell 提示符下使用 numactl 命令（Andi Kleen 的 numa 包的一部分）完成。</p>
+<h2 id="用法示例和语法"><a href="#用法示例和语法" class="headerlink" title="用法示例和语法"></a>用法示例和语法</h2><h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p>创建、修改、使用 cpuset 可以通过 cpuset 虚拟文件系统来完成。</p>
+<p>要挂载它，输入：</p>
+<p><code>mount -t cgroup -o cpuset cpuset /sys/fs/cgroup/cpuset</code></p>
+<p>然后在 &#x2F;sys&#x2F;fs&#x2F;cgroup&#x2F;cpuset 下，您可以找到与系统中 cpuset 树相对应的树。 例如，&#x2F;sys&#x2F;fs&#x2F;cgroup&#x2F;cpuset 是保存整个系统的 cpuset。</p>
+<p>如果你想在<code>/sys/fs/cgroup/cpuset</code> 下创建新的 cpuset：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /sys/fs/cgroup/cpuset</span><br><span class="line"><span class="built_in">mkdir</span> my_cpuset</span><br></pre></td></tr></table></figure>
+
+<p>现在你想在这个 cpuset 上做点什么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> my_cpuset</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在该文件夹下你会发现这些文件</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line">cgroup.clone_children   cpuset.memory_pressure</span><br><span class="line">cgroup.event_control    cpuset.memory_spread_page</span><br><span class="line">cgroup.procs            cpuset.memory_spread_slab</span><br><span class="line">cpuset.cpu_exclusive    cpuset.mems</span><br><span class="line">cpuset.cpus             cpuset.sched_load_balance</span><br><span class="line">cpuset.mem_exclusive    cpuse.sched_relax_domain_level</span><br><span class="line">cpuset.mem_hardwall     notify_on_release</span><br><span class="line">cpuset.memory_migrate   tasks</span><br></pre></td></tr></table></figure>
+
+<p>读取它们将为您提供有关此 cpuset 状态的信息：它可以使用的 CPU 和内存节点、正在使用它的进程、它的属性。通过写入这些文件，您可以操纵 cpuset。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># set some flags</span></span><br><span class="line">/bin/echo 1 &gt; cpuset.cpu_exclusive</span><br><span class="line"></span><br><span class="line"><span class="comment"># add some cpus</span></span><br><span class="line">/bin/echo 0-7 &gt; cpuset.cpus</span><br><span class="line"></span><br><span class="line"><span class="comment"># add some mems</span></span><br><span class="line">/bin/echo 0-7 &gt; cpuset.mems</span><br><span class="line"></span><br><span class="line"><span class="comment"># now attach your shell to this cpuset</span></span><br><span class="line">/bin/echo $$ &gt; tasks</span><br><span class="line"></span><br><span class="line"><span class="comment"># you can also create cpusets inside your cpuset by using mkdir in this directory</span></span><br><span class="line"><span class="built_in">mkdir</span> my_sub_cs</span><br><span class="line"></span><br><span class="line"><span class="comment"># to remove a cpuset, just use rmdir</span></span><br><span class="line"><span class="built_in">rmdir</span> my_sub_cs</span><br><span class="line"><span class="comment"># this will fail if the cpuset is in use (has cpusets inside, or has processes attached).</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 请注意，由于遗留原因，“cpuset”文件系统作为 cgroup 文件系统的包装器而存在。</span></span><br><span class="line"></span><br><span class="line">mount -t cpuset X /sys/fs/cgroup/cpuset</span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line">mount -t cgroup -ocpuset,noprefix X /sys/fs/cgroup/cpuset</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/sbin/cpuset_release_agent&quot;</span> &gt; /sys/fs/cgroup/cpuset/release_agent</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="增加-x2F-移除-CPU"><a href="#增加-x2F-移除-CPU" class="headerlink" title="增加&#x2F;移除 CPU"></a>增加&#x2F;移除 CPU</h3><p>这是在 cpuset 目录中写入 cpus 或 mems 文件时使用的语法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/bin/echo 1-4 &gt; cpuset.cpus       <span class="comment"># set cpus list to cpus 1,2,3,4</span></span><br><span class="line">/bin/echo 1,2,3,4 -&gt; cpuset.cpus  <span class="comment"># set cpus list to cpus 1,2,3,4</span></span><br></pre></td></tr></table></figure>
+
+<p>要将 CPU 添加到 cpuset，请写入新的 CPU 列表，包括要添加的 CPU。 要将 6 添加到上述 cpuset：</p>
+<p><code>/bin/echo 1-4,6 &gt; cpuset.cpus  # set cpus list to cpus 1,2,3,4,6</code></p>
+<p>类似地，要从 cpuset 中删除 CPU，请写入新的 CPU 列表，其中不包含要删除的 CPU。</p>
+<p>移除所有的CPU：</p>
+<p><code>/bin/echo &quot;&quot; &gt; cpuset.cpus   # clear cpus list</code></p>
+<h3 id="设置标志"><a href="#设置标志" class="headerlink" title="设置标志"></a>设置标志</h3><p>语法非常简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/bin/echo 1 &gt; cpuset.cpu_exclusive  <span class="comment"># set flag &#x27;cpuset.cpu_exclusive&#x27;</span></span><br><span class="line">/bin/echo 0 &gt; cpuset.cpu_exclusive  <span class="comment"># unset flag &#x27;cpuset.cpu_exclusive&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="附加进程"><a href="#附加进程" class="headerlink" title="附加进程"></a>附加进程</h3><p><code>/bin/echo PID &gt; tasks</code></p>
+<p>注意，是PID，而不是PIDs。 您一次只能附加一项任务。<br>如果您有多个任务要附加，则必须一个接一个地执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/bin/echo PID1 &gt; tasks</span><br><span class="line">/bin/echo PID2 &gt; tasks</span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line">/bin/echo PIDn &gt; tasks</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h2><p>Q： 为什么是 <code>/bin/echo</code><br>A： bash 的内置“echo”命令不会检查对 write() 的调用是否有错误。 如果您在 cpuset 文件系统中使用它，您将无法判断命令是成功还是失败。</p>
+<p>Q： 当我附加多个进程时，只有第一行真正附加了<br>A： 每次调用 write() 只能返回一个错误代码。 所以你也应该只输入一个pid</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://github.com/Guaderxx">Guader</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://guaderxx.github.io/2023/12/26/cpuset-%E8%AF%91%E6%96%87/">https://guaderxx.github.io/2023/12/26/cpuset-%E8%AF%91%E6%96%87/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/doc/">doc</a></div><div class="post_share"><div class="addtoany"><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_wechat"></a><a class="a2a_button_facebook_messenger"></a><a class="a2a_button_email"></a><a class="a2a_button_copy_link"></a><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a></div></div><script async="async" src="https://static.addtoany.com/menu/page.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/12/26/namespace-%E8%AF%91%E6%96%87/" title="namespace 译文"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">namespace 译文</div></div></a></div><div class="next-post pull-right"><a href="/2023/12/26/memory-%E8%AF%91%E6%96%87/" title="memory 译文"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">memory 译文</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2024/02/11/go-update-1-22/" title="go update 1.22"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-03</div><div class="title">go update 1.22</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cpusets"><span class="toc-number">1.</span> <span class="toc-text">Cpusets</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-cpusets"><span class="toc-number">1.1.</span> <span class="toc-text">什么是 cpusets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-cpusets"><span class="toc-number">1.2.</span> <span class="toc-text">为什么需要 cpusets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cpusets-%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84"><span class="toc-number">1.3.</span> <span class="toc-text">cpusets 是如何实现的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%8B%AC%E5%8D%A0-cpusets"><span class="toc-number">1.4.</span> <span class="toc-text">什么是独占 cpusets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E5%AD%98%E5%8E%8B%E5%8A%9B-memory-pressure"><span class="toc-number">1.5.</span> <span class="toc-text">什么是内存压力 memory_pressure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83-memory-spread"><span class="toc-number">1.6.</span> <span class="toc-text">什么是内存分布 memory spread</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-sched-load-balance"><span class="toc-number">1.7.</span> <span class="toc-text">什么是 sched_load_balance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sched-setaffinity-%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="toc-number">1.8.</span> <span class="toc-text">sched_setaffinity 实现细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-sched-relax-domain-level"><span class="toc-number">1.9.</span> <span class="toc-text">什么是 sched_relax_domain_level</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-cpusets"><span class="toc-number">1.10.</span> <span class="toc-text">如何使用 cpusets</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B%E5%92%8C%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">用法示例和语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">2.1.</span> <span class="toc-text">基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0-x2F-%E7%A7%BB%E9%99%A4-CPU"><span class="toc-number">2.2.</span> <span class="toc-text">增加&#x2F;移除 CPU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E6%A0%87%E5%BF%97"><span class="toc-number">2.3.</span> <span class="toc-text">设置标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%84%E5%8A%A0%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.4.</span> <span class="toc-text">附加进程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QA"><span class="toc-number">3.</span> <span class="toc-text">QA</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Guader</div><div class="footer_custom_text">The best time to plant a tree was twenty years ago. The second best time is now :)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/utils.min.js"></script><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/main.min.js"></script><script src="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://jsd.012700.xyz/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://jsd.012700.xyz/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(()=>{
+  const getGiscusTheme = theme => {
+    return theme === 'dark' ? 'dark' : 'light'
+  }
+
+  const loadGiscus = () => {
+    const config = Object.assign({
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Guaderxx/Guaderxx.github.io',
+      'data-repo-id': 'R_kgDOJxPT0Q',
+      'data-category-id': 'DIC_kwDOJxPT0c4CXUYG',
+      'data-mapping': 'pathname',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true
+    },null)
+
+    const ele = document.createElement('script')
+    for (let key in config) {
+      ele.setAttribute(key, config[key])
+    }
+    document.getElementById('giscus-wrap').appendChild(ele)
+  }
+
+  const changeGiscusTheme = theme => {
+    const sendMessage = message => {
+      const iframe = document.querySelector('iframe.giscus-frame')
+      if (!iframe) return
+      iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app')
+    }
+
+    sendMessage({
+      setConfig: {
+        theme: getGiscusTheme(theme)
+      }
+    });
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment= loadGiscus
+  }
+})()</script></div><script defer="defer" id="ribbon" src="https://jsd.012700.xyz/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="https://jsd.012700.xyz/npm/busuanzi@2.3.0/bsz.pure.mini.min.js"></script></div></body></html>

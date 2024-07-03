@@ -1,0 +1,566 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>go1.21-release-notes | Guader's Blog</title><meta name="author" content="Guader"><meta name="copyright" content="Guader"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="GO1.21 Release Notes 前两天更新Clash，编译时候提示我要更新到1.21，正好详细看看有哪些新东西原文  介绍大部分变化体现在工具链toolchain，运行时(runtime)，以及库(libraries)的实现。还有版本号的一点小变化，从N.N到N.N.N，详情查看Go versions。 语言的变化增加了三个新的内键函数。  min, max: 计算给定数的最大最小值。详">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go1.21-release-notes">
+<meta property="og:url" content="https://guaderxx.github.io/2023/08/22/go1-21-release-notes/index.html">
+<meta property="og:site_name" content="Guader&#39;s Blog">
+<meta property="og:description" content="GO1.21 Release Notes 前两天更新Clash，编译时候提示我要更新到1.21，正好详细看看有哪些新东西原文  介绍大部分变化体现在工具链toolchain，运行时(runtime)，以及库(libraries)的实现。还有版本号的一点小变化，从N.N到N.N.N，详情查看Go versions。 语言的变化增加了三个新的内键函数。  min, max: 计算给定数的最大最小值。详">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://guaderxx.github.io/img/avatar.png">
+<meta property="article:published_time" content="2023-08-22T12:20:38.000Z">
+<meta property="article:modified_time" content="2024-07-03T02:48:53.512Z">
+<meta property="article:author" content="Guader">
+<meta property="article:tag" content="Golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://guaderxx.github.io/img/avatar.png"><link rel="shortcut icon" href="/img/fav.png"><link rel="canonical" href="https://guaderxx.github.io/2023/08/22/go1-21-release-notes/index.html"><link rel="preconnect" href="https://jsd.012700.xyz"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-9ZF8XKZV7M"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9ZF8XKZV7M');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":90,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":800},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://jsd.012700.xyz/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'go1.21-release-notes',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-03 10:48:53'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">28</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Guader's Blog"><span class="site-name">Guader's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">go1.21-release-notes</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-08-22T12:20:38.000Z" title="Created 2023-08-22 20:20:38">2023-08-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-07-03T02:48:53.512Z" title="Updated 2024-07-03 10:48:53">2024-07-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Intro/">Intro</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">6.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>22mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="go1.21-release-notes"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="GO1-21-Release-Notes"><a href="#GO1-21-Release-Notes" class="headerlink" title="GO1.21 Release Notes"></a>GO1.21 Release Notes</h1><blockquote>
+<p>前两天更新Clash，编译时候提示我要更新到1.21，正好详细看看有哪些新东西<br><a target="_blank" rel="noopener" href="https://go.dev/doc/go1.21">原文</a></p>
+</blockquote>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>大部分变化体现在工具链<code>toolchain</code>，运行时(<code>runtime</code>)，以及库(<code>libraries</code>)的实现。还有版本号的一点小变化，从<code>N.N</code>到<code>N.N.N</code>，详情查看<a target="_blank" rel="noopener" href="https://go.dev/doc/toolchain#version">Go versions</a>。</p>
+<h2 id="语言的变化"><a href="#语言的变化" class="headerlink" title="语言的变化"></a>语言的变化</h2><p>增加了三个新的内键函数。</p>
+<ul>
+<li><code>min, max</code>: 计算给定数的最大最小值。<a target="_blank" rel="noopener" href="https://go.dev/ref/spec#Min_and_max">详情</a></li>
+<li><code>clear</code>: 删除一个<code>map</code>的所有对象或是将<code>slice</code>的所有对象零值化。<a target="_blank" rel="noopener" href="https://go.dev/ref/spec#Clear">详情</a></li>
+</ul>
+<p>现在更精确的指定了包初始化的顺序。新的算法是：</p>
+<ul>
+<li>根据导入路径排序所有的包</li>
+<li>重复以下操作，直到包列表为空：<ul>
+<li>找到列表中所有导入已经初始化完成的第一个包</li>
+<li>初始化该包并从列表中移除</li>
+</ul>
+</li>
+</ul>
+<p>这可能会改变某些程序的行为，因为它们依赖于特定的初始化顺序，而这种顺序并没有通过显式导入来表达。在过去的版本中，规范对此类程序的行为并没有明确定义。新规则提供了明确的定义。</p>
+<p>已经进行了多项改进，提高了类型推断的能力和精度。</p>
+<ul>
+<li>现在可以调用一个（可能部分实例化的）泛型函数，其参数本身也是（可能部分实例化的）泛型函数。编译器将尝试推断被调用者缺少的类型参数（如前所述），并为每个未完全实例化的泛型函数参数推断其缺少的类型参数（新参数）。典型的使用场景是调用在容器上运行的泛型函数（例如<code>slices.IndexFunc</code>），在这种情况下，函数参数也可能是泛型的，被调用函数的类型参数及其参数是从容器类型中推断出来的。更常见的情况下，如果可以从赋值中推断出参数的类型，则当将泛型函数分配给变量或作为结果值返回时，就可以使用该函数，而无需显式实例化。</li>
+<li>类型推断现在也会在为接口赋值时考虑方法：方法签名中使用的类型参数可以从匹配方法的相应参数类型中推断出来。</li>
+<li>同样，由于类型参数必须实现其相应约束条件的所有方法，因此类型参数和约束条件的方法必须匹配，这可能导致推断出更多的类型参数。</li>
+<li>如果将多个不同类型的无类型常量参数（例如一个无类型的int和一个无类型的float）传递给具有相同（未指定）类型参数类型的参数，现在类型推断将使用与具有无类型常量操作数的运算符相同的方法来确定类型，而不是出错。这个变化使从无类型常量参数推断出的类型与常量表达式的类型保持一致。</li>
+<li>在赋值中匹配相应类型时，类型推断现在变得精确了：组件类型（如slice的元素，或是函数签名中的参数类型）必须相同（给定合适的类型参数）才能匹配，否则推理失败。这一变化使错误信息更加准确：在过去，类型推断可能会错误的成功并导致无效赋值，而现在，如果两个类型不可能匹配，编译器就会报告推断错误。</li>
+</ul>
+<p>更广泛的说，语言规范中对<a target="_blank" rel="noopener" href="https://go.dev/ref/spec#Type_inference">类型推论</a>的描述已得到澄清。所有这些变化使得类型推断功能更加强大，推断失败也不再那么令人惊讶。</p>
+<p>GO1.21包含我们考虑再GO未来版本中进行的语言更改预览：将<code>for</code>循环变量设置为每次迭代，而不是每个循环，以避免意外共享bug。详细信息，参阅<a target="_blank" rel="noopener" href="https://go.dev/wiki/LoopvarExperiment">LoopvarExperiment wiki页</a>。</p>
+<p>GO1.21现在规定，如果一个<code>goroutine panic</code>了，而<code>recover</code>被一个<code>defer</code>函数直接调用，则保证<code>recover</code>的返回值不为<code>nil</code>。为确保这一点，使用接口值为<code>nil</code>（或未键入的<code>nil</code>）调用<code>panic</code>会导致<a target="_blank" rel="noopener" href="https://go.dev/pkg/runtime/#PanicNilError"><code>*runtime.PanicNilError</code></a>类型的运行时<code>panic</code>。</p>
+<p>为支持为旧版GO编写的程序，可通过设置<code>GODEBUG=panicnil=1</code>重新启用<code>nil panic</code>。如果编译程序的主软件包位与声明GO1.20或更早版本的模块中，则会自动启用此设置。</p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p>GO1.21在GO工具链中改进了对向后兼容性和向前兼容性的支持。</p>
+<p>为了提高向后兼容性，GO1.21正式规定GO使用<code>GODEBUG</code>环境变量来控制那些根据兼容性策略是非破坏性的，但可能导致现有程序破坏的更改的默认行为。（例如，依赖于错误行为的程序在错误修复后可能会被破坏，但错误修复不被视为破坏性更改。）当GO必须改变这种行为时，它会根据工作区<code>go.work</code>文件中的<code>go</code>行或主模块的<code>go.mod</code>文件在新旧行为之间做出选择。升级到新的GO工具链，但将<code>go</code>行设置为原来的（较旧的）GO版本，可以保留较旧工具链的行为。有了这种兼容性支持，最新的GO工具链应该总是旧版本GO的最佳，最安全的实现。查看<a target="_blank" rel="noopener" href="https://go.dev/doc/godebug">Go，向后兼容性和GODBUG</a>了解更多。</p>
+<p>为了提高向前兼容性，GO1.21现在将读取<code>go.work</code>或<code>go.mod</code>文件中的<code>go</code>行作为严格的最低要求：<code>go 1.21.0</code>意味着该工作区或模块不能在GO 1.20或 GO 1.21rc1中使用。这样，依赖于GO后期版本修正的项目就可以确保它们不会被早期版本使用。它还能为使用GO新功能的项目提供更好的错误报告：当问题是需要更新的GO版本时，该问题会被清楚的报告，而不是在尝试构建代码时打印出未解决的导入或语法错误。</p>
+<p>为了使这些新的更严格的版本要求更易于管理，<code>go</code>命令现在不仅可以调用捆绑在其自身版本中的工具链，还可以调用在<code>PATH</code>中找到的或按需下载的其他GO工具链版本。如果<code>go.mod</code>或<code>go.work</code>的<code>go</code>行声明了对GO更新版本的最低要求，<code>go</code>命令将自动查找并运行该版本。新工具链指令设置了建议使用的最小工具链，它可能比严格的<code>go</code>最小工具链更新。详情查看<a target="_blank" rel="noopener" href="https://go.dev/doc/toolchain">Go Toolchains</a>。</p>
+<h2 id="Go-命令"><a href="#Go-命令" class="headerlink" title="Go 命令"></a>Go 命令</h2><p>现在，<code>-pgo</code>构建标志默认为<code>-pgo=auto</code>，在命令行中指定单个主软件包的限制也已取消。如果主软件包文件夹中存在名为<code>default.pgo</code>的文件，<code>go</code>命令将使用该文件启用配置文件引导的优化，以构建相应的程序。</p>
+<p>现在，使用<code>-C dir</code>标志时，必须将其作为命令行的第一个标志。</p>
+<p>新的<code>go test</code>选项<code>-fullpath</code>会在测试日志信息中打印完整的路径名，而不仅仅是基名。</p>
+<p><code>go test -c</code>标志现在支持为多个软件包写入测试二进制文件，每个二进制文件都写入<code>pkg.test</code>，其中<code>pkg</code>是软件包名称。如果正在编译的测试软件包中有一个以上的软件包名称，则会出错。</p>
+<p><code>go test -o</code>现在可以接收文件夹参数，在这种情况下，测试二进制文件将写入该文件夹，而不是当前文件夹。</p>
+<h2 id="CGO"><a href="#CGO" class="headerlink" title="CGO"></a>CGO</h2><p>在<code>import &quot;C&quot;</code>的文件中，如果尝试在C类型上声明GO方法，GO工具链现在会正确报错。</p>
+<h2 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h2><p>在打印非常深的堆栈时，运行时现在会打印前50帧（最内层），然后打印最底层50帧（最外层），而不是只打印前100帧。这使得查看递归堆栈开始的深度变得更容易，对于调试堆栈溢出尤其有价值。</p>
+<p>在支持透明大页(<code>transparent huge pages</code>)的Linux平台上，GO运行时现在可以更明确的管理堆的哪些部分可以由大页支持。这样就能更好的利用内存：小型堆应减少内存使用量（在病理情况下最多可减少50%），而大型堆应减少堆中密集部分被破坏的大页，CPU使用率和延迟最多可改善1%。</p>
+<p>通过运行时内部垃圾收集调整，应用程序的尾部延迟最多可减少40%，内存使用量也会略有减少。某些应用可能还会观察到吞吐量的少量损失。内存使用量的减少应与吞吐量的损失成正比，因此，只要稍微增加<code>GOGC</code>[和&#x2F;或]<code>GOMEMLIMIT</code>，就可以恢复上一版本的吞吐量&#x2F;内存权衡（延迟变化不大）。</p>
+<p>在C创建的线程上从C调用GO需要一些设置来准备GO的执行。在UNIX平台，这种设置现在可以在同一线程的多次调用中得到保留。这大大减少了后续C到GO调用的开销，从每次调用约1～3微秒减少到每次调用约100-200纳秒。</p>
+<h2 id="Compiler"><a href="#Compiler" class="headerlink" title="Compiler"></a>Compiler</h2><p>策略引导优化（PGO），在GO 1.20中作为预览版加入，现在已可普遍使用。PGO可对生产工作负载配置文件确认为常用的代码进行额外优化。如前文GO命令部分所述，对于主软件包文件夹中包含<code>default.pgo</code>配置文件的二进制文件，默认情况下会启用PGO。性能的提升因应用程序行为而异，在一组具有代表性的围棋程序中，大多数程序都能通过启用PGO实现2%到7%的提升。查看<a target="_blank" rel="noopener" href="https://go.dev/doc/pgo">PGO user guide</a>了解更多。</p>
+<p>PGO构建现在可以将某些接口方法调用虚拟化，为最常见的被调用者添加具体调用。这样就可以进一步优化，例如内联被调用者。</p>
+<p>GO1.21将编译速度提高了6%，这主要归功于使用PGO构建编译器本身。</p>
+<h2 id="Assembler"><a href="#Assembler" class="headerlink" title="Assembler"></a>Assembler</h2><blockquote>
+<p>这部分和Linker部分，我不太了解，翻译的可能有问题。</p>
+</blockquote>
+<p>在<code>amd64</code>架构，无框架<code>nosplit</code>装配函数不再自动标记为<code>NOFRAME</code>。作为替代，如果需要，必须明确指定<code>NOFRAME</code>属性，这在其他支持帧指针的架构上已经是一种行为。这样，运行时就能为堆栈转换维护帧指针。</p>
+<p>改进了在<code>amd64</code>上进行动态链接时检查R15使用错误的验证器。</p>
+<h2 id="Linker"><a href="#Linker" class="headerlink" title="Linker"></a>Linker</h2><p>在windows&#x2F;amd64上，链接器（在编译器的帮助下）现在默认会输出SEH开卷数据，这改进了GO应用程序与Windows调试器和其他工具的集成。</p>
+<p>在GO 1.21中，如果变量初始化器中的条目数量足够多，并且初始化器表达式没有副作用，链接器（在编译器的帮助下）现在能够删除死的（未引用的）全局映射变量。</p>
+<h2 id="核心库"><a href="#核心库" class="headerlink" title="核心库"></a>核心库</h2><h3 id="新的log-slog包"><a href="#新的log-slog包" class="headerlink" title="新的log/slog包"></a>新的<code>log/slog</code>包</h3><p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/log/slog"><code>log/slog</code></a>包提供带级别的结构化日志。结构化日志记录会发出键值对,以实现快速、准确的处理大量日志数据。该包支持与流行的日志分析工具和服务集成。</p>
+<h3 id="新的testing-slogtest包"><a href="#新的testing-slogtest包" class="headerlink" title="新的testing/slogtest包"></a>新的<code>testing/slogtest</code>包</h3><p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/testing/slogtest"><code>testing/slogtest</code></a>可以帮助验证<a target="_blank" rel="noopener" href="https://go.dev/pkg/log/slog#Handler"><code>slog.Handler</code></a>的实现。</p>
+<h3 id="新的slices包"><a href="#新的slices包" class="headerlink" title="新的slices包"></a>新的<code>slices</code>包</h3><p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/slices"><code>slices</code></a>包使用可处理任何元素类型的泛型函数提供了很多切片的常见操作。</p>
+<h3 id="新的maps包"><a href="#新的maps包" class="headerlink" title="新的maps包"></a>新的<code>maps</code>包</h3><p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/maps/"><code>maps</code></a>包使用可处理任何元素类型的泛型函数提供了很多map的常用操作。</p>
+<h3 id="新的cmp包"><a href="#新的cmp包" class="headerlink" title="新的cmp包"></a>新的<code>cmp</code>包</h3><p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/cmp/"><code>cmp</code></a>定义了类型约束<a target="_blank" rel="noopener" href="https://go.dev/pkg/cmp/#Ordered">Ordered</a>和两个新的泛型函数<a target="_blank" rel="noopener" href="https://go.dev/pkg/cmp/#Less">Less</a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/cmp/#Compare">Compare</a>，它们对于<a target="_blank" rel="noopener" href="https://go.dev/ref/spec/#Comparison_operators">有序类型</a>很有用。</p>
+<h3 id="库的小改动"><a href="#库的小改动" class="headerlink" title="库的小改动"></a>库的小改动</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/archive/tar/"><code>archive/tar</code></a></li>
+</ul>
+<blockquote>
+<p>由<a target="_blank" rel="noopener" href="https://go.dev/pkg/archive/tar/#Header.FileInfo"><code>Header.FileInfo</code></a>返回的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FileInfo"><code>io/fs.FileInfo</code></a>接口的实现现在实现了一个调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatFileInfo"><code>io/fs.FormatFileInfo</code></a>的<code>String</code>方法。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/archive/zip/"><code>archive/zip</code></a></li>
+</ul>
+<blockquote>
+<p>由<a target="_blank" rel="noopener" href="https://go.dev/pkg/archive/zip/#FileHeader.FileInfo"><code>FileHeader.FileInfo</code></a>返回的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FileInfo"><code>io/fs.FileInfo</code></a>接口的实现现在实现了一个调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatFileInfo"><code>io/fs.FormatFileInfo</code></a>的<code>String</code>方法。<br>由<a target="_blank" rel="noopener" href="https://go.dev/pkg/archive/zip/#Reader.Open"><code>Reader.Open</code></a>返回的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#File"><code>io/fs.File</code></a>的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#ReadDirFile.ReadDir"><code>io/fs.ReadDirFile.ReadDir</code></a>方法返回的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#DirEntry"><code>io/fs.DirEntry</code></a>接口的实现现在实现了一个调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatDirEntry"><code>io/fs.FormatDirEntry</code></a>的<code>String</code>方法。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/bytes/"><code>bytes</code></a></li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://go.dev/pkg/bytes/#Buffer"><code>Buffer</code></a>类型有两个新方法：<a target="_blank" rel="noopener" href="https://go.dev/pkg/bytes/#Buffer.Available"><code>Available</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/bytes/#Buffer.AvailableBuffer"><code>AvailableBuffer</code></a>。这些方法可与<a target="_blank" rel="noopener" href="https://go.dev/pkg/bytes/#Buffer.Write"><code>Write</code></a>方法一起使用，直接向<code>Buffer</code>追加内容。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/context/"><code>context</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/context/#WithoutCancel"><code>WithoutCancel</code></a>函数返回一个上下文副本，该副本在原始上下文被取消时不会被取消。<br>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/context/#WithDeadlineCause"><code>WithDeadlineCause</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/context/#WithTimeoutCause"><code>WithTimeoutCause</code></a>函数提供了一种在最后期限或计时器到期时设置上下文取消原因的方法。可以使用<a target="_blank" rel="noopener" href="https://go.dev/pkg/context/#Cause"><code>Cause</code></a>函数查看原因。<br>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/context/#AfterFunc"><code>AfterFunc</code></a>函数用于注册一个函数，以便在取消上下文后运行。<br>优化意味着调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/context/#Background">Background</a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/context/#TODO">TODO</a>并将其转换为共享类型的结果可视为相同。在以前的版本中，它们总是不同的。比较<a target="_blank" rel="noopener" href="https://go.dev/pkg/context/#Context">上下文</a>值是否相等从来没有明确的定义，因此这不被认为是不兼容的更改。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/ecdsa/"><code>crypto/ecdsa</code></a></li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/ecdsa/#PublicKey.Equal"><code>PublicKey.Equal</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/ecdsa/#PrivateKey.Equal"><code>PrivateKey.Equal</code></a>现在可在恒定时间内执行。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/elliptic/"><code>crypto/elliptic</code></a></li>
+</ul>
+<blockquote>
+<p>所有的<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/elliptic/#Curve"><code>Curve</code></a>方法以及<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/elliptic/#GenerateKey"><code>GenerateKey</code></a>，<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/elliptic/#Marshal"><code>Marshal</code></a>，<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/elliptic/#Unmarshal"><code>Unmarshal</code></a>都已废弃。对于<code>ECDH</code>操作，应使用新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/ecdh/"><code>crypto/ecdh</code></a>包。对于较底层的操作，可使用三方模块，如<a target="_blank" rel="noopener" href="https://pkg.go.dev/filippo.io/nistec"><code>filippo.io/nistec</code></a>。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rand/"><code>crypto/rand</code></a></li>
+</ul>
+<blockquote>
+<p>该包现在可用在<code>NetBSD 10.0</code>及更高版本上使用<code>getrandom</code>系统调用。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rsa/"><code>crypto/rsa</code></a></li>
+</ul>
+<blockquote>
+<p>对于<code>GOARCH=amd64</code>和<code>GOARCH=arm64</code>，私有RSA操作（解密和签名）的性能比GO 1.19更好。在GO 1.20中，性能有所下降。<br>由于在<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rsa/#PrecomputedValues"><code>PrecomputedValues</code></a>中添加了私有字段，因此即使反序列化（例如从JSON）先前已预计算的私钥，也必须调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rsa/#PrivateKey.Precompute"><code>PrivateKey.Precompute</code></a>以获得最佳性能。<br><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rsa/#PublicKey.Equal"><code>PublicKey.Equal</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rsa/#PrivateKey.Equal"><code>PrivateKey.Equal</code></a>现在可在恒定时间内执行。<br><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rsa/#GenerateMultiPrimeKey"><code>GenerateMultiPrimeKey</code></a>函数和<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rsa/#PrecomputedValues.CRTValues"><code>PrecomputedValues.CRTValues</code></a>字段已废弃。在调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rsa/#PrivateKey.Precompute"><code>PrivateKey.Precompute</code></a>时，<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/rsa/#PrecomputedValues.CRTValues"><code>PrecomputedValues.CRTValues</code></a>仍将被填充，但在解密操作中不会使用这些值。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/sha256/"><code>crypto/sha256</code></a></li>
+</ul>
+<blockquote>
+<p>当<code>GOARCH=amd64</code>时，SHA-224和SHA-256操作现在使用本地指令，性能提高了3-4倍。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/"><code>ctypto/tls</code></a></li>
+</ul>
+<blockquote>
+<p>现在，服务器除了检查过期时间外，还会跳过验证恢复连接的客户端证书（包括不运行<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#Config.VerifyPeerCertificate"><code>Config.VerifyPeerCertificate</code></a>）。这样，在使用客户端证书时，会话票据(session tickets)就会变大。客户端已在恢复时跳过验证，但现在即使设置了<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#Config.InsecureSkipVerify"><code>Config.InsecureSkipVerify</code></a>也会检查过期时间。</p>
+</blockquote>
+<blockquote>
+<p>应用现在可以控制会话票据的内容。</p>
+<ul>
+<li>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#SessionState"><code>SessionState</code></a>类型描述了可恢复的会话</li>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#SessionState.Bytes"><code>SessionState.Bytes</code></a>方法和<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#ParseSessionState"><code>ParseSessionState</code></a>函数对<code>SessionState</code>进行序列化和反序列化</li>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#Config.WrapSession"><code>Config.WrapSession</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#Config.UnwrapSession"><code>Config.UnwrapSession</code></a>钩子可在服务器端将<code>SessionState</code>与票据进行转换</li>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#Config.EncryptTicket"><code>Config.EncryptTicket</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#Config.DecryptTicket"><code>Config.DecryptTicket</code></a>方法提供了<code>WrapSession</code>和<code>UnwrapSession</code>的默认实现</li>
+<li><code>ClientSessionCache</code>实现可使用<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#ClientSessionState.ResumptionState"><code>ClientSessionState.ResumptionState</code></a>方法和<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#NewResumptionState"><code>NewResumptionState</code></a>函数在客户端存储和恢复会话</li>
+</ul>
+</blockquote>
+<p>为了减少会话票据被用作跨连接跟踪机制的可能性，服务器现在会在每次恢复时（如果支持且未禁用）签发新票据，而且票据不再带有加密密钥的标识符。如果向<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#Conn.SetSessionTicketKeys"><code>Conn.SetSessionTicketKeys</code></a>传递大量密钥，可能会导致明显的性能损失。</p>
+<p>客户端和服务器现在都实现了扩展主密码扩展（RFC 7627）(Extended Master Secret extension)。已恢复对<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#ConnectionState.TLSUnique"><code>ConnectionState.TLSUnique</code></a>的弃用，现在将其设置为支持扩展主密钥的恢复连接。</p>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#QUICConn"><code>QUICConn</code></a>类型支持QUIC实现，包括<code>0-RTT</code>支持。请注意，这本身并不是QUIC实现，而且TLS仍不支持<code>0-RTT</code>。</p>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#VersionName"><code>VersionName</code></a>函数返回TLS版本号的名称。</p>
+<p>改进了服务器发送的客户端身份验证失败的TLS警告代码。之前，这种故障总是导致“坏证书(bad certificate)”警告。现在，根据RFC 5246和RFC 8446的规定，某些故障会导致更恰当的警告代码：</p>
+<ul>
+<li><p>对于TSL 1.3连接，如果服务器配置为使用<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#RequireAnyClientCert"><code>RequireAnyClientCert</code></a>或<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/tls/#RequireAndVerifyClientCert"><code>RequireAndVerifyClientCert</code></a>要求客户端验证，而客户端未提供任何证书，服务器现在会返回“需要证书(certificate required)”警告。</p>
+</li>
+<li><p>如果客户端提供的证书不是由服务器上配置的受信任证书颁发机构签署的，服务器将返回“未知证书颁发机构(unknown certificate authority)”警告</p>
+</li>
+<li><p>如果客户端提供的证书过期或无效，服务器将返回“证书过期(expired certificate)”警告</p>
+</li>
+<li><p>在与客户端身份验证失败有关的所有其他情况下，服务器仍会返回“坏证书(bad certificate)”警告</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/x509/"><code>crypto/x509</code></a></p>
+</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/x509/#RevocationList.RevokedCertificates"><code>RevocationList.RevokedCertificates</code></a>已被启用，取而代之的是新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/x509/#RevocationList.RevokedCertificateEntries"><code>RevokedCertificateEntries</code></a>字段，它是<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/x509/#RevocationListEntry"><code>RevocationListEntry</code></a>的一个片段。<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/x509/#RevocationListEntry"><code>RevocationListEntry</code></a>包含<a target="_blank" rel="noopener" href="https://go.dev/pkg/crypto/x509/pkix#RevokedCertificate"><code>pkix.RevokedCertificate</code></a>中的所有字段以及撤销原因代码<br>名称限制现在可在非叶证书上正确执行，而不是在表达名称限制的证书上执行</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/debug/elf/"><code>debug/elf</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/debug/elf/#File.DynValue"><code>File.DynValue</code></a>方法可用于检索指定动态标记列出的数值<br><code>DT_FLAGS_1</code>动态标记中允许使用的常量标记现在用<a target="_blank" rel="noopener" href="https://go.dev/pkg/debug/elf/#DynFlag1"><code>DynFlag1</code></a>类型定义。这些标记的名称以<code>DF_1</code>开头<br>该包现在定义了常量<a target="_blank" rel="noopener" href="https://go.dev/pkg/debug/elf/#COMPRESS_ZSTD"><code>COMPRESS_ZSTD</code></a><br>该包现在定义了常量<a target="_blank" rel="noopener" href="https://go.dev/pkg/debug/elf/#R_PPC64_REL24_P9NOTOC"><code>R_PPC64_REL24_P9NOTOC</code></a></p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/debug/pe/"><code>debug/pe</code></a></li>
+</ul>
+<blockquote>
+<p>尝试使用<a target="_blank" rel="noopener" href="https://go.dev/pkg/debug/pe/#Section.Data"><code>Section.Data</code></a>或<a target="_blank" rel="noopener" href="https://go.dev/pkg/debug/pe/#Section.Open"><code>Section.Open</code></a>返回的读取器读取包含未初始化数据的部分时，现在会返回错误信息</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/embed/"><code>embed</code></a></li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://go.dev/pkg/embed/#FS.Open"><code>FS.Open</code></a>返回的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#File"><code>io/fs.File</code></a>现在有了一个实现<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/#ReaderAt"><code>io.ReaderAt</code></a>的<code>ReadAt</code>方法<br>调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/embed/FS.Open"><code>FS.Open</code></a><a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#File.Stat"><code>.Stat</code></a>将返回一个现在实现了<code>String</code>方法的类型，该方法调用[&#96;io&#x2F;fs.FormatFileInfo](<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatFileInfo">https://go.dev/pkg/io/fs/#FormatFileInfo</a>)</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/encoding/binary/"><code>encoding/binary</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/encoding/binary/#NativeEndian"><code>NativeEndian</code></a>变量可用于使用当前机器的本地子节序进行字节片和整数之间的转换</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/errors/"><code>errors</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/errors/#ErrUnsupported"><code>ErrUnsupported</code></a>错误提供了一种标准化的方式，用于表示所请求的操作因不支持而无法执行。例如，在使用不支持硬链接的文件系统时调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#Link"><code>os.Link</code></a></p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/"><code>flag</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/#BoolFunc"><code>BoolFunc</code></a>函数和<a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/#FlagSet.BoolFunc"><code>FlagSet.BoolFunc</code></a>方法定义了一个不需要参数的标志，并在使用标志时调用一个函数。这与<a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/#Func"><code>Func</code></a>类似，但针对的是布尔标志<br>如果已经在同名标志上调用了<a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/#Set"><code>Set</code></a>，则标志定义（通过<a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/#Bool"><code>Bool</code></a>， <a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/#BoolVar"><code>BoolVar</code></a>，<a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/#Int"><code>Int</code></a>，<a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/#IntVar"><code>IntVar</code></a>等）会出现问题。这一修改旨在检测<a target="_blank" rel="noopener" href="https://go.dev/doc/go1.21#language">初始化顺序的变化</a>导致标记操作发生的顺序与预期不同的情况。在许多情况下，解决这个问题的方法是引入一个显式的包依赖关系，以便在进行任何<a target="_blank" rel="noopener" href="https://go.dev/pkg/flag/#Set"><code>Set</code></a>操作之前正确的对定义进行排序</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/go/ast/"><code>go/ast</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/go/ast/#IsGenerated"><code>IsGenerated</code></a>谓词可报告文件语法树是否包含<a target="_blank" rel="noopener" href="https://go.dev/s/generatedcode">特殊注释</a>，这种注释通常表示文件是由工具生成的。<br>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/go/ast/#File.GoVersion"><code>File.GoVersion</code></a>字段记录了任何<code>//go:build</code>或<code>//+build</code>指令所需的最小GO版本。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/go/build/"><code>go/build</code></a></li>
+</ul>
+<blockquote>
+<p>包现在可以解析文件头（在包声明前）中的构建指令（以<code>//go:</code>开头的注释）。这些指令可在新的包字段<a target="_blank" rel="noopener" href="https://go.dev/pkg/go/build#Package.Directives"><code>Directives</code></a>、<a target="_blank" rel="noopener" href="https://go.dev/pkg/go/build#Package.TestDirectives"><code>TestDirectives</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/go/build#Package.XTestDirectives"><code>XTestDirectives</code></a>中使用。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/go/build/constraint/"><code>go/build/constraint</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/go/build/constraint/#GoVersion"><code>GoVersion</code></a>函数返回构建表达式所隐含的最小GO版本</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/go/token/"><code>go/token</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/go/token/#File.Lines"><code>File.Lines</code></a>方法以<code>File.SetLines</code>接受的相同形式返回文件的行号表</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/go/types/"><code>go/types</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/go/types/#Package.GoVersion"><code>Package.GoVersion</code></a>方法返回用于检查软件包的GO语言版本</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/hash/maphash/"><code>hash/maphash</code></a></li>
+</ul>
+<blockquote>
+<p><code>hash/maphash</code>包现在有了纯GO实现，可使用<code>purego</code>构建标记进行选择</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/html/template/"><code>html/template</code></a></li>
+</ul>
+<blockquote>
+<p>当一个操作出现在JavsScript模板文字中时，将返回新错误<a target="_blank" rel="noopener" href="https://go.dev/pkg/html/template/#ErrJSTemplate"><code>ErrJSTemplate</code></a>。此前返回的是未导出错误(unexported error)。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/"><code>io/fs</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatFileInfo"><code>FormatFileInfo</code></a>函数返回<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FileInfo"><code>FileInfo</code></a>的格式化版本。新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatDirEntry"><code>FormatDirEntry</code></a>函数返回<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FileInfo"><code>DirEntry</code></a>的格式化版本。<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#ReadDir"><code>ReadDir</code></a>返回的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#DirEntry"><code>DirEntry</code></a>实现了一个调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatDirEntry"><code>FormatDirEntry</code></a>的<code>String</code>方法，传递给<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#WalkDirFunc"><code>WalkDirFunc</code></a>的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#DirEntry"><code>DirEntry</code></a>值也是如此。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/math/big/"><code>math/big</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/math/big/#Int.Float64"><code>Int.Float64</code></a>方法会返回与多精度整数最接近的浮点数值，并显示四舍五入的结果。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/net/"><code>net</code></a></li>
+</ul>
+<blockquote>
+<p>在Linux上，当内核支持多路径TCP时，<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/"><code>net</code></a>包现在可以使用多路径TCP。默认情况下不会使用。要在客户端可用时使用多路径TCP，请在调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/#Dialer.Dial"><code>Dialer.Dial</code></a>或<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/#Dialer.DialContext"><code>Dialer.DialContext</code></a>方法前调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/#Dialer.SetMultipathTCP"><code>Dialer.SetMultipathTCP</code></a>方法。要在服务器上可用时使用多路径TCP，请在调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/#ListenConfig.Listen"><code>ListenConfig.Listen</code></a>方法前调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/#ListenConfig.SetMultipathTCP"><code>ListenConfig.SetMultipathTCP</code></a>方法。像往常一样将网络指定为”tcp”, “tcp4”或”tcp6”。如果内核或远程主机不支持多路径TCP，连接将无声的退回到TCP。要测试特定连接是否使用多路径TCP，请使用[&#96;TCPConn.MultipathTCP](<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/#TCPConn.MultipathTCP)%E6%96%B9%E6%B3%95%E3%80%82">https://go.dev/pkg/net/#TCPConn.MultipathTCP)方法。</a><br>在未来的GO版本中，我们可能会在支持多路径TCP的系统上默认启用多路径TCP。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/net/http/"><code>net/http</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/http#ResponseController.EnableFullDuplex"><code>ResponseController.EnableFullDuplex</code></a>方法允许服务器处理程序在写入响应的同时读取<code>HTTP/1</code>请求正文。通常情况下，<code>HTTP/1</code>服务器在开始写入响应前，会自动消耗掉所有剩余的请求体，以避免客户端在读取响应前试图写入一个完成的请求而造成死锁。<code>EnableFullDuplex</code>方法会禁止这种行为。<br>当服务器以<code>HTTP</code>响应回应<code>HTTPS</code>请求时，<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/http/#Client"><code>Client</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/http/#Transport"><code>Transport</code></a>会返回新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/net/http/#ErrSchemeMismatch"><code>ErrSchemeMismatch</code></a>错误。<br><a target="_blank" rel="noopener" href="https://go.dev/pkg/net/http/"><code>net/http</code></a>包现在支持<a target="_blank" rel="noopener" href="https://go.dev/pkg/errors/#ErrUnsupported"><code>errors.ErrUnsupported</code></a>，表达式<code>errors.Is(http.ErrNotSupported, errors.ErrUnsupported)</code>将返回<code>true</code>。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/os/"><code>os</code></a></li>
+</ul>
+<blockquote>
+<p>程序现在可以向<a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#Chtimes"><code>Chtimes</code></a>函数传递一个空的<code>time.Time</code>值，以保持访问时间或修改时间不变。<br>在Windows中，<a target="_blank" rel="noopener" href="https://go.dev/pkg/os#File.Chdir"><code>File.Chdir</code></a>方法现在可将当前文件夹更改为文件，而不是总是返回错误信息。<br>在Unix系统上，如果向<a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#NewFile"><code>NewFile</code></a>传递了一个非阻塞描述符，调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#File.Fd"><code>File.Fd</code></a>方法现在将返回一个非阻塞描述符。在此之前，描述符会转换为阻塞模式。<br>在Windows系统中，在不存在的文件上调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#Truncate"><code>Truncate</code></a>会创建一个空文件。现在它会返回一个错误，表明文件不存在。<br>在Windows中调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#TempDir"><code>TempDir</code></a>时，现在使用<code>GetTempPath2W</code>，而不是<code>GetTempPathW</code>。新行为是一种安全加固措施，可防止以<code>SYSTEM</code>身份运行的进程创建的临时文件被非<code>SYSTEM</code>进程访问。<br>在Windows系统中，<code>os</code>包现在支持处理无法以有效UTF-8表示而以UTF-16保存的文件名表示的文件。<br>在Windows中，<a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#Lstat"><code>Lstat</code></a>现在可为以路径分隔符结尾的路径解析符号链接，这与POSIX平台上的行为一致。<br><a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#ReadDir"><code>ReadDir</code></a>函数和<a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#File.ReadDir"><code>File.ReadDir</code></a>方法返回的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#DirEntry"><code>io/fs.DirEntry</code></a>接口的实现现在实现了一个调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatDirEntry"><code>io/fs.FormatDirEntry</code></a>的<code>String</code>方法。<br><a target="_blank" rel="noopener" href="https://go.dev/pkg/os/#DirFS"><code>DirFS</code></a>函数返回的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FS"><code>io/fs.FS</code></a>接口的实现现在实现了<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#ReadFileFS"><code>io/fs.ReadFileFS</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#ReadDirFS"><code>io/fs.ReadDirFS</code></a>接口。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/path/filepath/"><code>path/filepath</code></a></li>
+</ul>
+<blockquote>
+<p>传递给<a target="_blank" rel="noopener" href="https://go.dev/pkg/path/filepath/#WalkDir"><code>WalkDir</code></a>函数参数的<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#DirEntry"><code>io/fs.DirEntry</code></a>接口的实现现在实现了一个调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatDirEntry"><code>io/fs.FormatDirEntry</code></a>的<code>String</code>方法。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/reflect/"><code>reflect</code></a></li>
+</ul>
+<blockquote>
+<p>在GO 1.21中，<a target="_blank" rel="noopener" href="https://go.dev/pkg/reflect/#ValueOf"><code>ValueOf</code></a>不再强制在堆上分配其参数，而是允许在栈上分配<code>Value</code>的内容。对<code>Value</code>的大多数操作也允许在堆栈中分配底层值。<br>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/reflect/#Value"><code>Value</code></a>方法<a target="_blank" rel="noopener" href="https://go.dev/pkg/reflect/#Value.Clear"><code>Value.Clear</code></a>可清除映射的内容或将片段的内容清零。这与语言中新增的<code>clear</code>内置方法相对应。<br><a target="_blank" rel="noopener" href="https://go.dev/pkg/reflect/#SliceHeader"><code>SliceHeader</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/reflect/#StringHeader"><code>StringHeader</code></a>类型现已弃用。新代码中，请首选<a target="_blank" rel="noopener" href="https://go.dev/pkg/unsafe/#Slice"><code>unsafe.Slice</code></a>、<a target="_blank" rel="noopener" href="https://go.dev/pkg/unsafe/#SliceData"><code>unsafe.SliceData</code></a>、<a target="_blank" rel="noopener" href="https://go.dev/pkg/unsafe/#String"><code>unsafe.String</code></a>或<a target="_blank" rel="noopener" href="https://go.dev/pkg/unsafe/#StringData"><code>unsafe.StringData</code></a>。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/regexp/"><code>regexp</code></a></li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://go.dev/pkg/regexp#Regexp"><code>Regexp</code></a>现在定义了<a target="_blank" rel="noopener" href="https://go.dev/pkg/regexp#Regexp.MarshalText"><code>MarshalText</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/regexp#Regexp.UnmarshalText"><code>UnmarshalText</code></a>方法。这些方法实现了<a target="_blank" rel="noopener" href="https://go.dev/pkg/encoding#TextMarshaler"><code>encoding.TextMarshaler</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/encoding#TextUnmarshaler"><code>encoding.TextUnmarshaler</code></a>，将被<a target="_blank" rel="noopener" href="https://go.dev/pkg/encoding/json"><code>encoding/json</code></a>等包使用。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/runtime/"><code>runtime</code></a></li>
+</ul>
+<blockquote>
+<p>GO程序产生的文本堆栈跟踪（例如在崩溃，调用<code>runtime.Stack</code>或使用<code>debug=2</code>收集<code>goroutine profile</code>时产生的堆栈跟踪）现在包含了在堆栈跟踪中创建每个<code>goroutine</code>的<code>goroutine</code>的<code>ID</code>。<br>崩溃的GO应用现在可以通过设置环境变量<code>GOTRACEBACK=wer</code>或在崩溃前调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/runtime/debug/#SetTraceback"><code>debug.SetTraceback(&quot;wer&quot;)</code></a>来选择加入Windows错误报告(<code>WER</code>)。除启用<code>WER</code>外，运行时的行为与<code>GOTRACEBACK=crash</code>相同。在非Windows系统上，<code>GOTRACEBACK=wer</code>将被忽略。<br><code>GODEBUG=cgocheck=2</code>是对<code>cgo</code>指针传递规则的全面检查，不再作为<a target="_blank" rel="noopener" href="https://go.dev/pkg/runtime#hdr-Environment_Variables">调试选项</a>提供。取而代之的是使用<code>GOEXPERIMENT=cgocheck2</code>作为实验。这意味着必须在构建时而不是启动时选择该模式。<br><code>GODEBUG=cgocheck=1</code>仍然可用（且仍然是默认值）。<br><code>runtime</code>包中新增了<code>Pinner</code>类型。<code>Pinner</code>可以用来“钉住”GO内存，这样非GO代码就可以更自由的使用它。例如，现在允许向C代码传递引用固定GO内存的GO值。此前，<a target="_blank" rel="noopener" href="https://pkg.go.dev/cmd/cgo#hdr-Passing_pointers"><code>cgo</code>指针传递规则</a>不允许传递任何此类嵌套引用。参阅<a target="_blank" rel="noopener" href="https://go.dev/pkg/runtime#Pinner">文档</a>了解更多。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/runtime/metrics/"><code>runtime/metrics</code></a></li>
+</ul>
+<blockquote>
+<p>一些以前内部的GC指标，如实时堆大小，现在也可用了。<code>GOGC</code>和<code>GOMEMLIMIT</code>现在也可作为指标使用。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/runtime/trace/"><code>runtime/trace</code></a></li>
+</ul>
+<blockquote>
+<p>现在，在<code>amd64</code>和<code>arm64</code>上收集痕迹所需的CPU成本大大降低：与上一版本相比最多可提高10倍。<br>跟踪现在包含显式停止事件，可用于GO运行时可能停止的各种原因，而不仅仅是垃圾回收。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/sync/"><code>sync</code></a></li>
+</ul>
+<blockquote>
+<p>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/sync/#OnceFunc"><code>OnceFunc</code></a>、<a target="_blank" rel="noopener" href="https://go.dev/pkg/sync/#OnceValue"><code>OnceValue</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/sync/#OnceValues"><code>OnceValues</code></a>函数捕捉了<a target="_blank" rel="noopener" href="https://go.dev/pkg/sync/#Once"><code>Once</code></a>的一种常用用法，即在首次使用时懒初始化一个值。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/syscall/"><code>syscall</code></a></li>
+</ul>
+<blockquote>
+<p>在Windows中，<a target="_blank" rel="noopener" href="https://go.dev/pkg/syscall#Fchdir"><code>Fchdir</code></a>函数现在可以将当前文件夹更改为其参数，而不是总是返回错误。<br>在FreeBSD上，<a target="_blank" rel="noopener" href="https://go.dev/pkg/syscall#SysProcAttr"><code>SysProcAttr</code></a>有一个新字段<code>Jail</code>，可用于将新创建的进程置于监禁环境中。<br>在Windows系统中，<code>syscall</code>包现在支持处理文件名无法以有效UTF-8表示而以UTF-16保存的文件。现在，<a target="_blank" rel="noopener" href="https://go.dev/pkg/syscall#UTF16ToString"><code>UTF16ToString</code></a>和<a target="_blank" rel="noopener" href="https://go.dev/pkg/syscall#UTF16FromString"><code>UTF16FromString</code></a>函数可在UTF-16数据和<a target="_blank" rel="noopener" href="https://simonsapin.github.io/wtf-8/">WTF-8</a>字符串之间进行转换。这是向下兼容的，因为WTF-8是早期版本中使用的UTF-8格式的超集。<br>有几个错误值与新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/errors/#ErrUnsupported"><code>errors.ErrUnsupported</code></a>匹配，因此<code>errors.Is(err, errors.ErrUnsupported)</code>返回<code>true</code>。</p>
+</blockquote>
+<ul>
+<li><p><code>ENOSYS</code></p>
+</li>
+<li><p><code>ENOTSUP</code></p>
+</li>
+<li><p><code>EOPNOTSUPP</code></p>
+</li>
+<li><p><code>EPLAN9</code> (Plan 9 only)</p>
+</li>
+<li><p><code>ERROR_CALL_NOT_IMPLEMENTED</code> (Windows only)</p>
+</li>
+<li><p><code>ERROR_NOT_SUPPORTED</code> (Windows only)</p>
+</li>
+<li><p><code>EWINDOWS</code> (Windows only)</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://go.dev/pkg/testing/"><code>testing</code></a></p>
+</li>
+</ul>
+<blockquote>
+<p>新的<code>-test.fullpath</code>选项将在测试日志信息中打印完整的路径名，而不仅仅是基名。<br>新的<a target="_blank" rel="noopener" href="https://go.dev/pkg/testing/#Testing"><code>Testing</code></a>函数会报告程序是否是由<code>go test</code>创建的测试。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/testing/fstest/"><code>testing/fstest</code></a></li>
+</ul>
+<blockquote>
+<p>调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/testing/fstest/MapFS.Open"><code>Open</code></a><a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#File.Stat"><code>.Stat</code></a>将返回一个类型，该类型现在实现了调用<a target="_blank" rel="noopener" href="https://go.dev/pkg/io/fs/#FormatFileInfo"><code>io/fs.FormatFileInfo</code></a>的<code>String</code>方法。</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/pkg/unicode/"><code>unicode</code></a></li>
+</ul>
+<blockquote>
+<p>整个系统的<a target="_blank" rel="noopener" href="https://go.dev/pkg/unicode/"><code>unicode</code></a>包和相关支持已升级到<a target="_blank" rel="noopener" href="https://www.unicode.org/versions/Unicode15.0.0/"><code>Unicode 15.0.0</code></a>。</p>
+</blockquote>
+<h2 id="Ports"><a href="#Ports" class="headerlink" title="Ports"></a>Ports</h2><h3 id="WebAssembly"><a href="#WebAssembly" class="headerlink" title="WebAssembly"></a>WebAssembly</h3><p>现在可以在GO程序中使用新的<code>go:wasmimport</code>指令从<code>WebAssembly</code>主机导入函数。</p>
+<p>现在，GO调度器与JS事件循环的交互效率大大提高，尤其是在频繁阻塞异步事件的应用程序中。</p>
+<h3 id="WebAssembly-System-Interface"><a href="#WebAssembly-System-Interface" class="headerlink" title="WebAssembly System Interface"></a>WebAssembly System Interface</h3><p>GO 1.21为<a target="_blank" rel="noopener" href="https://wasi.dev/">WebAssembly系统接口（WASI）</a>预览版1增加了一个实验端口（<code>GOOS=wasip1, GOARCH=wasm</code>）。</p>
+<p>由于增加了新的<code>GOOS</code>值”wasip1”，除非使用该<code>GOOS</code>值，否则名为<code>*_wasip1.go</code>的GO文件将<a target="_blank" rel="noopener" href="https://go.dev/pkg/go/build/#hdr-Build_Constraints">被GO工具忽略</a>。如果现有文件名和该模式匹配，需要重新命名。</p>
+<h3 id="ppc64-x2F-ppc64le"><a href="#ppc64-x2F-ppc64le" class="headerlink" title="ppc64&#x2F;ppc64le"></a>ppc64&#x2F;ppc64le</h3><p>在Linux上，<code>GOPPC64=power10</code>现在可以生成PC相关指令，前缀指令和其他新的<code>Power10</code>指令。在AIX上，<code>GOPPC64=power10</code>会生成<code>Power10</code>指令，但不会生成PC相关指令。</p>
+<p>在为<code>GOPPC64=power10 GOOS=linux GOARCH=ppc64le</code>构建与位置无关的二进制文件时，用户可以期待在大多数情况下缩小二进制文件的大小，在某些情况下缩小<code>3.5%</code>。与位置无关的二进制文件是为<code>ppc64le</code>构建的，其<code>-buildmode</code>值如下：<code>c-archive, c-shared, shared, pie, plugin</code>。</p>
+<h3 id="loong64"><a href="#loong64" class="headerlink" title="loong64"></a>loong64</h3><p><code>linux/loong64</code>端口现在支持<code>-buildmode=c-archive</code>, <code>-buildmode=c-shared</code>和<code>-buildmode=pie</code>。</p>
+<hr>
+<blockquote>
+<p>上周准备写的，一下给忘了，拖了一周。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://github.com/Guaderxx">Guader</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://guaderxx.github.io/2023/08/22/go1-21-release-notes/">https://guaderxx.github.io/2023/08/22/go1-21-release-notes/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Golang/">Golang</a></div><div class="post_share"><div class="addtoany"><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_wechat"></a><a class="a2a_button_facebook_messenger"></a><a class="a2a_button_email"></a><a class="a2a_button_copy_link"></a><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a></div></div><script async="async" src="https://static.addtoany.com/menu/page.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/08/12/grpc/" title="grpc"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">grpc</div></div></a></div><div class="next-post pull-right"><a href="/2023/09/04/bst/" title="bst"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">bst</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/09/08/generics/" title="generics"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-03</div><div class="title">generics</div></div></a></div><div><a href="/2023/09/20/forloop-performance/" title="forloop-performance"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-03</div><div class="title">forloop-performance</div></div></a></div><div><a href="/2024/05/06/singleflight-ants-gnet/" title="singleflight|ants|gnet"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-03</div><div class="title">singleflight|ants|gnet</div></div></a></div><div><a href="/2023/09/10/string-concatenation-benchmark/" title="string-concatenation-benchmark"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-03</div><div class="title">string-concatenation-benchmark</div></div></a></div><div><a href="/2023/06/21/write-a-hash-table/" title="Write a hash table"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2024-07-03</div><div class="title">Write a hash table</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GO1-21-Release-Notes"><span class="toc-number">1.</span> <span class="toc-text">GO1.21 Release Notes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%98%E5%8C%96"><span class="toc-number">1.2.</span> <span class="toc-text">语言的变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">1.3.</span> <span class="toc-text">工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.</span> <span class="toc-text">Go 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CGO"><span class="toc-number">1.5.</span> <span class="toc-text">CGO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Runtime"><span class="toc-number">1.6.</span> <span class="toc-text">Runtime</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Compiler"><span class="toc-number">1.7.</span> <span class="toc-text">Compiler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Assembler"><span class="toc-number">1.8.</span> <span class="toc-text">Assembler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linker"><span class="toc-number">1.9.</span> <span class="toc-text">Linker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%BA%93"><span class="toc-number">1.10.</span> <span class="toc-text">核心库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E7%9A%84log-slog%E5%8C%85"><span class="toc-number">1.10.1.</span> <span class="toc-text">新的log&#x2F;slog包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E7%9A%84testing-slogtest%E5%8C%85"><span class="toc-number">1.10.2.</span> <span class="toc-text">新的testing&#x2F;slogtest包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E7%9A%84slices%E5%8C%85"><span class="toc-number">1.10.3.</span> <span class="toc-text">新的slices包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E7%9A%84maps%E5%8C%85"><span class="toc-number">1.10.4.</span> <span class="toc-text">新的maps包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E7%9A%84cmp%E5%8C%85"><span class="toc-number">1.10.5.</span> <span class="toc-text">新的cmp包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%93%E7%9A%84%E5%B0%8F%E6%94%B9%E5%8A%A8"><span class="toc-number">1.10.6.</span> <span class="toc-text">库的小改动</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ports"><span class="toc-number">1.11.</span> <span class="toc-text">Ports</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WebAssembly"><span class="toc-number">1.11.1.</span> <span class="toc-text">WebAssembly</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebAssembly-System-Interface"><span class="toc-number">1.11.2.</span> <span class="toc-text">WebAssembly System Interface</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ppc64-x2F-ppc64le"><span class="toc-number">1.11.3.</span> <span class="toc-text">ppc64&#x2F;ppc64le</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loong64"><span class="toc-number">1.11.4.</span> <span class="toc-text">loong64</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Guader</div><div class="footer_custom_text">The best time to plant a tree was twenty years ago. The second best time is now :)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/utils.min.js"></script><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/main.min.js"></script><script src="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://jsd.012700.xyz/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://jsd.012700.xyz/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(()=>{
+  const getGiscusTheme = theme => {
+    return theme === 'dark' ? 'dark' : 'light'
+  }
+
+  const loadGiscus = () => {
+    const config = Object.assign({
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Guaderxx/Guaderxx.github.io',
+      'data-repo-id': 'R_kgDOJxPT0Q',
+      'data-category-id': 'DIC_kwDOJxPT0c4CXUYG',
+      'data-mapping': 'pathname',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true
+    },null)
+
+    const ele = document.createElement('script')
+    for (let key in config) {
+      ele.setAttribute(key, config[key])
+    }
+    document.getElementById('giscus-wrap').appendChild(ele)
+  }
+
+  const changeGiscusTheme = theme => {
+    const sendMessage = message => {
+      const iframe = document.querySelector('iframe.giscus-frame')
+      if (!iframe) return
+      iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app')
+    }
+
+    sendMessage({
+      setConfig: {
+        theme: getGiscusTheme(theme)
+      }
+    });
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment= loadGiscus
+  }
+})()</script></div><script defer="defer" id="ribbon" src="https://jsd.012700.xyz/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="https://jsd.012700.xyz/npm/busuanzi@2.3.0/bsz.pure.mini.min.js"></script></div></body></html>
