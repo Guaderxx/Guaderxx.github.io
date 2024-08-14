@@ -1,0 +1,942 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>HTTP Live Streaming -- ZH | Guader's Blog</title><meta name="author" content="Guader"><meta name="copyright" content="Guader"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="From: rfc8216  说起来我之前一直把 m3u8 当成直播流的，类似于 flv 这种。突然发现这其实是个文本协议。   翻译对照     english chinese    unbounded streams 无界流   Memo 备忘录   HTTP Live Streaming HTTP 实时流传输   Media Playlist 媒体播放列表   Master Playlist">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP Live Streaming -- ZH">
+<meta property="og:url" content="https://guaderxx.github.io/2024/07/29/HTTP-Live-Streaming-ZH/index.html">
+<meta property="og:site_name" content="Guader&#39;s Blog">
+<meta property="og:description" content="From: rfc8216  说起来我之前一直把 m3u8 当成直播流的，类似于 flv 这种。突然发现这其实是个文本协议。   翻译对照     english chinese    unbounded streams 无界流   Memo 备忘录   HTTP Live Streaming HTTP 实时流传输   Media Playlist 媒体播放列表   Master Playlist">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://guaderxx.github.io/img/avatar.png">
+<meta property="article:published_time" content="2024-07-29T12:49:40.000Z">
+<meta property="article:modified_time" content="2024-08-14T05:27:11.816Z">
+<meta property="article:author" content="Guader">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://guaderxx.github.io/img/avatar.png"><link rel="shortcut icon" href="../../../../img/fav.png"><link rel="canonical" href="https://guaderxx.github.io/2024/07/29/HTTP-Live-Streaming-ZH/index.html"><link rel="preconnect" href="https://jsd.012700.xyz"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="stylesheet" href="../../../../css/index.css?v=4.13.0"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-9ZF8XKZV7M"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9ZF8XKZV7M');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":90,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":800},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://jsd.012700.xyz/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HTTP Live Streaming -- ZH',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-14 13:27:11'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="../img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="../archives/"><div class="headline">Articles</div><div class="length-num">33</div></a><a href="../tags/"><div class="headline">Tags</div><div class="length-num">13</div></a><a href="../categories/"><div class="headline">Categories</div><div class="length-num">28</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="../tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="../categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="../link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="../index.html" title="Guader's Blog"><span class="site-name">Guader's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="../tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="../categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="../link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">HTTP Live Streaming -- ZH</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-07-29T12:49:40.000Z" title="Created 2024-07-29 20:49:40">2024-07-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-08-14T05:27:11.816Z" title="Updated 2024-08-14 13:27:11">2024-08-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="../../../../categories/Doc/">Doc</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">23.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>81mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="HTTP Live Streaming -- ZH"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p>From: <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8216">rfc8216</a></p>
+<blockquote>
+<p>说起来我之前一直把 m3u8 当成直播流的，类似于 flv 这种。<br>突然发现这其实是个文本协议。</p>
+</blockquote>
+<blockquote>
+<p>翻译对照</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>english</th>
+<th>chinese</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>unbounded streams</td>
+<td>无界流</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>备忘录</td>
+</tr>
+<tr>
+<td>HTTP Live Streaming</td>
+<td>HTTP 实时流传输</td>
+</tr>
+<tr>
+<td>Media Playlist</td>
+<td>媒体播放列表</td>
+</tr>
+<tr>
+<td>Master Playlist</td>
+<td>主播放列表</td>
+</tr>
+<tr>
+<td>Variant Streams</td>
+<td>变体流</td>
+</tr>
+<tr>
+<td>resolution</td>
+<td>分辨率</td>
+</tr>
+<tr>
+<td>Program Association Table (PAT)</td>
+<td>节目关联表</td>
+</tr>
+<tr>
+<td>Program Map Table (PMT)</td>
+<td>程序映射表</td>
+</tr>
+<tr>
+<td>Service Description Table (SDT)</td>
+<td>节目业务描述表</td>
+</tr>
+<tr>
+<td>Media Initialization Section</td>
+<td>媒体初始化部分</td>
+</tr>
+<tr>
+<td>Movie Box (moov)</td>
+<td>影片盒</td>
+</tr>
+<tr>
+<td>Media Data Box (mdat)</td>
+<td>媒体数据盒</td>
+</tr>
+<tr>
+<td>Movie Fragment Box (moof)</td>
+<td>影片片段盒</td>
+</tr>
+<tr>
+<td>File Type Box (ftyp)</td>
+<td>文件类型盒</td>
+</tr>
+<tr>
+<td>Track Box (trak)</td>
+<td>轨道盒</td>
+</tr>
+<tr>
+<td>Track Fragment Box (traf)</td>
+<td>轨道片段盒</td>
+</tr>
+<tr>
+<td>Movie Header Box (mvhd)</td>
+<td>影片头部盒</td>
+</tr>
+<tr>
+<td>Track Header Box (tkhd)</td>
+<td>轨道头部盒</td>
+</tr>
+<tr>
+<td>Movie Extends Box (mvex)</td>
+<td>影片扩展盒</td>
+</tr>
+<tr>
+<td>Common Media Application Format (CMAF)</td>
+<td>通用媒体应用格式</td>
+</tr>
+<tr>
+<td>Track Fragment Decode Time Box (tfdt)</td>
+<td>轨道片段解码时间盒</td>
+</tr>
+<tr>
+<td>Packed Audio</td>
+<td>压缩音频</td>
+</tr>
+<tr>
+<td>Advanced Audio Coding (AAC)</td>
+<td>高级音频编码</td>
+</tr>
+<tr>
+<td>Audio Data Transport Stream (ADTS)</td>
+<td>音频数据传输流</td>
+</tr>
+<tr>
+<td>Private frame (PRIV)</td>
+<td>私有帧</td>
+</tr>
+<tr>
+<td>Program Elementary Stream</td>
+<td>程序基本流</td>
+</tr>
+<tr>
+<td>Byte Order Mark (BOM)</td>
+<td>字节顺序标记</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>摘要</p>
+</blockquote>
+<p>本文档描述了传输多媒体数据的无界流的协议。<br>它指定了文件的数据格式，以及流的服务器（发送方）和客户端（接收方）要采取的操作。<br>它描述了这个协议的 7 号版本。</p>
+<blockquote>
+<p>这个备忘录的状态</p>
+</blockquote>
+<p>本文档不是互联网标准轨迹规范；其发布仅供参考。</p>
+<p>这是对 RFC 系列的贡献，独立于任何其他 RFC 流。<br>RFC 编辑者自行决定发布此文档，并且不对其实施或部署的价值作出任何声明。<br>经 RFC 编辑者批准发布的文档不是任何级别的互联网标准的候选文档；请参阅 <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7841#section-2">RFC 7841 的第 2 节</a>。</p>
+<p>有关本文档的当前状态、任何勘误表以及如何提供反馈的信息可在 <a target="_blank" rel="noopener" href="http://www.rfc-editor.org/info/rfc8216">http://www.rfc-editor.org/info/rfc8216</a> 上获得。</p>
+<blockquote>
+<p>版权声明 - 省略</p>
+</blockquote>
+<h2 id="1-Introduction-to-HTTP-Live-Streaming"><a href="#1-Introduction-to-HTTP-Live-Streaming" class="headerlink" title="1. Introduction to HTTP Live Streaming"></a>1. Introduction to HTTP Live Streaming</h2><p>HTTP 实时流传输是一种可靠且经济高效的通过互联网传输连续长视频的方法。<br>它允许接收方根据当前网络条件调整媒体的比特率，以保持最佳质量的不间断播放。<br>它支持间隙内容边界。它为媒体加密提供了灵活的框架。<br>它可以高效地提供相同内容的多种版本，例如音频翻译。<br>它与大规模 HTTP 缓存基础设施兼容，以支持向大量受众交付。</p>
+<p>自 2009 年互联网草案首次发布以来，HTTP 实时流式传输已被众多内容制作者、工具供应商、分销商和设备制造商实施和部署。<br>在随后的八年中，该协议通过与各种媒体流式传输实施者的广泛审查和讨论而得到完善。</p>
+<p>本文档旨在通过描述媒体传输协议来促进 HTTP Live Streaming 实现之间的互操作性。<br>使用此协议，客户端可以从服务器接收连续的媒体流以进行并发演示。</p>
+<p>该文档描述了这个协议的 7 号版本。</p>
+<blockquote>
+<p>最新的已经到 23 了 - 2024&#x2F;08&#x2F;13</p>
+</blockquote>
+<h2 id="2-Overview"><a href="#2-Overview" class="headerlink" title="2. Overview"></a>2. Overview</h2><p>多媒体演示由统一资源标识符 (URI) [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc3986">RFC3986</a>] 指定给播放列表。</p>
+<p>播放列表可以是媒体播放列表或主播放列表。<br>两者都是包含 URI 和描述性标签的 UTF-8 文本文件。</p>
+<p>一个媒体播放列表包含媒体片段列表，按顺序播放时将播放多媒体演示。</p>
+<p>这是一个媒体播放列表的示例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-TARGETDURATION:10</span><br><span class="line"></span><br><span class="line">#EXTINF:9.009,</span><br><span class="line">http://media.example.com/first.ts</span><br><span class="line">#EXTINF:9.009,</span><br><span class="line">http://media.example.com/second.ts</span><br><span class="line">#EXTINF:3.003,</span><br><span class="line">http://media.example.com/third.ts</span><br></pre></td></tr></table></figure>
+
+<p>第一行是格式标识符标签 <code>#EXTM3U</code> 。<br>包含 <code>#EXT-X-TARGETDURATION</code> 的行表示所有媒体片段的长度不超过 10 秒。<br>然后声明了三个媒体片段。<br>第一个和第二个媒体片段的长度为 9.009 秒；第三个媒体片段的长度为 3.003 秒。</p>
+<p>要播放此播放列表，客户端首先下载它，然后下载并播放其中声明的每个媒体片段。<br>客户端按照本文档中的说明重新加载播放列表以发现任何添加的片段。<br>数据 <em>应该</em> 通过 HTTP [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7230">RFC7230</a>] 传输，不过一般来说，URI 可以指定任何能够按需可靠传输指定资源的协议。</p>
+<p>更复杂的演示可以通过主播放列表来描述。<br>主播放列表提供一组变体流，每个变体流描述同一内容的不同版本。</p>
+<p>一个变体流包含一个媒体播放列表，该列表指定以特定比特率、特定格式和特定分辨率编码的包含视频的媒体。</p>
+<p>变体流还可以指定一组版本。<br>版本是内容的替代版本，例如以不同语言制作的音频或是用摄像机从不同角度录制的视频。</p>
+<p>客户端应根据网络状况在不同的变体流之间切换。<br>客户端应根据用户偏好选择版本。</p>
+<p>本文档中关键字 “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY” 以及 “OPTIONAL” 都和 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/bcp14">BCP 14</a>], [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc2119">RFC2119</a>] [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8174">RFC8174</a>] 中描述的一致。</p>
+<h2 id="3-Media-Segments"><a href="#3-Media-Segments" class="headerlink" title="3. Media Segments"></a>3. Media Segments</h2><p>媒体播放列表包含一系列构成整体演示的媒体片段。<br>一个媒体片段由一个 URI 和可选的字节范围指定。</p>
+<p>每个媒体片段的持续时间由媒体播放列表中的 <code>EXTINF</code> 标签指示（第 <a href="#4321-extinf">4.3.2.1</a> 节）。</p>
+<p>媒体播放列表中的每个片段都有一个唯一的整数作为媒体序列号。<br>媒体播放列表中第一个片段的媒体序列号为 0 或在播放列表中声明（第 <a href="#4332-ext-x-media-sequence">4.3.3.2</a> 节）。<br>其他每个片段的媒体序列号等于其前一个片段的媒体序列号加一。</p>
+<p>每个媒体片段必须携带编码比特流的延续，从具有前一个媒体序列号的片段末尾开始，其中时间戳和连续性计数器等系列中的值必须不间断地连续。<br>唯一的例外是媒体播放列表中出现的第一个媒体片段和明确标记为不连续的媒体片段（第 <a href="#4323-ext-x-discontinuity">4.3.2.3</a> 节）。<br>未标记的媒体不连续性可能会触发播放错误。</p>
+<p>任何包含视频的媒体片段都应包含足够的信息来初始化视频解码器并解码包含片段中最后一帧的连续帧集；<br>如果片段中有足够的信息来解码片段中的所有帧，则网络效率会得到优化。<br>例如，任何包含 H.264 视频的媒体片段都应包含瞬时解码刷新 (IDR)；<br>第一个 IDR 之前的帧将被下载但可能会被丢弃。</p>
+<h3 id="3-1-Supported-Media-Segment-Formats"><a href="#3-1-Supported-Media-Segment-Formats" class="headerlink" title="3.1. Supported Media Segment Formats"></a>3.1. Supported Media Segment Formats</h3><p>所有媒体段 <em>必须</em> 采用本节中描述的格式。<br>其他格式媒体文件的传输未定义。</p>
+<p>某些媒体格式需要使用通用的字节序列来初始化解析器，然后才能解析媒体段。<br>此格式特定的序列称为媒体初始化部分。<br>媒体初始化部分可以通过 <code>EXT-X-MAP</code> 标签指定（第 <a href="#4325-ext-x-map">4.3.2.5</a> 节）。<br>媒体初始化部分 <em>不得</em> 包含样本数据。</p>
+<h3 id="3-2-MPEG-2-Transport-Streams"><a href="#3-2-MPEG-2-Transport-Streams" class="headerlink" title="3.2. MPEG-2 Transport Streams"></a>3.2. MPEG-2 Transport Streams</h3><p>MPEG-2 传输流由 [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/44169.html">ISO 13818</a>] 指定。</p>
+<p>MPEG-2 传输流段的媒体初始化部分是一个节目关联表 (PAT)，后面跟着一个节目映射表 (PMT)。</p>
+<p>传输流片段 <em>必须</em> 包含单个 MPEG-2 节目；<br>多个节目传输流的播放尚未定义。<br>每个传输流片段 <em>必须</em> 包含一个 PAT 和一个 PMT，或者应用一个 <code>EXT-X-MAP</code> 标签（第 <a href="#4325-ext-x-map">4.3.2.5</a> 节）。<br>片段的传输流的前两个数据包中应该包含 <code>EXT-X-MAP</code> 标签，否则 <em>应该</em> 是 PAT 和 PMT。</p>
+<h3 id="3-3-Fragmented-MPEG-4"><a href="#3-3-Fragmented-MPEG-4" class="headerlink" title="3.3. Fragmented MPEG-4"></a>3.3. Fragmented MPEG-4</h3><p>MPEG-4 片段由 ISO 基础媒体文件格式 [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/68960.html">ISOBMFF</a>] 指定。<br>与常规 MPEG-4 文件不同，常规 MPEG-4 文件具有包含样本表的影片盒（ <code>moov</code> ）和包含相应样本的媒体数据盒（ <code>mdat</code> ），<br>而 MPEG-4 片段由包含样本表子集的影片片段盒（ <code>moof</code> ）和包含这些样本的媒体数据盒组成。<br>使用 MPEG-4 片段确实需要影片盒进行初始化，<br>但该影片盒仅包含非样本特定信息，例如轨道和样本描述。</p>
+<p>片段化 MPEG-4 (fMP4) 片段是 [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/68960.html">ISOBMFF</a>] 第 3 节定义的 “片段”，<br>包括 [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/68960.html">ISOBMFF</a>] 第 8.16 节中对媒体数据盒的限制。</p>
+<p>fMP4 段的媒体初始化部分是一个 ISO 基础媒体文件，可以为该段初始化解析器。</p>
+<p>广义上讲，fMP4 段和媒体初始化部分是 [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/68960.html">ISOBMFF</a>] 文件，也满足本节所述的约束。</p>
+<p>fMP4 片段的媒体初始化部分 <em>必须</em> 包含一个文件类型盒（ <code>ftyp</code> ），<br>其中包含与 <code>iso6</code> 或更高版本兼容的牌子。<br>文件类型盒后面 <em>必须</em> 跟一个影片盒。<br>影片盒 <em>必须</em> 包含 fMP4 片段中每个轨道片段盒（ <code>traf</code> ）的轨道盒（ <code>trak</code> ），<br>并具有匹配的 <code>track_ID</code>。<br>每个轨道盒都 <em>应该</em> 包含一个样本表，但其样本计数 <em>必须</em> 为零。<br>影片头部盒（ <code>mvhd</code> ）和轨道头部盒（ <code>tkhd</code> ）的持续时间 <em>必须</em> 为零。<br>影片扩展盒（ <code>mvex</code> ）<em>必须</em> 跟在最后一个轨道盒后面。<br>请注意，通用媒体应用格式 (CMAF) 头部 [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/71975.html">CMAF</a>] 满足所有这些要求。</p>
+<p>在 fMP4 片段中，<br>每个轨道片段盒 <em>必须</em> 包含一个轨道片段解码时间盒（ <code>tfdt</code> ）。<br>fMP4 片段 <em>必须</em> 使用电影片段相对寻址。<br>fMP4 片段 <em>不得</em> 使用外部数据引用。<br>请注意，CMAF 片段满足这些要求。</p>
+<p>播放列表中包含 <code>EXT-X-I-FRAMES-ONLY</code> 标签（第 <a href="#4336-ext-x-i-frames-only">4.3.3.6</a> 节）的 fMP4 片段 <em>可以</em> 省略帧内编码帧（I 帧）样本数据之后的媒体数据盒部分。</p>
+<p>媒体播放列表中的每个 fMP4 片段都 <em>必须</em> 应用 <code>EXT-X-MAP</code> 标签。</p>
+<h3 id="3-4-Packed-Audio"><a href="#3-4-Packed-Audio" class="headerlink" title="3.4. Packed Audio"></a>3.4. Packed Audio</h3><p>压缩音频片段包含编码的音频样本和 ID3 标签，<br>它们以最少的帧和不包含每个样本时间戳的方式简单打包在一起。<br>支持的压缩音频格式包括采用音频数据传输流 (ADTS) 帧的高级音频编码 (AAC) [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/43345.html">ISO_13818_7</a>]、MP3 [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/26797.html">ISO_13818_3</a>]、AC-3 <a target="_blank" rel="noopener" href="https://www.atsc.org/wp-content/uploads/2015/03/A52-201212-17.pdf">AC_3</a> 和增强型 AC-3 [<a target="_blank" rel="noopener" href="https://www.atsc.org/wp-content/uploads/2015/03/A52-201212-17.pdf">AC_3</a>]。</p>
+<p>压缩音频段没有媒体初始化部分.</p>
+<p>每个压缩音频片段 <em>必须</em> 在片段开头使用 ID3 私有帧 (PRIV) 标签 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8216#ref-ID3">ID3</a>] 来标示其第一个样本的时间戳。<br>ID3 PRIV 所有者标识符 <em>必须</em> 是 <code>&quot;com.apple.streaming.transportStreamTimestamp&quot;</code> 。<br>ID3 有效负载 <em>必须</em> 是 33 位 MPEG-2 程序基本流时间戳，<br>以大端八位字节数表示，其中高 31 位设置为零。<br>客户端 <em>不应该</em> 播放没有此 ID3 标签的压缩音频片段。</p>
+<h3 id="3-5-WebVTT"><a href="#3-5-WebVTT" class="headerlink" title="3.5. WebVTT"></a>3.5. WebVTT</h3><p>WebVTT 片段是 WebVTT [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8216#ref-WebVTT">WebVTT</a>] 文件的一部分。<br>WebVTT 片段带有字幕。</p>
+<p>WebVTT 段的媒体初始化部分是 WebVTT 标头。</p>
+<p>每个 WebVTT 片段 <em>必须</em> 包含要在片段 <code>EXTINF</code> 持续时间指示的时间段内显示的所有字幕提示。<br>每个提示的开始时间偏移和结束时间偏移必须指示该提示的总显示时间，即使提示时间范围的一部分超出了片段时长。<br>WebVTT 片段 <em>可以</em> 不包含任何提示；这表示在该时间段内不会显示任何字幕。</p>
+<p>每个 WebVTT 段 <em>必须</em> 以 WebVTT 标头开头或应用 <code>EXT-X-MAP</code> 标签。</p>
+<p>为了同步音频&#x2F;视频和字幕之间的时间戳， <em>应该</em> 将 <code>X-TIMESTAMP-MAP</code> 元数据标头添加到每个 WebVTT 标头。<br>此标头将 WebVTT 提示时间戳映射到变体流的其他版本中的 MPEG-2 (PES) 时间戳。<br>其格式为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X-TIMESTAMP-MAP=LOCAL:&lt;cue time&gt;,MPEGTS:&lt;MPEG-2 time&gt;</span><br><span class="line">e.g.</span><br><span class="line">X-TIMESTAMP-MAP=LOCAL:00:00:00.000,MPEGTS:900000</span><br></pre></td></tr></table></figure>
+
+<p><code>LOCAL</code> 属性中的提示时间戳 <em>可以</em> 超出该片段涵盖的时间范围。</p>
+<p>如果 WebVTT 段没有 <code>X-TIMESTAMP-MAP</code>，则客户端 <em>必须</em> 假定 WebVTT 提示时间 0 映射到 MPEG-2 时间戳 0。</p>
+<p>当将 WebVTT 与 PES 时间戳同步时，客户端 <em>应该</em> 考虑 33 位 PES 时间戳已换行而 WebVTT 提示时间尚未换行的情况。</p>
+<h2 id="4-Playlists"><a href="#4-Playlists" class="headerlink" title="4. Playlists"></a>4. Playlists</h2><p>本节介绍 HTTP 实时流式传输使用的播放列表文件。<br>本节中的 <em>必须</em> 和 <em>不得</em> 规定了合法播放列表文件的语法和结构规则。<br>违反这些规则的播放列表无效；客户端 <em>必须</em> 无法解析它们。<br>请参阅<a href="#632-loading-the-media-playlist-file">第 6.3.2 节</a>。</p>
+<p>播放列表文件的格式源自 M3U [<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/M3U">M3U</a>] 播放列表文件格式，并从早期文件格式继承了两个标签：<br><code>EXTM3U</code>（<a href="#4311-extm3u">第 4.3.1.1 节</a>）和 <code>EXTINF</code>（<a href="#4321-extinf">第 4.3.2.1 节</a>）。</p>
+<p>在标签语法规范中，用 <code>&lt;&gt;</code> 括起来的字符串标识一个标签参数，其具体格式在标签定义中有描述。<br>如果参数进一步用 <code>[]</code> 括起来，则为可选参数，否则为必选参数。</p>
+<p>每个播放列表文件 <em>必须</em> 可以通过其 URI 的路径部分或 HTTP 内容类型来识别。<br>在第一种情况下，路径必须以 <code>.m3u8</code> 或 <code>.m3u</code> 结尾。<br>在第二种情况下，HTTP 内容类型必须是 <code>application/vnd.apple.mpegurl</code> 或 <code>audio/mpegurl</code> 。<br>客户端 <em>应该</em> 拒绝解析未如此识别的播放列表。</p>
+<h3 id="4-1-Definition-of-a-Playlist"><a href="#4-1-Definition-of-a-Playlist" class="headerlink" title="4.1. Definition of a Playlist"></a>4.1. Definition of a Playlist</h3><p>播放列表文件必须采用 UTF-8 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc3629">RFC3629</a>] 编码。<br>它们 <em>不得</em> 包含任何字节顺序标记 (BOM)；客户端 <em>应该</em> 无法解析包含 BOM 或未解析为 UTF-8 的播放列表。<br>播放列表文件 <em>不得</em> 包含 UTF-8 控制字符（<code>U+0000</code> 到 <code>U+001F</code> 和 <code>U+007F</code> 到 <code>U+009F</code>），但 CR (<code>U+000D</code>) 和 LF (<code>U+000A</code>) 除外。<br>所有字符序列 <em>必须</em> 根据 Unicode 规范化形式 <code>NFC</code> [<a target="_blank" rel="noopener" href="https://www.unicode.org/versions/Unicode15.1.0/">UNICODE</a>] 进行规范化。<br>请注意，US-ASCII [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8216#ref-US_ASCII">US_ASCII</a>] 符合这些规则。</p>
+<p>播放列表文件中的行以单个换行符 <code>\n</code>或回车符加换行符 <code>\r\n</code> 结尾。<br>每行都是一个 URI、空白或以字符 <code>#</code> 开头。<br>空白行将被忽略。<br><em>不得</em> 出现空格，除非元素中明确指定了空格。</p>
+<p>以字符 <code>#</code> 开头的行是注释或标签。<br>标签以 <code>#EXT</code> 开头。<br>它们区分大小写。<br>以 <code>#</code> 开头的所有其他行都是注释， <em>应该</em> 被忽略。</p>
+<p>URI 行标识媒体片段或播放列表文件（参见<a href="#4342-ext-x-stream-inf">第 4.3.4.2 节</a>）。<br>每个媒体片段由 URI 和适用于它的标签指定。</p>
+<p>如果播放列表中的所有 URI 行都标识媒体段，则播放列表为媒体播放列表。<br>如果播放列表中的所有 URI 行都标识媒体播放列表，则播放列表为主播放列表。<br>播放列表 <em>必须</em> 是媒体播放列表或主播放列表；所有其他播放列表均无效。</p>
+<p>播放列表中的 URI（无论是 URI 行还是标签的一部分）都 <em>可以</em> 是相对的。<br>任何相对 URI 都被视为相对于包含它的播放列表的 URI。</p>
+<p>媒体播放列表的持续时间是其中媒体片段的持续时间的总和。</p>
+<p>媒体片段的片段比特率等于媒体片段的大小除以其 <code>EXTINF</code> 持续时间（<a href="#4321-extinf">第 4.3.2.1 节</a>）。<br>请注意，这包括容器开销，但不包括交付系统施加的开销，例如 HTTP、TCP 或 IP 标头。</p>
+<p>媒体播放列表的峰值片段比特率是任何连续片段集的最大比特率，其总时长介于目标时长的 0.5 到 1.5 倍之间。<br>一组片段的比特率是通过将片段大小的总和除以片段时长的总和来计算的。</p>
+<p>媒体播放列表的平均片段比特率是媒体播放列表中每个媒体片段的大小（以位为单位）的总和除以媒体播放列表的持续时间。<br>请注意，这包括容器开销，但不包括 HTTP 或交付系统施加的其他开销。</p>
+<h3 id="4-2-Attribute-Lists"><a href="#4-2-Attribute-Lists" class="headerlink" title="4.2. Attribute Lists"></a>4.2. Attribute Lists</h3><p>某些标签的值是属性列表。<br>属性列表是以逗号分隔的属性&#x2F;值对列表，其中没有空格。</p>
+<p>属性&#x2F;值对具有以下语法：</p>
+<p><code>AttributeName=AttributeValue</code></p>
+<p><code>AttributeName</code> 是一个不带引号的字符串，包含字符 <code>[A..Z]</code> 、 <code>[0..9]</code> 以及 <code>-</code> 。<br>因此， <code>AttributeName</code> 仅包含大写字母，不包含小写字母。<br><code>AttributeName</code> 和 <code>=</code> 字符之间以及 <code>=</code> 字符和 <code>AttributeValue</code> 之间 <em>不得</em> 有任何空格。</p>
+<p><code>AttributeValue</code> 是以下之一：</p>
+<ul>
+<li>十进制整数：来自集合 <code>[0..9]</code> 的不带引号的字符串，表示以 10 为基数的整数，范围从 0 到 2^64-1 (18446744073709551615)。十进制整数的长度可以是 1 到 20 个字符。</li>
+<li>十六进制序列：来自集合 <code>[0..9]</code> 和 <code>[A..F]</code> 的不带引号的字符串，以 <code>0x</code> 或 <code>0X</code> 为前缀。十六进制序列的最大长度取决于其属性名称。</li>
+<li>十进制浮点数：来自集合 <code>[0..9]</code> 和 <code>.</code> 的不带引号的字符串，以十进制位置表示法表示非负浮点数。</li>
+<li>有符号十进制浮点数：由集合 <code>[0..9]</code> 、 <code>-</code> 和 <code>.</code> 组成的不带引号的字符串，以十进制位置表示法表示有符号浮点数。</li>
+<li>引号字符串：一对双引号 (0x22) 内的字符串。以下字符 <em>不得</em> 出现在引号字符串中：换行符 (0xA)、回车符 (0xD) 或双引号 (0x22)。引号字符串属性值 <em>应该</em> 这样构造：逐字节比较足以测试两个引号字符串属性值是否相等。请注意，这意味着区分大小写的比较。</li>
+<li>枚举字符串：来自由 <code>AttributeName</code> 明确定义的集合的未加引号的字符串。枚举字符串绝不会包含双引号 <code>&quot;</code> 、逗号 <code>,</code> 或空格。</li>
+<li>十进制分辨率：两个十进制整数，以 <code>x</code> 字符分隔。第一个整数是水平像素尺寸（宽度）；第二个是垂直像素尺寸（高度）。</li>
+</ul>
+<p>给定 <code>AttributeName</code> 的 <code>AttributeValue</code> 类型由属性定义指定。</p>
+<p>给定的 <code>AttributeName</code> <em>不得</em> 在给定的属性列表中出现多次。<br>客户端 <em>应该</em> 拒绝解析此类播放列表。</p>
+<h3 id="4-3-Playlist-Tags"><a href="#4-3-Playlist-Tags" class="headerlink" title="4.3. Playlist Tags"></a>4.3. Playlist Tags</h3><p>播放列表标签指定播放列表的全局参数或有关其后出现的媒体片段或媒体播放列表的信息。</p>
+<h4 id="4-3-1-Basic-Tags"><a href="#4-3-1-Basic-Tags" class="headerlink" title="4.3.1. Basic Tags"></a>4.3.1. Basic Tags</h4><p>媒体播放列表和主播放列表中都允许使用这些标签。</p>
+<h5 id="4-3-1-1-EXTM3U"><a href="#4-3-1-1-EXTM3U" class="headerlink" title="4.3.1.1. EXTM3U"></a>4.3.1.1. EXTM3U</h5><p><code>EXTM3U</code> 标签表示该文件是扩展 M3U [<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/M3U">M3U</a>] 播放列表文件。<br>它 <em>必须</em> 是每个媒体播放列表和每个主播放列表的第一行。其格式为：</p>
+<p><code>#EXTM3U</code> </p>
+<h5 id="4-3-1-2-EXT-X-VERSION"><a href="#4-3-1-2-EXT-X-VERSION" class="headerlink" title="4.3.1.2. EXT-X-VERSION"></a>4.3.1.2. EXT-X-VERSION</h5><p><code>EXT-X-VERSION</code> 标签表示播放列表文件、其关联媒体及其服务器的兼容版本。<br><code>EXT-X-VERSION</code> 标签适用于整个播放列表文件。<br>它的格式为：</p>
+<p><code>EXT-X-VERSION:&lt;n&gt;</code></p>
+<p>其中 <code>n</code> 是一个整数，表示协议兼容版本号。</p>
+<p>它 <em>必须</em> 出现在包含与协议版本 1 不兼容的标签或属性的所有播放列表中，以支持与旧客户端的互操作性。<br><a href="#7-protocol-version-compatibility">第 7 节</a> 指定了任何给定播放列表文件的兼容性版本号的最小值。</p>
+<p>播放列表文件 <em>不得</em> 包含多个 <code>EXT-X-VERSION</code> 标签。<br>如果客户端遇到包含多个 <code>EXT-X-VERSION</code> 标签的播放列表，则 <em>必须</em> 无法解析它。</p>
+<h4 id="4-3-2-Media-Segment-Tags"><a href="#4-3-2-Media-Segment-Tags" class="headerlink" title="4.3.2. Media Segment Tags"></a>4.3.2. Media Segment Tags</h4><p>每个媒体片段由一系列媒体片段标签和 URI 指定。<br>一些媒体片段标签仅适用于下一个片段；其他则适用于所有后续片段，直到出现相同标签的另一个实例。</p>
+<p>媒体片段标签 <em>不得</em> 出现在主播放列表中。<br>客户端 <em>必须</em> 无法解析同时包含媒体片段标签和主播放列表标签的播放列表（<a href="#434-master-playlist-tags">第 4.3.4 节</a>）。</p>
+<h5 id="4-3-2-1-EXTINF"><a href="#4-3-2-1-EXTINF" class="headerlink" title="4.3.2.1. EXTINF"></a>4.3.2.1. EXTINF</h5><p><code>EXTINF</code> 标签指定媒体片段的持续时间。<br>它仅适用于下一个媒体片段。此标签对于每个媒体片段都是 <em>必需</em> 的。<br>其格式为：</p>
+<p><code>#EXTINF:&lt;duration&gt;,[&lt;title&gt;]</code></p>
+<p>其中， <code>duration</code> 是十进制浮点数或十进制整数（如 <a href="#42-attribute-lists">第 4.2 节</a> 所述），用于指定媒体片段的持续时间（以秒为单位）。<br>持续时间 <em>应该</em> 为十进制浮点数，且精度应足够高，以避免在片段持续时间累积时出现可察觉的误差。<br>但是，如果兼容版本号小于 3，则持续时间 <em>必须</em> 为整数。<br>以整数形式报告的持续时间 <em>应该</em> 四舍五入为最接近的整数。<br>逗号后面的行的其余部分是媒体片段的可选人类可读信息标题，以 UTF-8 文本表示。</p>
+<h5 id="4-3-2-2-EXT-X-BYTERANGE"><a href="#4-3-2-2-EXT-X-BYTERANGE" class="headerlink" title="4.3.2.2. EXT-X-BYTERANGE"></a>4.3.2.2. EXT-X-BYTERANGE</h5><p><code>EXT-X-BYTERANGE</code> 标签表示媒体片段是其 URI 所标识的资源的子范围。<br>它仅适用于播放列表中紧随其后的下一个 URI 行。<br>其格式为：</p>
+<p><code>#EXT-X-BYTERANGE:&lt;n&gt;[@&lt;o&gt;]</code></p>
+<p>其中 <code>n</code> 是一个十进制整数，表示子范围的长度（以字节为单位）。<br>如果存在，<code>o</code> 是一个十进制整数，表示子范围的开始，以相对于资源开头的字节偏移量表示。<br>如果 <code>o</code> 不存在，则子范围从上一个媒体段的子范围后面的下一个字节开始。</p>
+<p>如果 <code>o</code> 不存在，则前一个媒体段 <em>必须</em> 出现在播放列表文件中，并且 <em>必须</em> 是同一媒体资源的子范围，或者媒体段未定义，并且客户端 <em>必须</em> 无法解析播放列表。</p>
+<p>没有 <code>EXT-X-BYTERANGE</code> 标签的媒体片段由其 URI 标识的整个资源组成。</p>
+<p>使用 <code>EXT-X-BYTERANGE</code> 标签 <em>需要</em> 兼容版本号为 4 或更高。</p>
+<h5 id="4-3-2-3-EXT-X-DISCONTINUITY"><a href="#4-3-2-3-EXT-X-DISCONTINUITY" class="headerlink" title="4.3.2.3. EXT-X-DISCONTINUITY"></a>4.3.2.3. EXT-X-DISCONTINUITY</h5><p><code>EXT-X-DISCONTINUITY</code> 标签表示其后的媒体片段与之前的媒体片段之间的不连续性。</p>
+<p>它的格式为：</p>
+<p><code>#EXT-X-DISCONTINUITY</code></p>
+<p>如果以下任何特征发生变化，则 <em>必须</em> 存在 <code>EXT-X-DISCONTINUITY</code> 标签：</p>
+<ul>
+<li>文件格式</li>
+<li>轨道的数量、类型和标识符</li>
+<li>时间戳序列</li>
+</ul>
+<p>如果以下任何特征发生变化，则 <em>应该</em> 存在 <code>EXT-X-DISCONTINUITY</code> 标签：</p>
+<ul>
+<li>编码参数</li>
+<li>编码序列</li>
+</ul>
+<p>有关 <code>EXT-X-DISCONTINUITY</code> 标签的更多信息，请参阅第 <a href="#3-media-segments">3</a> 、<a href="#621-general-server-responsibilities">6.2.1</a> 和 <a href="#633-playing-the-media-playlist-file">6.3.3</a> 节。</p>
+<h5 id="4-3-2-4-EXT-X-KEY"><a href="#4-3-2-4-EXT-X-KEY" class="headerlink" title="4.3.2.4. EXT-X-KEY"></a>4.3.2.4. EXT-X-KEY</h5><p>媒体片段 <em>可以</em> 加密。<code>EXT-X-KEY</code> 标签指定如何解密它们。<br>它适用于每个媒体片段和每个由 <code>EXT-X-MAP</code> 标签声明的媒体初始化部分，该标签出现在播放列表文件中具有相同 <code>KEYFORMAT</code> 属性的下一个 <code>EXT-X-KEY</code> 标签之间（或播放列表文件的末尾）。<br>如果两个或多个具有不同 <code>KEYFORMAT</code> 属性的 <code>EXT-X-KEY</code> 标签最终产生相同的解密密钥，则它们可以应用于同一个媒体片段。<br>其格式为：</p>
+<p><code>#EXT-X-KEY:&lt;attribute-list&gt;</code></p>
+<p>定义了以下属性：</p>
+<ul>
+<li>方法 ( <code>METHOD</code> )<br>  该值是一个枚举字符串，用于指定加密方法。<br>  此属性是 <em>必需</em> 的。<br>  定义的方法有：<code>NONE</code> 、 <code>AES-128</code> 和 <code>SAMPLE-AES</code> 。<br>  加密方法为 <code>NONE</code> 表示媒体片段未加密。<ul>
+<li>如果加密方法为 <code>NONE</code> ，则其他属性 <em>不得</em> 存在。</li>
+<li><code>AES-128</code> 加密方法表示媒体段已使用高级加密标准 (AES) [<a href="#52-iv-for-aes-128">AES_128</a>] 和 128 位密钥、密码块链接 (CBC) 和公钥加密标准 #7 (PKCS7) 填充 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5652">RFC5652</a>] 完全加密。<br>CBC 在每个段边界上重新启动，使用初始化向量 (IV) 属性值或媒体序列号作为 IV；请参阅 <a href="#52-iv-for-aes-128">第 5.2 节</a> 。</li>
+<li><code>SAMPLE-AES</code> 加密方法表示媒体片段包含使用高级加密标准 [<a href="#52-iv-for-aes-128">AES_128</a>] 加密的媒体样本，例如音频或视频。<br>这些媒体流如何加密并封装在片段中取决于片段的媒体编码和媒体格式。<br><code>fMP4</code> 媒体片段使用通用加密 [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/68042.html">COMMON_ENC</a>] 的 <code>cbcs</code> 方案进行加密。<br>HTTP 实时流 (HLS) 示例加密规范 [<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/HLS_Sample_Encryption/Intro/Intro.html">SampleEnc</a>] 中描述了包含 H.264 [<a target="_blank" rel="noopener" href="https://www.itu.int/rec/T-REC-H.264">H_264</a>]、AAC [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/53943.html">ISO_14496</a>]、AC-3 [<a target="_blank" rel="noopener" href="https://www.atsc.org/wp-content/uploads/2015/03/A52-201212-17.pdf">AC_3</a>] 和增强型 AC-3 [<a target="_blank" rel="noopener" href="https://www.atsc.org/wp-content/uploads/2015/03/A52-201212-17.pdf">AC_3</a>] 媒体流的其他媒体片段格式的加密。<br>IV 属性 <em>可以</em> 存在；请参阅 <a href="#52-iv-for-aes-128">第 5.2 节</a> 。</li>
+</ul>
+</li>
+<li>URI<br>  该值是一个带引号的字符串，其中包含指定如何获取密钥的 URI。<br>  除非 <code>METHOD</code> 为 <code>NONE</code> ，否则此属性是 <em>必需</em> 的。</li>
+<li>IV<br>  该值是一个十六进制序列，指定与密钥一起使用的 128 位无符号整数初始化向量。<br>  使用 IV 属性 <em>需要</em> 兼容版本号为 2 或更高。<br>  有关何时使用 IV 属性，请参阅 <a href="#52-iv-for-aes-128">第 5.2 节</a> 。</li>
+<li>KEYFORMAT<br>  该值是一个带引号的字符串，用于指定密钥在 URI 标识的资源中的表示方式；<br>  有关详细信息，请参阅 <a href="#5-key-files">第 5 节</a> 。<br>  此属性是可选的；如果不存在，则表示隐式值为 <code>identity</code> 。<br>  使用 <code>KEYFORMAT</code> 属性要求兼容版本号为 5 或更高。</li>
+<li>KEYFORMATVERSIONS<br>  该值是一个带引号的字符串，其中包含一个或多个由 <code>/</code> 字符分隔的正整数（例如，<code>1</code> 、 <code>1/2</code> 或 <code>1/2/5</code> ）。<br>  如果定义了特定 <code>KEYFORMAT</code> 的多个版本，则可以使用此属性来指示此实例符合哪个版本。<br>  此属性是可选的；如果不存在，则其值被视为 <code>1</code> 。<br>  使用 <code>KEYFORMATVERSIONS</code> 属性 <em>需要</em> 兼容版本号为 5 或更高。</li>
+</ul>
+<p>如果媒体播放列表文件不包含 <code>EXT-X-KEY</code> 标签，则媒体片段未加密。</p>
+<p>有关密钥文件的格式请参见 <a href="#5-key-files">第 5 节</a> ，有关媒体片段加密的更多信息请参见第 <a href="#52-iv-for-aes-128">5.2</a> 、 <a href="#623-encrypting-media-segments">6.2.3</a> 和 6.3.6 节。</p>
+<h5 id="4-3-2-5-EXT-X-MAP"><a href="#4-3-2-5-EXT-X-MAP" class="headerlink" title="4.3.2.5. EXT-X-MAP"></a>4.3.2.5. EXT-X-MAP</h5><p><code>EXT-X-MAP</code> 标签指定如何获取解析适用媒体片段所需的媒体初始化部分（ <a href="#3-media-segments">第 3 节</a> ）。<br>它适用于播放列表中出现在其后面的每个媒体片段，直到下一个 <code>EXT-X-MAP</code> 标签或播放列表结束。</p>
+<p>它的格式为：</p>
+<p><code>#EXT-X-MAP:&lt;attribute-list&gt;</code> </p>
+<p>定义了以下属性：</p>
+<ul>
+<li>URI<br>  该值是一个带引号的字符串，其中包含一个 URI，用于标识包含媒体初始化部分的资源。<br>  此属性是 <em>必需</em> 的。</li>
+<li>BYTERANGE<br>  该值是一个带引号的字符串，指定 URI 属性所标识的资源中的字节范围。<br>  此范围 <em>应该</em> 仅包含媒体初始化部分。<br>  字节范围的格式在 <a href="#4322-ext-x-byterange">第 4.3.2.2 节</a> 中描述。​<br>  ​此属性是可选的；如果不存在，则字节范围是 URI 所指示的整个资源。</li>
+</ul>
+<p>当播放列表中的第一个媒体片段（即 I 帧）（或 <code>EXT-X-DISCONTINUITY</code> 标签后面的第一个片段）没有紧跟在其资源开头的媒体初始化部分之后时， <em>应该</em> 为带有 <code>EXT-X-I-FRAMES-ONLY</code> 标签的播放列表中的媒体片段提供 <code>EXT-X-MAP</code> 标签。</p>
+<p>在包含 <code>EXT-X-I-FRAMES-ONLY</code> 标签的媒体播放列表中使用 <code>EXT-X-MAP</code> 标签 <em>需要</em> 兼容版本号为 5 或更高。<br>在不包含 <code>EXT-X-I-FRAMES-ONLY</code> 标签的媒体播放列表中使用 <code>EXT-X-MAP</code> 标签 <em>需要</em> 兼容版本号为 6 或更高。</p>
+<p>如果 <code>EXT-X-MAP</code> 标签声明的媒体初始化部分使用 <code>AES-128</code> 方法加密，则适用于 <code>EXT-X-MAP</code> 的 <code>EXT-X-KEY</code> 标签的 IV 属性是 <em>必需</em> 的。</p>
+<h5 id="4-3-2-6-EXT-X-PROGRAM-DATE-TIME"><a href="#4-3-2-6-EXT-X-PROGRAM-DATE-TIME" class="headerlink" title="4.3.2.6. EXT-X-PROGRAM-DATE-TIME"></a>4.3.2.6. EXT-X-PROGRAM-DATE-TIME</h5><p><code>EXT-X-PROGRAM-DATE-TIME</code> 标签将媒体片段的第一个样本与绝对日期 和&#x2F;或 时间关联起来。<br>它仅适用于下一个媒体片段。<br>其格式为：</p>
+<p><code>#EXT-X-PROGRAM-DATE-TIME:&lt;date-time-msec&gt;</code></p>
+<p>其中 <code>date-time-msec</code> 是 ISO&#x2F;IEC 8601:2004 [<a target="_blank" rel="noopener" href="https://www.iso.org/standard/40874.html">ISO_8601</a>] 日期&#x2F;时间表示形式，例如 <code>YYYY-MM-DDThh:mm:ss.SSSZ</code>。<br>它 <em>应该</em> 指示时区和秒的小数部分，精确到毫秒。</p>
+<p>例如：</p>
+<p><code>#EXT-X-PROGRAM-DATE-TIME:2010-02-19T14:54:23.031+08:00</code> </p>
+<p>有关 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签的更多信息，请参阅第 <a href="#621-general-server-responsibilities">6.2.1</a> 和 <a href="#633-playing-the-media-playlist-file">6.3.3</a> 节。</p>
+<h5 id="4-3-2-7-EXT-X-DATERANGE"><a href="#4-3-2-7-EXT-X-DATERANGE" class="headerlink" title="4.3.2.7. EXT-X-DATERANGE"></a>4.3.2.7. EXT-X-DATERANGE</h5><p><code>EXT-X-DATERANGE</code> 标签将日期范围（即由开始日期和结束日期定义的时间范围）与一组属性&#x2F;值对关联起来。<br>其格式为：</p>
+<p><code>#EXT-X-DATERANGE:&lt;attribute-list&gt;</code></p>
+<p>其中定义的属性是：</p>
+<ul>
+<li>ID<br>  带引号的字符串，用于唯一标识播放列表中的日期范围。此属性是 <em>必需</em> 的。</li>
+<li>CLASS<br>  客户端定义的带引号的字符串，用于指定一组属性及其关联的值语义。<br>  具有相同 CLASS 属性值的所有日期范围都 <em>必须</em> 遵循这些语义。此属性是可选的。</li>
+<li>START-DATE<br>  包含日期范围开始的 ISO-8601 日期的带引号的字符串。此属性是 <em>必需</em> 的。</li>
+<li>END-DATE<br>  包含日期范围结束的 ISO-8601 日期的带引号的字符串。<br>  它 <em>必须</em> 等于或晚于 START-DATE 属性的值。此属性是可选的。</li>
+<li>DURATION<br>  日期范围的持续时间以十进制浮点秒数表示。它 <em>不得</em> 为负数。<br>  单个时刻（例如越过终点线）的持续时间 <em>应该</em> 为 0。此属性是可选的。</li>
+<li>PLANNED-DURATION<br>  日期范围的预期持续时间，以十进制浮点数秒表示。它 <em>不得</em> 为负数。<br>  此属性应用于指示实际持续时间尚不清楚的日期范围的预期持续时间。<br>  它是可选的。</li>
+<li><code>X-&lt;client-attribute&gt;</code><br>  <code>X-</code> 前缀定义了为客户端定义属性保留的命名空间。客户端属性必须是合法的 <code>AttributeName</code> 。<br>  客户端在定义自己的属性名称时应使用反向 DNS 语法以避免冲突。<br>  属性值必须是带引号的字符串、十六进制序列或十进制浮点数。<br>  客户端定义属性的一个示例是 <code>X-COM-EXAMPLE-AD-ID=&quot;XYZ123&quot;</code>。<br>  这些属性是可选的。</li>
+<li><code>SCTE35-CMD, SCTE35-OUT, SCTE35-IN</code><br>  用于承载 <code>SCTE-35</code> 数据；有关详细信息，请参阅 <a href="#43271-mapping-scte-35-into-ext-x-daterange">第 4.3.2.7.1 节</a> 。这些属性是可选的。</li>
+<li>END-ON-NEXT<br>  枚举字符串，其值 <em>必须</em> 为 YES。此属性表示包含它的范围的结束等于其后续范围的 <code>START-DATE</code> 。<br>  后续范围是同一 <code>CLASS</code> 的日期范围，其最早的 <code>START-DATE</code> 晚于相关范围的 <code>START-DATE</code> 。<br>  此属性是可选的。</li>
+</ul>
+<p>具有 <code>END-ON-NEXT=YES</code> 属性的 <code>EXT-X-DATERANGE</code> 标签 <em>必须</em> 具有 <code>CLASS</code> 属性。<br>具有相同 <code>CLASS</code> 属性的其他 <code>EXT-X-DATERANGE</code> 标签 <em>不得</em> 指定重叠的日期范围。</p>
+<p>具有 <code>END-ON-NEXT=YES</code> 属性的 <code>EXT-X-DATERANGE</code> 标签 <em>不得</em> 包含 <code>DURATION</code> 或 <code>END-DATE</code> 属性。</p>
+<p>如果日期范围没有 <code>DURATION</code> 、 <code>END-DATE</code> 或 <code>END-ON-NEXT=YES</code> 属性，则即使具有 <code>PLANNED-DURATION</code> ，其持续时间也是未知的。</p>
+<p>如果播放列表包含 <code>EXT-X-DATERANGE</code> 标签，它还必须包含至少一个 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签。</p>
+<p>如果播放列表包含两个具有相同 ID 属性值的 <code>EXT-X-DATERANGE</code> 标签，则两个标签中出现的任何 <code>AttributeName</code> 都必须具有相同的 <code>AttributeValue</code> 。</p>
+<p>如果日期范围同时包含 <code>DURATION</code> 属性和 <code>END-DATE</code> 属性，则 <code>END-DATE</code> 属性的值 <em>必须</em> 等于 <code>START-DATE</code> 属性的值加上 <code>DURATION</code> 属性的值。</p>
+<p>客户端 <em>应该</em> 忽略具有非法语法的 <code>EXT-X-DATERANGE</code> 标签。</p>
+<h6 id="4-3-2-7-1-Mapping-SCTE-35-into-EXT-X-DATERANGE"><a href="#4-3-2-7-1-Mapping-SCTE-35-into-EXT-X-DATERANGE" class="headerlink" title="4.3.2.7.1. Mapping SCTE-35 into EXT-X-DATERANGE"></a>4.3.2.7.1. Mapping SCTE-35 into EXT-X-DATERANGE</h6><p>根据 SCTE-35 规范 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8216#ref-SCTE35">SCTE35</a>]，源媒体中携带的拼接信息 <em>可以</em> 使用 <code>EXT-X-DATERANGE</code> 标签在媒体播放列表中表示。</p>
+<p>每个包含 <code>splice_null()</code> 、 <code>splice_schedule()</code> 、 <code>bandwidth_reservation()</code> 或 <code>private_cmd()</code> 的 SCTE-35 <code>splice_info_section()</code> 都 <em>应该</em> 由带有 <code>SCTE35-CMD</code> 属性的 <code>EXT-X-DATERANGE</code> 标签表示，该属性的值是 <code>splice_info_section()</code> 的大端二进制表示形式，以十六进制序列表示。</p>
+<p>由一对 <code>splice_insert()</code> 命令发出信号的 SCTE-35 拼接输出&#x2F;输入对 <em>应该</em> 由一个或多个带有相同 ID 属性的 <code>EXT-X-DATERANGE</code> 标签表示，这些标签对于该拼接输出&#x2F;输入对 <em>必须</em> 是唯一的。<br>“输出” <code>splice_info_section()</code>（将 <code>out_of_network_indicator</code> 设置为 1） <em>必须</em> 放置在 <code>SCTE35-OUT</code> 属性中，格式与 <code>SCTE35-CMD</code> 相同。<br>“输入” <code>splice_info_section()</code>（将 <code>out_of_network_indicator</code> 设置为 0） <em>必须</em> 放置在 <code>SCTE35-IN</code> 属性中，格式与 <code>SCTE35-CMD</code> 相同。</p>
+<p>由一对 <code>time_signal()</code> 命令发出信号的 SCTE-35 拼接输出&#x2F;输入对，每个命令都携带一个分段描述符 ( <code>segmentation_descriptor()</code> )， <em>应该</em> 由一个或多个携带相同 ID 属性的 <code>EXT-X-DATERANGE</code> 标签表示，这些标签对于该拼接输出&#x2F;输入对 <em>必须</em> 是唯一的。<br>“输出” <code>splice_info_section()</code> <em>必须</em> 放置在 <code>SCTE35-OUT</code> 属性中；<br>“输入” <code>splice_info_section()</code> <em>必须</em> 放置在 <code>SCTE35-IN</code> 属性中。</p>
+<p>即使两个或多个 <code>segmentation_descriptor()</code> 到达同一个 <code>splice_info_section()</code> ，不同类型的分段（如 <code>segmentation_descriptor()</code> 中的 <code>segmentation_type_id</code> 所示）也 <em>应该</em> 由单独的 <code>EXT-X-DATERANGE</code> 标签表示。<br>在这种情况下，每个 <code>EXT-X-DATERANGE</code> 标签将具有一个 <code>SCTE35-OUT</code> 、 <code>SCTE35-IN</code> 或 <code>SCTE35-CMD</code> 属性，其值是整个  <code>splice_info_section()</code> 。</p>
+<p>未发出拼接输出点或输入点信号的 SCTE-35 <code>time_signal()</code> 命令 <em>应该</em> 由具有 <code>SCTE35-CMD</code> 属性的 <code>EXT-X-DATERANGE</code> 标签表示。</p>
+<p>包含 <code>SCTE35-OUT</code> 属性的 <code>EXT-X-DATERANGE</code> 标签的 <code>START-DATE</code> <em>必须</em> 是与该拼接的程序时间相对应的日期和时间。</p>
+<p>包含 <code>SCTE35-CMD</code> 的 <code>EXT-X-DATERANGE</code> 标签的 <code>START-DATE</code> 必须是命令中 <code>splice_time()</code> 指定的日期和时间，或者如果命令未指定 <code>splice_time()</code> ，则 <em>必须</em> 是该命令出现在源流中的程序时间。</p>
+<p>包含 <code>SCTE35-OUT</code> 属性的 <code>EXT-X-DATERANGE</code> 标签 <em>可以</em> 包含 <code>PLANNED-DURATION</code> 属性。其值 <em>必须</em> 是拼接的计划持续时间。</p>
+<p>包含 <code>SCTE35-IN</code> 属性的 <code>EXT-X-DATERANGE</code> 标签的 <code>DURATION</code> <em>必须</em> 是相应出点和入点之间的实际（非计划）程序持续时间。</p>
+<p>包含 <code>SCTE35-IN</code> 属性的 <code>EXT-X-DATERANGE</code> 标签的 <code>END-DATE</code> <em>必须</em> 是该入点的实际（非计划）程序日期和时间。</p>
+<p>如果在将 <code>SCTE35-OUT</code> 属性添加到播放列表时不知道实际的结束日期和时间，则 <em>不得</em> 存在 <code>DURATION</code> 属性和 <code>END-TIME</code> 属性；一旦建立，就应该通过另一个 <code>EXT-X-DATERANGE</code> 标签来发出拼接的实际结束日期的信号。</p>
+<p>已取消的拼接 <em>不应该</em> 作为 <code>EXT-X-DATERANGE</code> 标签出现在播放列表中。</p>
+<p>宣布拼接的 <code>EXT-X-DATERANGE</code> 标签 <em>应该</em> 与最后一个预拼接媒体片段同时添加到播放列表中，或者如果可能的话更早地添加到播放列表中。</p>
+<p><code>EXT-X-DATERANGE</code> 标签的 ID 属性 <em>可以</em> 包含 <code>splice_event_id</code> 和&#x2F;或 <code>fragmentation_event_id</code> ，但它在播放列表中 <em>必须</em> 是唯一的。<br>如果有可能重复使用 SCTE-35 ID，则 ID 属性值必须包含歧义消除信息，例如日期或序列号。</p>
+<h4 id="4-3-3-Media-Playlist-Tags"><a href="#4-3-3-Media-Playlist-Tags" class="headerlink" title="4.3.3. Media Playlist Tags"></a>4.3.3. Media Playlist Tags</h4><p>媒体播放列表标签描述媒体播放列表的全局参数。<br>任何媒体播放列表中每种类型的媒体播放列表标签 <em>不得</em> 超过一个。</p>
+<p>媒体播放列表标签 <em>不得</em> 出现在主播放列表中。</p>
+<h5 id="4-3-3-1-EXT-X-TARGETDURATION"><a href="#4-3-3-1-EXT-X-TARGETDURATION" class="headerlink" title="4.3.3.1. EXT-X-TARGETDURATION"></a>4.3.3.1. EXT-X-TARGETDURATION</h5><p><code>EXT-X-TARGETDURATION</code> 标签指定媒体片段的最大时长。<br>播放列表文件中每个媒体片段的 <code>EXTINF</code> 时长（四舍五入为最接近的整数） <em>必须</em> 小于或等于目标时长；较长的片段可能会触发播放停顿或其他错误。<br>它适用于整个播放列表文件。其格式为：</p>
+<p><code>#EXT-X-TARGETDURATION:&lt;s&gt;</code></p>
+<p>其中 <code>s</code> 是一个十进制整数，表示目标持续时间（以秒为单位）。<br><code>EXT-X-TARGETDURATION</code> 标签是必需的。</p>
+<h5 id="4-3-3-2-EXT-X-MEDIA-SEQUENCE"><a href="#4-3-3-2-EXT-X-MEDIA-SEQUENCE" class="headerlink" title="4.3.3.2. EXT-X-MEDIA-SEQUENCE"></a>4.3.3.2. EXT-X-MEDIA-SEQUENCE</h5><p><code>EXT-X-MEDIA-SEQUENCE</code> 标签表示播放列表文件中出现的第一个媒体片段的媒体序列号。<br>其格式为：</p>
+<p><code>#EXT-X-MEDIA-SEQUENCE:&lt;number&gt;</code></p>
+<p>其中 <code>number</code> 是十进制整数。</p>
+<p>如果媒体播放列表文件不包含 <code>EXT-X-MEDIA-SEQUENCE</code> 标签，则媒体播放列表中第一个媒体段的媒体序列号应被视为 0。<br>客户端不得假设不同媒体播放列表中具有相同媒体序列号的段包含匹配的内容（参见 <a href="#632-loading-the-media-playlist-file">第 6.3.2 节</a> ）。</p>
+<p>媒体段的 URI 不需要包含其媒体序列号。</p>
+<p>有关设置 <code>EXT-X-MEDIA-SEQUENCE</code> 标签的更多信息，请参阅第 <a href="#621-general-server-responsibilities">6.2.1</a> 和 <a href="#635-determining-the-next-segment-to-load">6.3.5</a> 节。</p>
+<p><code>EXT-X-MEDIA-SEQUENCE</code> 标签 <em>必须</em> 出现在播放列表中的第一个媒体片段之前。</p>
+<h5 id="4-3-3-3-EXT-X-DISCONTINUITY-SEQUENCE"><a href="#4-3-3-3-EXT-X-DISCONTINUITY-SEQUENCE" class="headerlink" title="4.3.3.3. EXT-X-DISCONTINUITY-SEQUENCE"></a>4.3.3.3. EXT-X-DISCONTINUITY-SEQUENCE</h5><p><code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签允许同一变体流的不同版本或媒体播放列表中具有 <code>EXT-X-DISCONTINUITY</code> 标签的不同变体流之间的同步。</p>
+<p>它的格式为：</p>
+<p><code>#EXT-X-DISCONTINUITY-SEQUENCE:&lt;number&gt;</code></p>
+<p>其中 <code>number</code> 是十进制整数。</p>
+<p>如果媒体播放列表不包含 <code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签，则播放列表中第一个媒体段的不连续序列号 <em>应该</em> 被视为 0。</p>
+<p><code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签 <em>必须</em> 出现在播放列表中的第一个媒体片段之前。</p>
+<p><code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签 <em>必须</em> 出现在任何 <code>EXT-X-DISCONTINUITY</code> 标签之前。</p>
+<p>有关设置 <code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签值的更多信息，请参阅第 <a href="#621-general-server-responsibilities">6.2.1</a> 和 <a href="#622-live-playlists">6.2.2</a> 节。</p>
+<h5 id="4-3-3-4-EXT-X-ENDLIST"><a href="#4-3-3-4-EXT-X-ENDLIST" class="headerlink" title="4.3.3.4. EXT-X-ENDLIST"></a>4.3.3.4. EXT-X-ENDLIST</h5><p><code>EXT-X-ENDLIST</code> 标签表示不再向媒体播放列表文件添加媒体片段。<br>它 <em>可以</em> 出现在媒体播放列表文件的任何位置。<br>其格式为：</p>
+<p><code>#EXT-X-ENDLIST</code></p>
+<h5 id="4-3-3-5-EXT-X-PLAYLIST-TYPE"><a href="#4-3-3-5-EXT-X-PLAYLIST-TYPE" class="headerlink" title="4.3.3.5. EXT-X-PLAYLIST-TYPE"></a>4.3.3.5. EXT-X-PLAYLIST-TYPE</h5><p><code>EXT-X-PLAYLIST-TYPE</code> 标签提供有关媒体播放列表文件的可变性信息。<br>它适用于整个媒体播放列表文件。<br>它是可选的。其格式为：</p>
+<p><code>#EXT-X-PLAYLIST-TYPE:&lt;type-enum&gt;</code></p>
+<p>其中 <code>type-enum</code> 是 <code>EVENT</code> 或 <code>VOD</code> 。</p>
+<p><a href="#621-general-server-responsibilities">第 6.2.1 节</a> 定义了 <code>EXT-X-PLAYLIST-TYPE</code> 标签的含义。</p>
+<p>如果 <code>EXT-X-PLAYLIST-TYPE</code> 值为 <code>EVENT</code> ，则只能将媒体片段添加到媒体播放列表的末尾。<br>如果 <code>EXT-X-PLAYLIST-TYPE</code> 值为视频点播 ( <code>VOD</code> )，则媒体播放列表不能更改。</p>
+<p>如果媒体播放列表中省略了 <code>EXT-X-PLAYLIST-TYPE</code> 标签，则可以根据 <a href="#621-general-server-responsibilities">第 6.2.1 节</a> 中的规则更新播放列表，而无需其他限制。<br>例如， <em>可以</em> 更新实时播放列表（ <a href="#622-live-playlists">第 6.2.2 节</a> ）以按媒体片段出现的顺序删除它们。</p>
+<h5 id="4-3-3-6-EXT-X-I-FRAMES-ONLY"><a href="#4-3-3-6-EXT-X-I-FRAMES-ONLY" class="headerlink" title="4.3.3.6. EXT-X-I-FRAMES-ONLY"></a>4.3.3.6. EXT-X-I-FRAMES-ONLY</h5><p><code>EXT-X-I-FRAMES-ONLY</code> 标签表示播放列表中的每个媒体片段都描述单个 I 帧。<br>I 帧是经过编码的视频帧，其编码不依赖于任何其他帧。<br>I 帧播放列表可用于特技播放，例如快进、快速倒退和滚动播放。</p>
+<p><code>EXT-X-I-FRAMES-ONLY</code> 标签适用于整个播放列表。其格式为：</p>
+<p><code>#EXT-X-I-FRAMES-ONLY</code></p>
+<p>在带有 <code>EXT-X-I-FRAMES-ONLY</code> 标签的播放列表中，媒体片段持续时间（ <code>EXTINF</code> 标签值）是媒体片段中 I 帧的显示时间与播放列表中下一个 I 帧的显示时间之间的时间，或者如果它是播放列表中的最后一个 I 帧，则为显示结束的时间。</p>
+<p>包含 I 帧段的媒体资源 <em>必须</em> 以媒体初始化段（ <a href="#3-media-segments">第 3 节</a> ）开头，或附带指示媒体初始化段的 <code>EXT-X-MAP</code> 标记，以便客户端可以按任意顺序加载和解码 I 帧段。<br>应用了 <code>EXT-X-BYTERANGE</code> 标记的 I 帧段的字节范围（ <a href="#4322-ext-x-byterange">第 4.3.2.2 节</a> ） <em>不得</em> 包括其媒体初始化段；客户端可以假设媒体初始化段由 <code>EXT-X-MAP</code> 标记定义，或位于从资源开头到该资源中第一个 I 帧段的偏移量之间。</p>
+<p>使用 <code>EXT-X-I-FRAMES-ONLY</code> 需要兼容版本号为 4 或更高。</p>
+<h4 id="4-3-4-Master-Playlist-Tags"><a href="#4-3-4-Master-Playlist-Tags" class="headerlink" title="4.3.4. Master Playlist Tags"></a>4.3.4. Master Playlist Tags</h4><p>主播放列表标签定义演示的变体流、版本和其他全局参数。</p>
+<p>主播放列表标签 <em>不得</em> 出现在媒体播放列表中；<br>客户端 <em>不得</em> 解析任何同时包含主播放列表标签和媒体播放列表标签或媒体片段标签的播放列表。</p>
+<h5 id="4-3-4-1-EXT-X-MEDIA"><a href="#4-3-4-1-EXT-X-MEDIA" class="headerlink" title="4.3.4.1. EXT-X-MEDIA"></a>4.3.4.1. EXT-X-MEDIA</h5><p><code>EXT-X-MEDIA</code> 标签用于关联包含相同内容的备选版本（ <a href="#43421-alternative-renditions">第 4.3.4.2.1 节</a> ）的媒体播放列表。<br>例如，三个 <code>EXT-X-MEDIA</code> 标签可用于识别包含相同演示的英语、法语和西班牙语版本的纯音频媒体播放列表。<br>或者，两个 <code>EXT-X-MEDIA</code> 标签可用于识别显示两个不同摄像机角度的纯视频媒体播放列表。</p>
+<p>它的格式为：</p>
+<p><code>#EXT-X-MEDIA:&lt;attribute-list&gt;</code> </p>
+<p>定义了以下属性：</p>
+<ul>
+<li><p>TYPE<br>  该值是一个枚举字符串；有效字符串为 AUDIO 、 VIDEO 、 SUBTITLES 和 CLOSED-CAPTIONS。<br>  此属性是必需的。<br>  通常，隐藏字幕 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8216#ref-CEA608">CEA608</a>] 媒体在视频流中传输。<br>  因此，类型为 <code>CLOSED-CAPTIONS</code> 的 <code>EXT-X-MEDIA</code> 标签不指定 Rendition；隐藏字幕媒体存在于每个视频 Rendition 的媒体片段中。</p>
+</li>
+<li><p>URI<br>  该值是一个带引号的字符串，其中包含标识媒体播放列表文件的 URI。此属性是可选的；<br>  请参阅 <a href="#43421-alternative-renditions">第 4.3.4.2.1 节</a> 。如果类型为 <code>CLOSED-CAPTIONS</code> ，则 URI 属性 <em>不得</em> 存在。</p>
+</li>
+<li><p>GROUP-ID<br>  该值是一个带引号的字符串，用于指定 Rendition 所属的组。<br>  请参阅 <a href="#43411-rendition-groups">第 4.3.4.1.1 节</a> 。此属性是必需的。</p>
+</li>
+<li><p>LANGUAGE<br>  该值是一个带引号的字符串，其中包含用于识别语言的标准标记之一 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5646">RFC5646</a>]，用于标识 Rendition 中使用的主要语言。此属性是可选的。</p>
+</li>
+<li><p>ASSOC-LANGUAGE<br>  该值是一个带引号的字符串，其中包含一个语言标记 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5646">RFC5646</a>] ，用于标识与 Rendition 关联的语言。<br>  关联语言通常用于与 <code>LANGUAGE</code> 属性指定的语言不同的角色（例如，书面与口语或后备方言）。此属性是可选的。<br>  例如， <code>LANGUAGE</code> 和 <code>ASSOC-LANGUAGE</code> 属性可用于链接使用不同口语和书面语言的挪威语版本。</p>
+</li>
+<li><p>NAME<br>  该值是一个带引号的字符串，其中包含 Rendition 的可读描述。<br>  如果存在 <code>LANGUAGE</code> 属性，则该描述应使用该语言。此属性是必需的。</p>
+</li>
+<li><p>DEFAULT<br>  该值是一个枚举字符串；有效字符串为 <code>YES</code> 和 <code>NO</code> 。<br>  如果该值为 <code>YES</code> ，则客户端应在用户未提供表明其他选择的信息的情况下播放此内容版本。<br>  此属性是可选的。如果未提供该属性，则隐含值为 <code>NO</code> 。</p>
+</li>
+<li><p>AUTOSELECT<br>  该值是一个枚举字符串；有效字符串为 <code>YES</code> 和 <code>NO</code> 。<br>  此属性是可选的。如果不存在该属性，则表示隐式值为 <code>NO</code> 。<br>  如果值为 <code>YES</code> ，则客户端可以选择在没有明确用户偏好的情况下播放此版本，因为它与当前播放环境（例如所选的系统语言）相匹配。<br>  如果存在 <code>AUTOSELECT</code> 属性，则如果 <code>DEFAULT</code> 属性的值为 <code>YES</code> ，则其值必须为 <code>YES</code> 。</p>
+</li>
+<li><p>FORCED<br>  该值是一个枚举字符串；有效字符串为 <code>YES</code> 和 <code>NO</code> 。<br>  此属性是可选的。若不存在则表示隐式值为 <code>NO</code> 。<br>  除非 <code>TYPE</code> 为 <code>SUBTITLES</code> ，否则不得存在 <code>FORCED</code> 属性。<br>  值为 <code>YES</code> 表示版本包含被视为播放必不可少的内容。<br>  选择强制版本时，客户端应选择与当前播放环境（例如语言）最匹配的版本。<br>  值为 <code>NO</code> 表示 Rendition 包含旨在响应明确的用户请求而播放的内容。</p>
+</li>
+<li><p>INSTREAM-ID<br>  该值是一个带引号的字符串，用于指定媒体播放列表中片段内的 Rendition。<br>  如果 <code>TYPE</code> 属性为 <code>CLOSED-CAPTIONS</code> ，则此属性是必需的，在这种情况下，它必须具有以下值之一： <code>CC1</code> 、 <code>CC2</code> 、 <code>CC3</code> 、 <code>CC4</code> 或 <code>SERVICEn</code> ，其中 n 必须是 1 到 63 之间的整数（例如 <code>SERVICE3</code> 或 <code>SERVICE42</code> ）。<br>  值 <code>CC1</code> 、 <code>CC2</code> 、 <code>CC3</code> 和 <code>CC4</code> 标识 Line 21 数据服务信道 <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8216#ref-CEA608">CEA608</a>。“SERVICE”值标识数字电视隐藏式字幕 [CEA708] 服务块编号。<br>  对于所有其他 <code>TYPE</code> 值，不得指定 <code>INSTREAM-ID</code> 。</p>
+</li>
+<li><p>CHARACTERISTICS<br>  该值是一个带引号的字符串，其中包含一个或多个由逗号 <code>,</code> 字符分隔的统一类型标识符 [<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/UniformTypeIdentifier.html">UTI</a>]。<br>  此属性是可选的。每个 UTI 表示 Rendition 的单独特征。</p>
+<p>  字幕版本可能包含以下特征：</p>
+<ul>
+<li><p><code>&quot;public.accessibility.transcribes-spoken-dialog&quot;</code> 、</p>
+</li>
+<li><p><code>&quot;public.accessibility.describes-music-and-sound&quot;</code> 和</p>
+</li>
+<li><p><code>&quot;public.easy-to-read&quot;</code> （表示字幕已经过编辑以便于阅读）。</p>
+<p>音频演绎可能包含以下特征： <code>&quot;public.accessibility.describes-video&quot;</code> 。<br><code>CHARACTERISTICS</code> 属性可以包括私有 UTI</p>
+</li>
+</ul>
+</li>
+<li><p>CHANNELS<br>  该值是一个带引号的字符串，用于指定有序的、以反斜杠分隔的参数列表（ <code>/</code> ）。<br>  如果 <code>TYPE</code> 属性为 <code>AUDIO</code> ，则第一个参数是以十进制整数表示的音频通道数，表示 Rendition 中任何媒体段中存在的独立、同时音频通道的最大数量。<br>  例如，AC-3 5.1 Rendition 将具有 <code>CHANNELS=&quot;6&quot;</code> 属性。目前未定义其他 <code>CHANNELS</code> 参数。<br>  所有音频 <code>EXT-X-MEDIA</code> 标签都应具有 <code>CHANNELS</code> 属性。<br>  如果主播放列表包含两个使用相同编解码器但不同声道数编码的版本，则 <code>CHANNELS</code> 属性是必需的；否则，它是可选的。</p>
+</li>
+</ul>
+<h6 id="4-3-4-1-1-Rendition-Groups"><a href="#4-3-4-1-1-Rendition-Groups" class="headerlink" title="4.3.4.1.1. Rendition Groups"></a>4.3.4.1.1. Rendition Groups</h6><p>一组具有相同 <code>GROUP-ID</code> 值和相同 <code>TYPE</code> 值的一个或多个 <code>EXT-X-MEDIA</code> 标签定义了一个 Rendition 组。<br>组中的每个成员都必须是相同内容的替代 Rendition；否则，可能会出现播放错误。</p>
+<p>播放列表中的所有 <code>EXT-X-MEDIA</code> 标签必须满足以下限制：</p>
+<ul>
+<li>同一组内的所有 <code>EXT-X-MEDIA</code> 标签必须具有不同的 <code>NAME</code> 属性。</li>
+<li>一个组不得有多个 <code>DEFAULT</code> 属性为 <code>YES</code> 的成员。</li>
+<li>每个具有 <code>AUTOSELECT=YES</code> 属性的 <code>EXT-X-MEDIA</code> 标签都应具有 <code>LANGUAGE</code> [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5646">RFC5646</a>] 、 <code>ASSOC-LANGUAGE</code> 、 <code>FORCED</code> 和 <code>CHARACTERISTICS</code> 属性的组合，这些属性与其组中其他 <code>AUTOSELECT=YES</code> 成员的属性不同。</li>
+</ul>
+<p>播放列表可以包含多个相同类型的组，以便提供该媒体类型的多种编码。<br>如果这样做，则相同类型的每个组必须具有相同的成员集，并且每个相应的成员必须具有相同的属性（ <code>URI</code> 和 <code>CHANNELS</code> 属性除外）。</p>
+<p>一个版本组中的每个成员可以有不同的样本格式。<br>例如，英语版本可以用 <code>AC-3 5.1</code> 编码，而西班牙语版本则用 <code>AAC</code> 立体声编码。<br>但是，引用此类组的任何 <code>EXT-X-STREAM-INF</code> 标签（ <a href="#4342-ext-x-stream-inf">第 4.3.4.2 节</a> ）或 <code>EXT-X-I-FRAME-STREAM-INF</code> 标签（ <a href="#4343-ext-x-i-frame-stream-inf">第 4.3.4.3 节</a> ）必须具有 <code>CODECS</code> 属性，该属性列出了组中任何版本中存在的每种样本格式，否则可能会发生客户端播放失败。<br>在上面的示例中， <code>CODECS</code> 属性将包括 <code>&quot;ac-3,mp4a.40.2&quot;</code> 。</p>
+<h5 id="4-3-4-2-EXT-X-STREAM-INF"><a href="#4-3-4-2-EXT-X-STREAM-INF" class="headerlink" title="4.3.4.2. EXT-X-STREAM-INF"></a>4.3.4.2. EXT-X-STREAM-INF</h5><p><code>EXT-X-STREAM-INF</code> 标签指定变体流，它是一组可以组合起来播放演示文稿的 Rendition。<br>该标签的属性提供了有关变体流的信息。</p>
+<p><code>EXT-X-STREAM-INF</code> 标签后面的 <code>URI</code> 行指定了包含变体流版本 (Rendition) 的媒体播放列表。<br>此 <code>URI</code> 行是必需的。不支持多个视频版本 (Rendition) 的客户端应该播放此版本。</p>
+<p>它的格式为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#EXT-X-STREAM-INF:&lt;attribute-list&gt;</span><br><span class="line">&lt;URI&gt;</span><br></pre></td></tr></table></figure>
+
+<p>定义了以下属性:</p>
+<ul>
+<li><p>BANDWIDTH<br>  该值是 比特&#x2F;秒 的十进制整数。它表示变体流的峰值片段比特率。<br>  如果变体流中的所有媒体片段都已创建，则 <code>BANDWIDTH</code> 值必须是任何可播放的版本组合产生的峰值片段比特率的最大总和。<br>  （对于具有单个媒体播放列表的变体流，这只是该媒体播放列表的峰值片段比特率。）<br>  不准确的值可能会导致播放停顿或阻止客户端播放变体。</p>
+<p>  如果要在演示中的所有媒体片段都完成编码之前提供主播放列表，则 <code>BANDWIDTH</code> 值应该是使用相同设置进行编码的类似内容的代表时段的 <code>BANDWIDTH</code> 值。</p>
+<p>  每个 <code>EXT-X-STREAM-INF</code> 标签 <em>必须</em> 包含 <code>BANDWIDTH</code> 属性。</p>
+</li>
+<li><p>AVERAGE-BANDWIDTH<br>  该值是比特&#x2F;秒的十进制整数。它表示变体流的平均分段比特率。</p>
+<p>  如果变体流中的所有媒体片段都已创建，则 <code>AVERAGE-BANDWIDTH</code> 值必须是任何可播放的 Rendition 组合产生的平均片段比特率的最大总和。<br>  （对于具有单个媒体播放列表的变体流，这只是该媒体播放列表的平均片段比特率。）<br>  不准确的值可能会导致播放停顿或阻止客户端播放变体。</p>
+<p>  如果要在演示文稿中的所有媒体片段都完成编码之前提供主播放列表，则平均带宽值应该是使用相同设置进行编码的类似内容代表时段的平均带宽值。</p>
+<p>  <code>AVERAGE-BANDWIDTH</code> 属性为可选属性。</p>
+</li>
+<li><p>CODECS<br>  该值是一个带引号的字符串，其中包含以逗号分隔的格式列表，其中每种格式指定变体流指定的一个或多个呈现形式中存在的媒体样本类型。<br>  有效格式标识符是 ISO 基本媒体文件格式名称空间中的标识符，由” ‘Bucket’ 媒体类型的 ‘Codecs’ 和 ‘Profiles’ 参数” [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc6381">RFC6381</a>] 定义。</p>
+<p>  例如，包含 <code>AAC</code> 低复杂度 ( <code>AAC-LC</code> ) 音频和 <code>H.264 Main Profile Level 3.0</code> 视频的流的 <code>CODECS</code> 值为 <code>&quot;mp4a.40.2,avc1.4d401e&quot;</code> 。<br>  每个 <code>EXT-X-STREAM-INF</code> 标签应该包含一个 <code>CODECS</code> 属性。</p>
+</li>
+<li><p>RESOLUTION<br>  该值是一个十进制分辨率，描述了显示变体流中所有视频的最佳像素分辨率。<br>  RESOLUTION 属性是可选的，但如果变体流包含视频，则建议使用。</p>
+</li>
+<li><p>FRAME-RATE<br>  该值是一个十进制浮点数，描述变体流中所有视频的最大帧速率，四舍五入到小数点后三位。<br>  <code>FRAME-RATE</code> 属性是可选的，但如果变体流包含视频，则建议使用。<br>  如果变体流中的任何视频超过每秒 30 帧，则应包含 <code>FRAME-RATE</code> 属性。</p>
+</li>
+<li><p>HDCP-LEVEL<br>  该值是一个枚举字符串；有效字符串为 <code>TYPE-0</code> 和 <code>NONE</code> 。<br>  此属性是建议性的；<code>TYPE-0</code> 值表示变体流可能无法播放，除非输出受高带宽数字内容保护 (HDCP) Type 0 [<a target="_blank" rel="noopener" href="https://www.digital-cp.com/sites/default/files/specifications/HDCP%20on%20HDMI%20Specification%20Rev2_2_Final1.pdf">HDCP</a>] 或同等保护。<br>  <code>NONE</code> 值表示内容不需要输出版权保护。</p>
+<p>  具有不同 <code>HDCP</code> 级别的加密变体流应使用不同的媒体加密密钥。</p>
+<p>  <code>HDCP-LEVEL</code> 属性是可选的。<br>  如果变体流中的任何内容在没有 <code>HDCP</code> 的情况下无法播放，则应存在该属性。<br>  没有输出版权保护的客户端不应加载具有 <code>HDCP-LEVEL</code> 属性的变体流，除非其值为 NONE。</p>
+</li>
+<li><p>AUDIO<br>  该值是一个带引号的字符串。它必须与主播放列表中其他位置的 <code>EXT-X-MEDIA</code> 标签的 <code>GROUP-ID</code> 属性值匹配，该标签的 <code>TYPE</code> 属性为 <code>AUDIO</code> 。<br>  它表示播放演示时应使用的音频呈现集。请参阅 <a href="#43421-alternative-renditions">第 4.3.4.2.1 节</a> 。<br>  <code>AUDIO</code> 属性是可选的。</p>
+</li>
+<li><p>VIDEO<br>  该值是一个带引号的字符串。<br>  它 <em>必须</em> 与主播放列表中其他位置的 <code>EXT-X-MEDIA</code> 标签的 <code>GROUP-ID</code> 属性值匹配，该标签的 <code>TYPE</code> 属性为 <code>VIDEO</code> 。<br>  它表示播放演示时应使用的视频呈现集。请参阅 <a href="#43421-alternative-renditions">第 4.3.4.2.1 节</a> 。<br>  <code>VIDEO</code> 属性是可选的。</p>
+</li>
+<li><p>SUBTITLES<br>  该值是一个带引号的字符串。<br>  它必须与主播放列表中其他位置的 <code>EXT-X-MEDIA</code> 标签的 <code>GROUP-ID</code> 属性值匹配，该标签的 <code>TYPE</code> 属性为 <code>SUBTITLES</code> 。<br>  它表示播放演示时可以使用的字幕版本集。请参阅 <a href="#43421-alternative-renditions">第 4.3.4.2.1 节</a> 。<br>  <code>SUBTITLES</code> 属性是可选的。</p>
+</li>
+<li><p>CLOSED-CAPTIONS<br>  该值可以是带引号的字符串，也可以是值为 <code>NONE</code> 的枚举字符串。<br>  如果该值是带引号的字符串，则它必须与播放列表中其他位置的 <code>EXT-X-MEDIA</code> 标签的 <code>GROUP-ID</code> 属性值匹配，该标签的 <code>TYPE</code> 属性为 <code>CLOSED-CAPTIONS</code> ，并且它指示播放演示文稿时可以使用的隐藏字幕版本集。请参阅 <a href="#43421-alternative-renditions">第 4.3.4.2.1 节</a> 。<br>  如果该值为枚举字符串值 <code>NONE</code> ，则所有 <code>EXT-X-STREAM-INF</code> 标签都必须具有该属性，其值为 <code>NONE</code> ，表示主播放列表中的任何变体流中均无隐藏字幕。如果一个变体流中有隐藏字幕，而另一个没有，则可能会引发播放不一致。<br>  <code>CLOSED-CAPTIONS</code> 属性是可选的。</p>
+</li>
+</ul>
+<h6 id="4-3-4-2-1-Alternative-Renditions"><a href="#4-3-4-2-1-Alternative-Renditions" class="headerlink" title="4.3.4.2.1. Alternative Renditions"></a>4.3.4.2.1. Alternative Renditions</h6><p>当 <code>EXT-X-STREAM-INF</code> 标签包含 <code>AUDIO</code> 、 <code>VIDEO</code> 、 <code>SUBTITLES</code> 或 <code>CLOSED-CAPTIONS</code> 属性时，表示可以使用内容的替代版本来播放该变体流。</p>
+<p>定义替代版本时， <em>必须</em> 满足以下约束以防止客户端播放错误：</p>
+<ul>
+<li>与 <code>EXT-X-STREAM-INF</code> 标签关联的所有可播放的 Rendition 组合的总带宽必须小于或等于 <code>EXT-X-STREAM-INF</code> 标签的 <code>BANDWIDTH</code> 属性。</li>
+<li>如果 <code>EXT-X-STREAM-INF</code> 标签包含 <code>RESOLUTION</code> 属性和 <code>VIDEO</code> 属性，则每个备选视频再现都必须具有与 <code>RESOLUTION</code> 属性的值匹配的最佳显示分辨率。</li>
+<li>与 <code>EXT-X-STREAM-INF</code> 标签相关的每个替代渲染都必须满足 <a href="#624-providing-variant-streams">第 6.2.4 节</a> 中描述的变体流的约束。</li>
+</ul>
+<p>如果媒体类型为 <code>SUBTITLES</code> ，则 <code>EXT-X-MEDIA</code> 标签的 <code>URI</code> 属性是必需的；如果媒体类型为 <code>VIDEO</code> 或 <code>AUDIO</code> ，则 <code>URI</code> 属性是可选的。<br>如果媒体类型为 <code>VIDEO</code> 或 <code>AUDIO</code> ，则缺少 <code>URI</code> 属性表示此 Rendition 的媒体数据包含在引用此 <code>EXT-X-MEDIA</code> 标签的任何 <code>EXT-X-STREAM-INF</code> 标签的媒体播放列表中。<br>如果媒体类型为 <code>AUDIO</code> ，且缺少 <code>URI</code> 属性，则客户端必须假定此 Rendition 的音频数据存在于 <code>EXT-X-STREAM-INF</code> 标签指定的每个视频 Rendition 中。</p>
+<p>如果媒体类型为 <code>CLOSED-CAPTIONS</code> ，则不得包含 <code>EXT-X-MEDIA</code> 标签的 <code>URI</code> 属性。</p>
+<h5 id="4-3-4-3-EXT-X-I-FRAME-STREAM-INF"><a href="#4-3-4-3-EXT-X-I-FRAME-STREAM-INF" class="headerlink" title="4.3.4.3. EXT-X-I-FRAME-STREAM-INF"></a>4.3.4.3. EXT-X-I-FRAME-STREAM-INF</h5><p><code>EXT-X-I-FRAME-STREAM-INF</code> 标签标识包含多媒体演示的 I 帧的媒体播放列表文件。<br>它是独立的，因为它不适用于主播放列表中的特定 URI。其格式为：</p>
+<p><code>#EXT-X-I-FRAME-STREAM-INF:&lt;attribute-list&gt;</code></p>
+<p><code>EXT-X-STREAM-INF</code> 标签定义的所有属性（ <a href="#4342-ext-x-stream-inf">第 4.3.4.2 节</a> ）也为 <code>EXT-X-I-FRAME-STREAM-INF</code> 标签定义，但 <code>FRAME-RATE</code> 、 <code>AUDIO</code> 、 <code>SUBTITLES</code> 和 <code>CLOSED-CAPTIONS</code> 属性除外。<br>此外，还定义了以下属性：</p>
+<ul>
+<li>URI<br>  该值是一个带引号的字符串，其中包含标识 I 帧媒体播放列表文件的 URI。<br>  该播放列表文件必须包含 <code>EXT-X-I-FRAMES-ONLY</code> 标签。</li>
+</ul>
+<p>每个 <code>EXT-X-I-FRAME-STREAM-INF</code> 标签必须包含一个 <code>BANDWIDTH</code> 属性和一个 URI 属性。</p>
+<p><a href="#43421-alternative-renditions">4.3.4.2.1节</a> 中的规定也适用于具有 <code>VIDEO</code> 属性的 <code>EXT-X-I-FRAME-STREAM-INF</code> 标签。</p>
+<p>指定替代视频演绎和 I 帧播放列表的主播放列表应为每个常规视频演绎包含一个替代 I 帧视频演绎，并具有相同的 <code>NAME</code> 和 <code>LANGUAGE</code> 属性。</p>
+<h5 id="4-3-4-4-EXT-X-SESSION-DATA"><a href="#4-3-4-4-EXT-X-SESSION-DATA" class="headerlink" title="4.3.4.4. EXT-X-SESSION-DATA"></a>4.3.4.4. EXT-X-SESSION-DATA</h5><p><code>EXT-X-SESSION-DATA</code> 标签允许在主播放列表中携带任意会话数据。</p>
+<p>它的格式为：</p>
+<p><code>#EXT-X-SESSION-DATA:&lt;attribute-list&gt;</code></p>
+<p>定义了以下属性：</p>
+<ul>
+<li>DATA-ID<br>  <code>DATA-ID</code> 的值是一个带引号的字符串，用于标识特定的数据值。<br>  <code>DATA-ID</code> 应符合反向 DNS 命名约定，例如 <code>&quot;com.example.movi​​e.title&quot;</code> ；<br>  但是，没有中央注册机构，因此播放列表作者 <em>应该</em> 小心选择一个不太可能与其他值冲突的值。<br>  此属性是必需的。</li>
+<li>VALUE<br>  <code>VALUE</code> 是一个带引号的字符串。它包含由 <code>DATA-ID</code> 标识的数据。<br>  如果指定了 <code>LANGUAGE</code> ， <code>VALUE</code> 应该包含以指定语言编写的人类可读字符串。</li>
+<li>URI<br>  该值是包含 <code>URI</code> 的带引号的字符串。<br>  <code>URI</code> 标识的资源必须采用 <code>JSON</code> 格式 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7159">RFC7159</a>] ；否则，客户端可能无法解释该资源。</li>
+<li>LANGUAGE<br>  该值是一个带引号的字符串，其中包含用于标识 <code>VALUE</code> 的语言的语言标记 [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5646">RFC5646</a>] 。<br>  此属性是可选的。</li>
+</ul>
+<p>每个 <code>EXT-X-SESSION-DATA</code> 标签必须包含 <code>VALUE</code> 或 <code>URI</code> 属性，但不能同时包含两者。</p>
+<p>播放列表 <em>可以</em> 包含多个具有相同 <code>DATA-ID</code> 属性的 <code>EXT-X-SESSION-DATA</code> 标签。<br>播放列表 <em>不得</em> 包含多个具有相同 <code>DATA-ID</code> 属性和 <code>LANGUAGE</code> 属性的 <code>EXT-X-SESSION-DATA</code> 标签。</p>
+<h5 id="4-3-4-5-EXT-X-SESSION-KEY"><a href="#4-3-4-5-EXT-X-SESSION-KEY" class="headerlink" title="4.3.4.5. EXT-X-SESSION-KEY"></a>4.3.4.5. EXT-X-SESSION-KEY</h5><p><code>EXT-X-SESSION-KEY</code> 标签允许在主播放列表中指定媒体播放列表中的加密密钥。<br>这样客户端就可以预加载这些密钥，而无需先读取媒体播放列表。</p>
+<p>它的格式为：</p>
+<p><code>#EXT-X-SESSION-KEY:&lt;attribute-list&gt;</code> </p>
+<p><code>EXT-X-KEY</code> 标签定义的所有属性（ <a href="#4324-ext-x-key">第 4.3.2.4 节</a> ）也为 <code>EXT-X-SESSION-KEY</code> 定义，但 <code>METHOD</code> 属性的值 <em>不得</em> 为 <code>NONE</code> 。<br>如果使用 <code>EXT-X-SESSION-KEY</code> ，则 <code>METHOD</code> 、 <code>KEYFORMAT</code> 和 <code>KEYFORMATVERSIONS</code> 属性的值必须与任何具有相同 URI 值的 <code>EXT-X-KEY</code> 匹配。</p>
+<p>如果多个变体流或版本使用相同的加密密钥和格式，则 <em>应该</em> 添加 <code>EXT-X-SESSION-KEY</code> 标签。<br><code>EXT-X-SESSION-KEY</code> 标签不与任何特定媒体播放列表相关联。</p>
+<p>主播放列表 <em>不得</em> 包含多个具有相同 <code>METHOD</code> 、 <code>URI</code> 、 <code>IV</code> 、 <code>KEYFORMAT</code> 和 <code>KEYFORMATVERSIONS</code> 属性值的 <code>EXT-X-SESSION-KEY</code> 标签。</p>
+<p><code>EXT-X-SESSION-KEY</code> 标签是可选的。</p>
+<h4 id="4-3-5-Media-or-Master-Playlist-Tags"><a href="#4-3-5-Media-or-Master-Playlist-Tags" class="headerlink" title="4.3.5. Media or Master Playlist Tags"></a>4.3.5. Media or Master Playlist Tags</h4><p>本节中的标签可以出现在主播放列表或媒体播放列表中。<br>如果其中一个标签出现在主播放列表中，则它 <em>不应该</em> 出现在该主播放列表引用的任何媒体播放列表中。<br>同时出现在两者中的标签 <em>必须</em> 具有相同的值；否则，客户端 <em>应该</em> 忽略媒体播放列表中的值。</p>
+<p>这些标签 <em>不得</em> 在播放列表中出现多次。<br>如果标签出现多次，客户端 <em>必须</em> 无法解析播放列表。</p>
+<h5 id="4-3-5-1-EXT-X-INDEPENDENT-SEGMENTS"><a href="#4-3-5-1-EXT-X-INDEPENDENT-SEGMENTS" class="headerlink" title="4.3.5.1. EXT-X-INDEPENDENT-SEGMENTS"></a>4.3.5.1. EXT-X-INDEPENDENT-SEGMENTS</h5><p><code>EXT-X-INDEPENDENT-SEGMENTS</code> 标签表示媒体片段中的所有媒体样本都可以解码，而无需来自其他片段的信息。<br>它适用于播放列表中的每个媒体片段。</p>
+<p>其格式为：</p>
+<p><code>#EXT-X-INDEPENDENT-SEGMENTS</code></p>
+<p>如果 <code>EXT-X-INDEPENDENT-SEGMENTS</code> 标签出现在主播放列表中，则它将适用于主播放列表中每个媒体播放列表的每个媒体片段。</p>
+<h5 id="4-3-5-2-EXT-X-START"><a href="#4-3-5-2-EXT-X-START" class="headerlink" title="4.3.5.2. EXT-X-START"></a>4.3.5.2. EXT-X-START</h5><p><code>EXT-X-START</code> 标签表示开始播放播放列表的首选点。<br>默认情况下，客户端在开始播放会话时 <em>应该</em> 在此点开始播放。<br>此标签是可选的。</p>
+<p>其格式为：</p>
+<p><code>#EXT-X-START:&lt;attribute-list&gt;</code></p>
+<p>定义了以下属性：</p>
+<ul>
+<li><p>TIME-OFFSET<br>  <code>TIME-OFFSET</code> 的值是一个有符号的十进制浮点数，单位为秒。<br>  正数表示与播放列表开头之间的时间偏移。<br>  负数表示与播放列表中最后一个媒体片段结尾之间的负时间偏移。<br>  此属性是必需的。</p>
+<p>  <code>TIME-OFFSET</code> 的绝对值不应大于播放列表的持续时间。<br>  如果 <code>TIME-OFFSET</code> 的绝对值超过播放列表的持续时间，则表示播放列表的结束（如果为正数）或播放列表的开始（如果为负数）。</p>
+<p>  如果播放列表不包含 <code>EXT-X-ENDLIST</code> 标签，则 <code>TIME-OFFSET</code> <em>不应该</em> 位于播放列表文件结尾的三个目标持续时间内。</p>
+</li>
+<li><p>PRECISE<br>  该值是一个枚举字符串；有效字符串为 <code>YES</code> 和 <code>NO</code> 。<br>  如果该值为 <code>YES</code> ，客户端应从包含 <code>TIME-OFFSET</code> 的媒体段开始播放，但不应渲染该段中呈现时间早于 <code>TIME-OFFSET</code> 的媒体样本。<br>  如果该值为 <code>NO</code> ，客户端应尝试渲染该段中的每个媒体样本。<br>  此属性是可选的。<br>  如果缺失，其值应被视为 <code>NO</code> 。</p>
+</li>
+</ul>
+<h2 id="5-Key-Files"><a href="#5-Key-Files" class="headerlink" title="5. Key Files"></a>5. Key Files</h2><h3 id="5-1-Structure-of-Key-Files"><a href="#5-1-Structure-of-Key-Files" class="headerlink" title="5.1. Structure of Key Files"></a>5.1. Structure of Key Files</h3><p>具有 <code>URI</code> 属性的 <code>EXT-X-KEY</code> 标签标识密钥文件。<br>密钥文件包含一个可以解密播放列表中的媒体片段的密钥。</p>
+<p>[<a href="#52-iv-for-aes-128">AES_128</a>] 加密使用 16 个八位字节的密钥。<br>如果 <code>EXT-X-KEY</code> 标签的 <code>KEYFORMAT</code> 为 <code>&quot;identity&quot;</code> ，则密钥文件是二进制格式的单个 16 个八位字节的打包数组。</p>
+<h3 id="5-2-IV-for-AES-128"><a href="#5-2-IV-for-AES-128" class="headerlink" title="5.2. IV for AES-128"></a>5.2. IV for AES-128</h3><p>[AES_128] <em>需要</em> 在加密和解密时提供相同的 16 个八位字节 IV 。<br>改变此 IV 可增加密码的强度。</p>
+<p><code>EXT-X-KEY</code> 标签上的 IV 属性（ <code>KEYFORMAT</code> 为 <code>&quot;identity&quot;</code> ）指定了在解密使用该密钥文件加密的媒体片段时可以使用的 IV 。<br>AES-128 的 IV 值为 128 位数字。</p>
+<p><code>KEYFORMAT</code> 为 <code>identity</code> 且没有 IV 属性的 <code>EXT-X-KEY</code> 标签表示在解密媒体段时将使用媒体序列号作为 IV，通过将其大端二进制表示放入 16 八位字节（128 位）缓冲区并用零填充（在左侧）。</p>
+<h2 id="6-Client-x2F-Server-Responsibilities"><a href="#6-Client-x2F-Server-Responsibilities" class="headerlink" title="6. Client&#x2F;Server Responsibilities"></a>6. Client&#x2F;Server Responsibilities</h2><h3 id="6-1-Introduction"><a href="#6-1-Introduction" class="headerlink" title="6.1. Introduction"></a>6.1. Introduction</h3><p>本节介绍服务器如何生成播放列表和媒体片段以及客户端如何下载它们进行播放。</p>
+<h3 id="6-2-Server-Responsibilities"><a href="#6-2-Server-Responsibilities" class="headerlink" title="6.2. Server Responsibilities"></a>6.2. Server Responsibilities</h3><h4 id="6-2-1-General-Server-Responsibilities"><a href="#6-2-1-General-Server-Responsibilities" class="headerlink" title="6.2.1. General Server Responsibilities"></a>6.2.1. General Server Responsibilities</h4><p>源媒体的制作超出了本文档的范围，本文档仅假设包含演示的连续编码媒体源。</p>
+<p>服务器 <em>必须</em> 将源媒体划分为单个媒体片段，这些片段的持续时间小于或等于固定目标持续时间。<br>超过计划目标持续时间的片段可能会触发播放停顿和其他错误。</p>
+<p>服务器 <em>应该</em> 尝试在支持有效解码各个媒体段的点（例如，在数据包和关键帧边界）上划分源媒体。</p>
+<p>服务器 <em>必须</em> 为每个媒体片段创建一个 URI ，以便其客户端获取片段数据。<br>如果服务器支持部分加载资源（例如，通过 HTTP 范围请求），则可以使用 <code>EXT-X-BYTERANGE</code> 标签将片段指定为较大资源的子范围。</p>
+<p>客户端加载的播放列表中指定的任何媒体片段都 <em>必须</em> 可立即下载，否则可能会出现播放错误。<br>下载开始后，其传输速率 <em>不应该</em> 受到片段制作过程的限制。</p>
+<p>如果客户端表示准备接受，HTTP 服务器 <em>应该</em> 使用 <code>gzip</code> 内容编码传输文本文件（例如播放列表和 <code>WebVTT</code> 片段）。</p>
+<p>服务器必须创建一个媒体播放列表文件（ <a href="#4-playlists">第 4 节</a> ），其中包含服务器希望提供的每个媒体片段的 URI ，并按照播放顺序排列。</p>
+<p><code>EXT-X-VERSION</code> 标签的值（ <a href="#4312-ext-x-version">第 4.3.1.2 节</a> ）不应大于播放列表中标签和属性所需的值（参见 <a href="#7-protocol-version-compatibility">第 7 节</a> ）。</p>
+<p>从客户端的角度来看，对播放列表文件的更改 <em>必须</em> 以原子方式进行，否则可能会出现播放错误。</p>
+<p>服务器 <em>不得</em> 更改媒体播放列表文件，除非：</p>
+<ul>
+<li>向其添加行（ <a href="#621-general-server-responsibilities">第 6.2.1 节</a> ）。</li>
+<li>按照出现的顺序从播放列表中删除媒体片段 URI ，以及仅适用于这些片段的任何标签（ <a href="#622-live-playlists">第 6.2.2 节</a> ）。</li>
+<li>增加 <code>EXT-X-MEDIA-SEQUENCE</code> 或 <code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签的值（ <a href="#622-live-playlists">第 6.2.2 节</a> ）。</li>
+<li>将 <code>EXT-X-ENDLIST</code> 标签添加到播放列表（ <a href="#621-general-server-responsibilities">第 6.2.1 节</a> ）。</li>
+</ul>
+<p>如果媒体播放列表包含 <code>EXT-X-PLAYLIST-TYPE</code> 标签，则其更新会受到进一步限制。<br>值为 <code>VOD</code> 的 <code>EXT-X-PLAYLIST-TYPE</code> 标签表示播放列表文件不得更改。<br>值为 <code>EVENT</code> 的 <code>EXT-X-PLAYLIST-TYPE</code> 标签表示服务器 <em>不得</em> 更改或删除播放列表文件的任何部分；它可以向其中添加行。</p>
+<p>媒体播放列表中的 <code>EXT-X-TARGETDURATION</code> 标签的值 <em>不得</em> 更改。<br>典型的目标持续时间为 10 秒。</p>
+<p>除此处允许的更改之外的播放列表更改可能会触发播放错误和不一致的客户端行为。</p>
+<p>媒体播放列表中的每个媒体片段都有一个整数 <strong>不连续序列号</strong> 。<br>除了媒体内的时间戳之外，还可以使用 <strong>不连续序列号</strong> 来同步不同版本之间的媒体片段。</p>
+<p>片段的不连续性序列号是 <code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签的值（如果没有则为零）加上该片段 URI 行之前的播放列表中 <code>EXT-X-DISCONTINUITY</code> 标签的数量。</p>
+<p>服务器 <em>可以</em> 通过将 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签应用于媒体片段，从而将绝对日期和时间与媒体片段关联起来。<br>这定义了标签指定的（挂钟）日期和时间与片段中的第一个媒体时间戳之间的信息映射，可用作查找、显示或其他用途的基础。<br>如果服务器提供此映射，则 <em>应该</em> 将 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签应用于每个已应用 <code>EXT-X-DISCONTINUITY</code> 标签的片段。</p>
+<p>服务器不得向播放列表添加任何 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签，这会导致节目日期和媒体片段之间的映射变得模糊。</p>
+<p>如果范围内的任何日期映射到播放列表中的媒体段，则服务器 <em>不得</em> 从播放列表中删除 <code>EXT-X-DATERANGE</code> 标签。</p>
+<p>服务器 <em>不得</em> 在同一播放列表中的任何新日期范围重复使用 <code>EXT-X-DATERANGE</code> 标签的 ID 属性值。</p>
+<p>一旦将具有 <code>END-ON-NEXT=YES</code> 属性的日期范围的以下范围添加到播放列表，服务器 <em>不得</em> 随后添加具有相同 CLASS 属性的日期范围，其 <code>START-DATE</code> 位于 <code>END-ON-NEXT=YES</code> 范围和其以下范围之间。</p>
+<p>对于具有 <code>PLANNED-DURATION</code> 属性的日期范围，服务器 <em>应该</em> 在范围建立后发出实际结束信号。<br>它可以通过添加另一个具有相同 <code>ID</code> 属性值和 <code>DURATION</code> 或 <code>END-DATE</code> 属性的 <code>EXT-X-DATERANGE</code> 标签来实现这一点，或者，如果日期范围具有 <code>END-ON-NEXT=YES</code> 属性，则通过添加以下范围来实现。</p>
+<p>如果媒体播放列表包含演示的最终媒体片段，则播放列表文件 <em>必须</em> 包含 <code>EXT-X-ENDLIST</code> 标签；这允许客户端最大限度地减少无效的播放列表重新加载。</p>
+<p>如果媒体播放列表不包含 <code>EXT-X-ENDLIST</code> 标签，则服务器 <em>必须</em> 提供包含至少一个新媒体片段的新版播放列表文件。<br>新版播放列表文件的可用时间 <em>必须</em> 与上一版播放列表文件的可用时间相对应：不早于该时间之后目标持续时间的一半，不晚于该时间之后目标持续时间的 1.5 倍。这样，客户端就可以高效利用网络。</p>
+<p>如果服务器希望删除整个演示文稿，它 <em>应该</em> 向客户端明确指示播放列表文件不再可用（例如，使用 HTTP 404 或 410 响应）。<br>它 <em>必须</em> 确保播放列表文件中的所有媒体片段至少在删除时播放列表文件的持续时间内对客户端可用，以防止中断正在进行的播放。</p>
+<h4 id="6-2-2-Live-Playlists"><a href="#6-2-2-Live-Playlists" class="headerlink" title="6.2.2. Live Playlists"></a>6.2.2. Live Playlists</h4><p>服务器 <em>可以</em> 通过从播放列表文件中删除媒体片段来限制媒体片段的可用性（ <a href="#621-general-server-responsibilities">第 6.2.1 节</a> ）。<br>如果要删除媒体片段，播放列表文件 <em>必须</em> 包含 <code>EXT-X-MEDIA-SEQUENCE</code> 标签。<br>每从播放列表文件中删除一个媒体片段，其值 <em>必须</em> 增加 1； <em>不得</em> 减少或换行。<br>如果每个媒体片段没有一致、唯一的媒体序列号，客户端可能会出现故障。</p>
+<p><em>必须</em> 按照媒体片段在播放列表中出现的顺序将其从播放列表文件中删除；否则，客户端播放可能会出现故障。</p>
+<p>如果删除媒体片段会导致播放列表的时长少于目标时长的三倍，则服务器 <em>不得</em> 从不带 <code>EXT-X-ENDLIST</code> 标签的播放列表文件中删除媒体片段。<br>否则，可能会触发播放停顿。</p>
+<p>当服务器从播放列表中移除媒体片段 URI 时，相应的媒体片段 <em>必须</em> 保持可供客户端使用的一段时间，该时间等于片段的持续时间加上由包含该片段的服务器分发的最长播放列表文件的持续时间。<br>在此之前移除媒体片段可能会中断正在进行的播放。</p>
+<p>如果服务器希望从包含 <code>EXT-X-DISCONTINUITY</code> 标签的媒体播放列表中删除片段，则媒体播放列表 <em>必须</em> 包含 <code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签。<br>如果没有 <code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签，客户端就无法在 Rendition 之间找到相应的片段。</p>
+<p>如果服务器从媒体播放列表中删除了 <code>EXT-X-DISCONTINUITY</code> 标签，则 <em>必须</em> 增加 <code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签的值，以使仍在媒体播放列表中的片段的不连续序列号保持不变。<br><code>EXT-X-DISCONTINUITY-SEQUENCE</code> 标签的值 <em>不得</em> 减少或换行。<br>如果每个媒体片段没有一致的 <strong>不连续序列号</strong> ，客户端可能会出现故障。</p>
+<p>如果服务器计划在通过 HTTP 将媒体片段传送给客户端后删除它，则它 <em>应该</em> 确保 HTTP 响应包含反映计划生存时间的 <code>Expires</code> 标头。</p>
+<p>直播播放列表 <em>不得</em> 包含 <code>EXT-X-PLAYLIST-TYPE</code> 标签，因为该标签的任何值都不允许删除媒体片段。</p>
+<h4 id="6-2-3-Encrypting-Media-Segments"><a href="#6-2-3-Encrypting-Media-Segments" class="headerlink" title="6.2.3. Encrypting Media Segments"></a>6.2.3. Encrypting Media Segments</h4><p>媒体片段 <em>可以</em> 加密。<br>每个加密的媒体片段必须应用一个 <code>EXT-X-KEY</code> 标签（ <a href="#4324-ext-x-key">第 4.3.2.4 节</a> ），并带有一个 URI，客户端可以使用该 URI 获取包含解密密钥的密钥文件（ <a href="#5-key-files">第 5 节</a> ）。</p>
+<p>媒体片段只能使用一种加密 <code>METHOD</code> 、一个加密密钥和 IV 进行加密。<br>但是，服务器 <em>可以</em> 通过提供多个 <code>EXT-X-KEY</code> 标签（每个标签具有不同的 <code>KEYFORMAT</code> 属性值）来提供多种检索该密钥的方法。</p>
+<p>服务器 <em>可以</em> 在密钥响应中设置 HTTP Expires 标头，以指示密钥可以缓存的持续时间。</p>
+<p>播放列表中任何未加密的媒体片段（如果前面有一个加密的媒体片段）都 <em>必须</em> 应用 <code>EXT-X-KEY</code> 标签，且 <code>METHOD</code> 属性为 <code>NONE</code> 。<br>否则，客户端会误认为这些片段已加密。</p>
+<p>如果加密 <code>METHOD</code> 是 <code>AES-128</code> ，且播放列表不包含 <code>EXT-X-I-FRAMES-ONLY</code> 标签，则 <em>应</em> 将 <a href="#4324-ext-x-key">第 4.3.2.4 节</a> 中所述的 AES 加密应用于各个媒体片段。</p>
+<p>如果加密 <code>METHOD</code> 是 <code>AES-128</code> ，且播放列表包含 <code>EXT-X-I-FRAMES-ONLY</code> 标签，则必须使用带 PKCS7 填充 <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc5652">RFC5652</a> 的 AES-128 CBC 对整个资源进行加密。<br>除非第一个块包含 I 帧，否则 <em>可以</em> 在 16 字节块边界上重新开始加密。<br>用于加密的 IV <em>必须</em> 是媒体段的 <strong>媒体序列号</strong> 或 <code>EXT-X-KEY</code> 标签的 IV 属性值，如 <a href="#52-iv-for-aes-128">第 5.2 节</a> 所述。<br>这些限制允许客户端加载和解密指定为常规加密媒体段子范围及其媒体初始化部分的各个 I 帧。</p>
+<p>如果加密 <code>METHOD</code> 是 <code>SAMPLE-AES</code> ，则媒体样本 <em>可以</em> 在封装到媒体段之前进行加密。</p>
+<p>如果 <code>EXT-X-KEY</code> 标签适用于播放列表文件中的任何媒体段，则服务器 <em>不得</em> 从播放列表文件中删除该标签，否则随后加载该播放列表的客户端将无法解密这些媒体段。</p>
+<h4 id="6-2-4-Providing-Variant-Streams"><a href="#6-2-4-Providing-Variant-Streams" class="headerlink" title="6.2.4. Providing Variant Streams"></a>6.2.4. Providing Variant Streams</h4><p>服务器 <em>可以</em> 提供多个媒体播放列表文件，以提供同一演示文稿的不同编码。<br>如果这样做，它 <em>应该</em> 提供一个列出每个变体流的主播放列表文件，以允许客户端动态切换编码。</p>
+<p>主播放列表使用 <code>EXT-X-STREAM-INF</code> 标签描述常规变体流，使用 <code>EXT-X-I-FRAME-STREAM-INF</code> 标签描述 I 帧变体流。</p>
+<p>如果 <code>EXT-X-STREAM-INF</code> 标签或 <code>EXT-X-I-FRAME-STREAM-INF</code> 标签包含 <code>CODECS</code> 属性，则属性值 <em>必须</em> 包含变体流指定的任何版本中任何媒体段中存在的每种媒体格式 <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc6381">RFC6381</a> 。</p>
+<p>为了允许客户端在它们之间无缝切换，服务器在生成变体流时 <em>必须</em> 满足以下约束：</p>
+<ul>
+<li>每个变体流 <em>必须</em> 呈现相同的内容。</li>
+<li>变体流中的匹配内容 <em>必须</em> 具有匹配的时间戳。这允许客户端同步媒体。</li>
+<li>变体流中的匹配内容 <em>必须</em> 具有匹配的 <strong>不连续序列号</strong> （参见 <a href="#4333-ext-x-discontinuity-sequence">第 4.3.3.3 节</a> ）。</li>
+<li>每个变体流中的每个媒体播放列表都 <em>必须</em> 具有相同的目标时长。<br>  唯一的例外是字幕版本和包含 <code>EXT-X-I-FRAMES-ONLY</code> 标签的媒体播放列表，如果它们的 <code>EXT-X-PLAYLIST-TYPE</code> 为 <code>VOD</code> ，则它们 <em>可以</em> 具有不同的目标时长。</li>
+<li>在一个变体流的媒体播放列表中出现但未在另一个变体流中出现的内容 <em>必须</em> 出现在媒体播放列表文件的开头或结尾，并且不得长于目标持续时间。</li>
+<li>如果任何媒体播放列表具有 <code>EXT-X-PLAYLIST-TYPE</code> 标签，则所有媒体播放列表都 <em>必须</em> 具有相同值的 <code>EXT-X-PLAYLIST-TYPE</code> 标签。</li>
+<li>如果播放列表包含值为 <code>VOD</code> 的 <code>EXT-X-PLAYLIST-TYPE</code> 标签，则每个变体流中每个媒体播放列表的第一个片段 <em>必须</em> 从相同的媒体时间戳开始。</li>
+<li>如果主播放列表中的任何媒体播放列表包含 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签，则该主播放列表中的所有媒体播放列表都必须包含 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签，并且日期和时间与媒体时间戳具有一致的映射。</li>
+<li>每个变体流 <em>必须</em> 包含相同的一组日期范围，每个日期范围由具有相同 ID 属性值的 <code>EXT-X-DATERANGE</code> 标签标识，并包含相同的一组属性&#x2F;值对。</li>
+</ul>
+<p>此外，为了实现最广泛的兼容性，变体流 <em>应该</em> 包含相同的编码音频比特流。<br>这样，客户端就可以在变体流之间切换，而不会出现声音故障。</p>
+<p>变体流的规则也适用于替代演绎版 （参见 <a href="#43421-alternative-renditions">第 4.3.4.2.1 节</a> ）。</p>
+<h3 id="6-3-Client-Responsibilities"><a href="#6-3-Client-Responsibilities" class="headerlink" title="6.3. Client Responsibilities"></a>6.3. Client Responsibilities</h3><h4 id="6-3-1-General-Client-Responsibilities"><a href="#6-3-1-General-Client-Responsibilities" class="headerlink" title="6.3.1. General Client Responsibilities"></a>6.3.1. General Client Responsibilities</h4><p>客户端如何获取播放列表文件的 URI 超出了本文档的范围；假定已经这样做了。</p>
+<p>客户端从 URI 中获取播放列表文件，如果获取到的播放列表文件是主播放列表，则客户端可以从主播放列表中选择一个变体流进行加载。</p>
+<p>客户端 <em>必须</em> 确保加载的播放列表符合 <a href="#4-playlists">第 4 节</a> ，并且 <code>EXT-X-VERSION</code> 标签（如果存在）指定客户端支持的协议版本；<br>如果任一检查失败，客户端 <em>不得</em> 尝试使用播放列表，否则可能会发生意外行为。</p>
+<p>如果播放列表中的任何 URI 元素包含客户端无法处理的 URI 方案，则客户端 <em>必须</em> 停止播放。<br>所有客户端都 <em>必须</em> 支持 HTTP 方案。</p>
+<p>为了支持前向兼容性，在解析播放列表时，客户端必须：</p>
+<ul>
+<li>忽略任何无法识别的标签。</li>
+<li>忽略任何具有无法识别的 <code>AttributeName</code> 的属性&#x2F;值对。</li>
+<li>忽略任何包含枚举字符串类型属性&#x2F;值对的标签，该标签的 <code>AttributeName</code> 可以被识别，但 <code>AttributeValue</code> 无法被识别，除非该属性的定义另有说明。</li>
+</ul>
+<p>客户端用于在变体流之间切换的算法超出了本文档的范围。</p>
+<h4 id="6-3-2-Loading-the-Media-Playlist-File"><a href="#6-3-2-Loading-the-Media-Playlist-File" class="headerlink" title="6.3.2. Loading the Media Playlist File"></a>6.3.2. Loading the Media Playlist File</h4><p>每次从播放列表 URI 加载或重新加载媒体播放列表时，如果客户端打算正常播放演示（即按播放列表顺序以标称播放速率播放），则 <em>必须</em> 确定下一个要加载的媒体片段，如 <a href="#635-determining-the-next-segment-to-load">第 6.3.5 节</a> 所述。</p>
+<p>如果媒体播放列表包含 <code>EXT-X-MEDIA-SEQUENCE</code> 标签，则客户端 <em>应该</em> 假定其中的每个媒体片段在播放列表文件加载时以及播放列表文件的持续时间内将变得不可用。</p>
+<p>重新加载播放列表时，客户端 <em>可以</em> 使用片段 <strong>媒体序列号</strong> 来跟踪播放列表中媒体片段的位置。</p>
+<p>客户端 <em>不得</em> 假设不同变体流或演绎版中具有相同 <strong>媒体序列号</strong> 的片段在演示中具有相同的位置；播放列表 <em>可以</em> 具有独立的媒体序列号。<br>相反，客户端 <em>必须</em> 使用播放列表时间线上每个片段的相对位置及其 <strong>不连续序列号</strong> 来定位相应的片段。</p>
+<p>客户端 <em>必须</em> 加载每个选定要播放的版本媒体播放列表文件，以便找到特定于该版本媒体的位置。<br>但为了防止服务器产生不必要的负载，客户端 <em>不应该</em> 加载任何其他版本的播放列表文件。</p>
+<p>对于某些变体流，可以选择不包含 <code>EXT-X-STREAM-INF</code> 标签指定的 Rendition 的 Rendition。<br>如上所述，在这种情况下，客户端 <em>不应该</em> 加载该 Rendition。</p>
+<h4 id="6-3-3-Playing-the-Media-Playlist-File"><a href="#6-3-3-Playing-the-Media-Playlist-File" class="headerlink" title="6.3.3. Playing the Media Playlist File"></a>6.3.3. Playing the Media Playlist File</h4><p>播放开始时，客户端 <em>应</em> 从媒体播放列表中选择首先播放哪个媒体片段。<br>如果不存在 <code>EXT-X-ENDLIST</code> 标签，并且客户端打算正常播放媒体，则客户端 <em>不应该</em> 选择从播放列表文件末尾开始的片段，该片段的起始位置少于三个目标持续时间。<br>这样做可能会触发播放停顿。</p>
+<p>按照播放列表中出现的顺序播放媒体片段即可实现正常播放。<br>客户端 <em>可以</em> 按照自己希望的任何方式呈现可用媒体，包括正常播放、随机访问和特技模式。</p>
+<p>媒体片段中以及媒体播放列表中多个媒体片段中的样本的编码参数 <em>应该</em> 保持一致。<br>但是，客户端应在遇到编码变化时进行处理，例如，通过缩放视频内容来适应分辨率变化。<br>如果变体流包含 RESOLUTION 属性，则客户端 <em>应该</em> 将所有视频显示在与该分辨率具有相同比例的矩形内。</p>
+<p>客户端 <em>应该</em> 准备好处理特定类型（例如音频或视频）的多个轨道。<br>没有其他偏好的客户端 <em>应该</em> 选择其可以播放的具有最小数字轨道标识符的轨道。</p>
+<p>客户端 <em>应该</em> 忽略传输流中它们无法识别的私有流。<br>私有流可用于支持使用相同流的不同设备，但流作者 <em>应该</em> 注意由此带来的额外网络负载。</p>
+<p>在播放应用了 <code>EXT-X-DISCONTINUITY</code> 标签的媒体片段之前，客户端 <em>必须</em> 准备重置其解析器和解码器；否则，可能会发生播放错误。</p>
+<p>客户端 <em>应该</em> 尝试在需要不间断播放之前提前加载媒体片段，以补偿延迟和吞吐量的暂时变化。</p>
+<p>客户端 <em>可以</em> 使用 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签的值向用户显示节目的起始时间。<br>如果该值包含时区信息，客户端 <em>应</em> 将其考虑在内；如果不包含，客户端 <em>可以</em> 假设时间为本地时间。</p>
+<p>请注意，播放列表中的日期可以指内容的制作时间（或其他时间），与播放时间无关。</p>
+<p>如果播放列表中的第一个 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签出现在一个或多个媒体片段 URI 之后，客户端 <em>应该</em> 从该标签向后推断（使用 <code>EXTINF</code> 持续时间和&#x2F;或媒体时间戳）以将日期与这些片段关联。<br>要将日期与任何其他未直接应用 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签的媒体片段关联，客户端 <em>应该</em> 从播放列表中该片段之前的最后一个 <code>EXT-X-PROGRAM-DATE-TIME</code> 标签向前推断。</p>
+<h4 id="6-3-4-Reloading-the-Media-Playlist-File"><a href="#6-3-4-Reloading-the-Media-Playlist-File" class="headerlink" title="6.3.4. Reloading the Media Playlist File"></a>6.3.4. Reloading the Media Playlist File</h4><p>客户端 <em>必须</em> 定期重新加载媒体播放列表文件以了解当前可用的媒体，除非它包含值为 <code>VOD</code> 的 <code>EXT-X-PLAYLIST-TYPE</code> 标签，或者值为 <code>EVENT</code> 并且 <code>EXT-X-ENDLIST</code> 标签也存在。</p>
+<p>但是，为了限制服务器上的集体负载，客户端 <em>不得</em> 尝试以比本节指定的更频繁的频率重新加载播放列表文件。</p>
+<p>当客户端首次加载播放列表文件或重新加载播放列表文件并发现自上次加载以来已发生变化时，客户端 <em>必须</em> 至少等待目标时长，才能尝试再次重新加载播放列表文件，该时间从客户端上次开始加载播放列表文件的时间开始计算。</p>
+<p>如果客户端重新加载播放列表文件并发现它没有改变，那么它 <em>必须</em> 等待目标持续时间的一半才能重试。</p>
+<p>重新加载媒体播放列表后，客户端 <em>应该</em> 验证其中的每个媒体片段是否与上一个媒体播放列表中具有相同媒体序列号的媒​​体​​片段具有相同的 URI（和字节范围，如果指定）。<br>如果没有，它 <em>应该</em> 停止播放，因为这通常表示服务器错误。</p>
+<p>为了减少服务器负载，客户端 <em>不应该</em> 重新加载当前未播放的变体流或替代版本播放列表文件。<br>如果客户端决定切换到其他变体流播放，则 <em>应该</em> 停止重新加载旧变体流播放列表，并开始加载新变体流播放列表。<br>客户端可以使用 <code>EXTINF</code> 持续时间和 <a href="#624-providing-variant-streams">第 6.2.4 节</a> 中的约束来确定相应媒体的大致位置。<br>加载新变体流中的媒体后，媒体片段中的时间戳可用于精确同步新旧时间线。</p>
+<p>客户端 <em>不得</em> 尝试使用媒体序列号在流之间进行同步（参见 <a href="#632-loading-the-media-playlist-file">第 6.3.2 节</a> ）。</p>
+<h4 id="6-3-5-Determining-the-Next-Segment-to-Load"><a href="#6-3-5-Determining-the-Next-Segment-to-Load" class="headerlink" title="6.3.5. Determining the Next Segment to Load"></a>6.3.5. Determining the Next Segment to Load</h4><p>客户端 <em>必须</em> 在每次加载或重新加载时检查媒体播放列表文件以确定下一个要加载的媒体段，因为可用媒体集 <em>可能</em> 会发生变化。</p>
+<p>第一个加载的片段通常是客户端选择首先播放的片段（参见 <a href="#633-playing-the-media-playlist-file">第 6.3.3 节</a> ）。</p>
+<p>为了正常播放演示文稿，下一个要加载的媒体段是具有最低媒体序列号的媒​​体​​段，该媒体序列号大于最后一个加载的媒体段的媒体序列号。</p>
+<h4 id="6-3-6-Decrypting-Encrypted-Media-Segments"><a href="#6-3-6-Decrypting-Encrypted-Media-Segments" class="headerlink" title="6.3.6. Decrypting Encrypted Media Segments"></a>6.3.6. Decrypting Encrypted Media Segments</h4><p>如果媒体播放列表文件包含指定密钥文件 URI 的 <code>EXT-X-KEY</code> 标签，则客户端可以获取该密钥文件并使用其中的密钥解密该 <code>EXT-X-KEY</code> 标签适用的所有媒体段。</p>
+<p>客户端 <em>必须</em> 忽略任何具有不受支持或无法识别的 <code>KEYFORMAT</code> 属性的 <code>EXT-X-KEY</code> 标签，以实现跨设备寻址。<br>如果播放列表包含仅应用了具有无法识别或无法支持的 <code>KEYFORMAT</code> 属性的 <code>EXT-X-KEY</code> 标签的媒体片段，则播放应会失败。</p>
+<p>客户端 <em>不得</em> 尝试解密任何 <code>EXT-X-KEY</code> 标签具有其无法识别的 <code>METHOD</code> 属性的段。</p>
+<p>如果加密 <code>METHOD</code> 是 <code>AES-128</code> ，则 <em>应该</em> 将 AES-128 CBC 解密应用于各个媒体段，其加密格式如 <a href="#4324-ext-x-key">第 4.3.2.4 节</a> 所述。</p>
+<p>如果加密方法是 <code>AES-128</code> ，且媒体片段是 I 帧播放列表的一部分（ <a href="#4336-ext-x-i-frames-only">第 4.3.3.6 节</a> ），并且它应用了 <code>EXT-X-BYTERANGE</code> 标签，则在加载和解密该片段时需要特别小心，因为 URI 标识的资源从资源开始就以 16 字节块的形式加密。</p>
+<p>可以通过首先扩大其字节范围（由 <code>EXT-X-BYTERANGE</code> 标签指定）来恢复解密的 I 帧，以便它从资源的开头开始和结束在 16 字节边界上。</p>
+<p>接下来，字节范围进一步扩大，在范围开头包含一个 16 字节块。这个 16 字节块允许计算下一个块的正确 IV。</p>
+<p>然后，可以使用任意 IV 加载扩展的字节范围并使用 AES-128 CBC 解密。解密的字节中丢弃添加到原始字节范围开头和结尾的字节数；剩下的就是解密的 I 帧。</p>
+<p>如果加密 <code>METHOD</code> 是 <code>SAMPLE-AES</code> ，则 <em>应</em> 将 AES-128 解密应用于媒体段内的加密媒体样本。</p>
+<p><code>EXT-X-KEY</code> 标签的 <code>METHOD</code> 为 <code>NONE</code> ，表示其适用的媒体片段未加密。</p>
+<h2 id="7-Protocol-Version-Compatibility"><a href="#7-Protocol-Version-Compatibility" class="headerlink" title="7. Protocol Version Compatibility"></a>7. Protocol Version Compatibility</h2><p>协议兼容性由 <code>EXT-X-VERSION</code> 标签指定。<br>包含与协议版本 1 不兼容的标签或属性的播放列表必须包含 <code>EXT-X-VERSION</code> 标签。</p>
+<p>如果客户端不支持 <code>EXT-X-VERSION</code> 标签指定的协议版本，则客户端 <em>不得</em> 尝试播放，否则可能会发生意外行为。</p>
+<p>如果媒体播放列表包含以下内容，则必须指示 <code>EXT-X-VERSION</code> 为 2 或更高版本：</p>
+<ul>
+<li><code>EXT-X-KEY</code> 标签的 IV 属性。</li>
+</ul>
+<p>如果媒体播放列表包含以下内容，则必须指示 <code>EXT-X-VERSION</code> 为 3 或更高版本：</p>
+<ul>
+<li>浮点 <code>EXTINF</code> 持续时间值。</li>
+</ul>
+<p>如果媒体播放列表包含以下内容，则必须指示 <code>EXT-X-VERSION</code> 为 4 或更高版本：</p>
+<ul>
+<li><code>EXT-X-BYTERANGE</code> 标签。</li>
+<li><code>EXT-X-I-FRAMES-ONLY</code> 标签。</li>
+</ul>
+<p>如果媒体播放列表包含以下内容，则必须指示 <code>EXT-X-VERSION</code> 为 5 或更高版本：</p>
+<ul>
+<li><code>EXT-X-KEY</code> 标签的 <code>KEYFORMAT</code> 和 <code>KEYFORMATVERSIONS</code> 属性。</li>
+<li><code>EXT-X-MAP</code> 标签</li>
+</ul>
+<p>如果媒体播放列表包含以下内容，则必须指示 <code>EXT-X-VERSION</code> 为 6 或更高版本：</p>
+<ul>
+<li>媒体播放列表中不包含 <code>EXT-X-I-FRAMES-ONLY</code> 的 <code>EXT-X-MAP</code> 标签。</li>
+</ul>
+<p>如果媒体播放列表包含以下内容，则必须指示 <code>EXT-X-VERSION</code> 为 7 或更高版本：</p>
+<ul>
+<li><code>EXT-X-MEDIA</code> 标签的 <code>INSTREAM-ID</code> 属性的 <code>&quot;SERVICE&quot;</code> 值。</li>
+</ul>
+<p><code>EXT-X-MEDIA</code> 标签以及 <code>EXT-X-STREAM-INF</code> 标签的 <code>AUDIO</code> 、 <code>VIDEO</code> 和 <code>SUBTITLES</code> 属性向后兼容协议版本 1，但在较旧的客户端上播放可能并不理想。<br>服务器可以考虑在主播放列表中指示 <code>EXT-X-VERSION</code> 为 4 或更高版本，但这不是必须的。</p>
+<p>协议版本 6 中删除了 <code>EXT-X-STREAM-INF</code> 和 <code>EXT-X-I-FRAME-STREAM-INF</code> 标签的 <code>PROGRAM-ID</code> 属性。</p>
+<p><code>EXT-X-ALLOW-CACHE</code> 标签在协议版本 7 中已被删除。</p>
+<h2 id="8-Playlist-Examples"><a href="#8-Playlist-Examples" class="headerlink" title="8. Playlist Examples"></a>8. Playlist Examples</h2><h3 id="8-1-Simple-Media-Playlist"><a href="#8-1-Simple-Media-Playlist" class="headerlink" title="8.1. Simple Media Playlist"></a>8.1. Simple Media Playlist</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-TARGETDURATION:10</span><br><span class="line">#EXT-X-VERSION:3</span><br><span class="line">#EXTINF:9.009,</span><br><span class="line">http://media.example.com/first.ts</span><br><span class="line">#EXTINF:9.009,</span><br><span class="line">http://media.example.com/second.ts</span><br><span class="line">#EXTINF:3.003,</span><br><span class="line">http://media.example.com/third.ts</span><br><span class="line">#EXT-X-ENDLIST</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-2-Live-Media-Playlist-Using-HTTPS"><a href="#8-2-Live-Media-Playlist-Using-HTTPS" class="headerlink" title="8.2. Live Media Playlist Using HTTPS"></a>8.2. Live Media Playlist Using HTTPS</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-VERSION:3</span><br><span class="line">#EXT-X-TARGETDURATION:8</span><br><span class="line">#EXT-X-MEDIA-SEQUENCE:2680</span><br><span class="line"></span><br><span class="line">#EXTINF:7.975,</span><br><span class="line">https://priv.example.com/fileSequence2680.ts</span><br><span class="line">#EXTINF:7.941,</span><br><span class="line">https://priv.example.com/fileSequence2681.ts</span><br><span class="line">#EXTINF:7.975,</span><br><span class="line">https://priv.example.com/fileSequence2682.ts</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-3-Playlist-With-Encrypted-Media-Segments"><a href="#8-3-Playlist-With-Encrypted-Media-Segments" class="headerlink" title="8.3. Playlist With Encrypted Media Segments"></a>8.3. Playlist With Encrypted Media Segments</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-VERSION:3</span><br><span class="line">#EXT-X-MEDIA-SEQUENCE:7794</span><br><span class="line">#EXT-X-TARGETDURATION:15</span><br><span class="line"></span><br><span class="line">#EXT-X-KEY:METHOD=AES-128,URI=&quot;https://priv.example.com/key.php?r=52&quot;</span><br><span class="line"></span><br><span class="line">#EXTINF:2.833,</span><br><span class="line">http://media.example.com/fileSequence52-A.ts</span><br><span class="line">#EXTINF:15.0,</span><br><span class="line">http://media.example.com/fileSequence52-B.ts</span><br><span class="line">#EXTINF:13.333,</span><br><span class="line">http://media.example.com/fileSequence52-C.ts</span><br><span class="line"></span><br><span class="line">#EXT-X-KEY:METHOD=AES-128,URI=&quot;https://priv.example.com/key.php?r=53&quot;</span><br><span class="line"></span><br><span class="line">#EXTINF:15.0,</span><br><span class="line">http://media.example.com/fileSequence53-A.ts</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-4-Master-Playlist"><a href="#8-4-Master-Playlist" class="headerlink" title="8.4. Master Playlist"></a>8.4. Master Playlist</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=1280000,AVERAGE-BANDWIDTH=1000000</span><br><span class="line">http://example.com/low.m3u8</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=2560000,AVERAGE-BANDWIDTH=2000000</span><br><span class="line">http://example.com/mid.m3u8</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=7680000,AVERAGE-BANDWIDTH=6000000</span><br><span class="line">http://example.com/hi.m3u8</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=65000,CODECS=&quot;mp4a.40.5&quot;</span><br><span class="line">http://example.com/audio-only.m3u8</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-5-Master-Playlist-with-I-Frames"><a href="#8-5-Master-Playlist-with-I-Frames" class="headerlink" title="8.5. Master Playlist with I-Frames"></a>8.5. Master Playlist with I-Frames</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=1280000</span><br><span class="line">low/audio-video.m3u8</span><br><span class="line">#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH=86000,URI=&quot;low/iframe.m3u8&quot;</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=2560000</span><br><span class="line">mid/audio-video.m3u8</span><br><span class="line">#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH=150000,URI=&quot;mid/iframe.m3u8&quot;</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=7680000</span><br><span class="line">hi/audio-video.m3u8</span><br><span class="line">#EXT-X-I-FRAME-STREAM-INF:BANDWIDTH=550000,URI=&quot;hi/iframe.m3u8&quot;</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=65000,CODECS=&quot;mp4a.40.5&quot;</span><br><span class="line">audio-only.m3u8</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-6-Master-Playlist-with-Alternative-Audio"><a href="#8-6-Master-Playlist-with-Alternative-Audio" class="headerlink" title="8.6. Master Playlist with Alternative Audio"></a>8.6. Master Playlist with Alternative Audio</h3><p>在此示例中， <code>CODECS</code> 属性已压缩以节省空间。<br>使用 <code>\</code> 表示标签在删除空格后继续到下一行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID=&quot;aac&quot;,NAME=&quot;English&quot;, \</span><br><span class="line">    DEFAULT=YES,AUTOSELECT=YES,LANGUAGE=&quot;en&quot;, \</span><br><span class="line">    URI=&quot;main/english-audio.m3u8&quot;</span><br><span class="line">#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID=&quot;aac&quot;,NAME=&quot;Deutsch&quot;, \</span><br><span class="line">    DEFAULT=NO,AUTOSELECT=YES,LANGUAGE=&quot;de&quot;, \</span><br><span class="line">    URI=&quot;main/german-audio.m3u8&quot;</span><br><span class="line">#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID=&quot;aac&quot;,NAME=&quot;Commentary&quot;, \</span><br><span class="line">    DEFAULT=NO,AUTOSELECT=NO,LANGUAGE=&quot;en&quot;, \</span><br><span class="line">    URI=&quot;commentary/audio-only.m3u8&quot;</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=1280000,CODECS=&quot;...&quot;,AUDIO=&quot;aac&quot;</span><br><span class="line">low/video-only.m3u8</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=2560000,CODECS=&quot;...&quot;,AUDIO=&quot;aac&quot;</span><br><span class="line">mid/video-only.m3u8</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=7680000,CODECS=&quot;...&quot;,AUDIO=&quot;aac&quot;</span><br><span class="line">hi/video-only.m3u8</span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=65000,CODECS=&quot;mp4a.40.5&quot;,AUDIO=&quot;aac&quot;</span><br><span class="line">main/english-audio.m3u8</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-7-Master-Playlist-with-Alternative-Video"><a href="#8-7-Master-Playlist-with-Alternative-Video" class="headerlink" title="8.7. Master Playlist with Alternative Video"></a>8.7. Master Playlist with Alternative Video</h3><p>此示例显示了三种不同的视频版本（ <code>Main</code> 、 <code>Centerfield</code> 和 <code>Dugout</code> ）和三种不同的变体流（低、中和高）。<br>在此示例中，不支持 <code>EXT-X-MEDIA</code> 标签和 <code>EXT-X-STREAM-INF</code> 标签的 <code>VIDEO</code> 属性的客户端只能播放视频版本 <code>Main</code> 。</p>
+<p>由于 <code>EXT-X-STREAM-INF</code> 标签没有 <code>AUDIO</code> 属性，因此所有视频版本都需要包含音频。</p>
+<p>在此示例中， <code>CODECS</code> 属性已压缩以节省空间。<br>使用 <code>\</code> 表示标签在删除空格后继续到下一行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID=&quot;low&quot;,NAME=&quot;Main&quot;, \</span><br><span class="line">    DEFAULT=YES,URI=&quot;low/main/audio-video.m3u8&quot;</span><br><span class="line">#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID=&quot;low&quot;,NAME=&quot;Centerfield&quot;, \</span><br><span class="line">    DEFAULT=NO,URI=&quot;low/centerfield/audio-video.m3u8&quot;</span><br><span class="line">#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID=&quot;low&quot;,NAME=&quot;Dugout&quot;, \</span><br><span class="line">    DEFAULT=NO,URI=&quot;low/dugout/audio-video.m3u8&quot;</span><br><span class="line"></span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=1280000,CODECS=&quot;...&quot;,VIDEO=&quot;low&quot;</span><br><span class="line">low/main/audio-video.m3u8</span><br><span class="line"></span><br><span class="line">#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID=&quot;mid&quot;,NAME=&quot;Main&quot;, \</span><br><span class="line">    DEFAULT=YES,URI=&quot;mid/main/audio-video.m3u8&quot;</span><br><span class="line">#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID=&quot;mid&quot;,NAME=&quot;Centerfield&quot;, \</span><br><span class="line">    DEFAULT=NO,URI=&quot;mid/centerfield/audio-video.m3u8&quot;</span><br><span class="line">#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID=&quot;mid&quot;,NAME=&quot;Dugout&quot;, \</span><br><span class="line">    DEFAULT=NO,URI=&quot;mid/dugout/audio-video.m3u8&quot;</span><br><span class="line"></span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=2560000,CODECS=&quot;...&quot;,VIDEO=&quot;mid&quot;</span><br><span class="line">mid/main/audio-video.m3u8</span><br><span class="line"></span><br><span class="line">#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID=&quot;hi&quot;,NAME=&quot;Main&quot;, \</span><br><span class="line">    DEFAULT=YES,URI=&quot;hi/main/audio-video.m3u8&quot;</span><br><span class="line">#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID=&quot;hi&quot;,NAME=&quot;Centerfield&quot;, \</span><br><span class="line">    DEFAULT=NO,URI=&quot;hi/centerfield/audio-video.m3u8&quot;</span><br><span class="line">#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID=&quot;hi&quot;,NAME=&quot;Dugout&quot;, \</span><br><span class="line">    DEFAULT=NO,URI=&quot;hi/dugout/audio-video.m3u8&quot;</span><br><span class="line"></span><br><span class="line">#EXT-X-STREAM-INF:BANDWIDTH=7680000,CODECS=&quot;...&quot;,VIDEO=&quot;hi&quot;</span><br><span class="line">hi/main/audio-video.m3u8</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-8-Session-Data-in-a-Master-Playlist"><a href="#8-8-Session-Data-in-a-Master-Playlist" class="headerlink" title="8.8. Session Data in a Master Playlist"></a>8.8. Session Data in a Master Playlist</h3><p>在此示例中，仅显示 <code>EXT-X-SESSION-DATA</code> ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#EXT-X-SESSION-DATA:DATA-ID=&quot;com.example.lyrics&quot;,URI=&quot;lyrics.json&quot;</span><br><span class="line"></span><br><span class="line">#EXT-X-SESSION-DATA:DATA-ID=&quot;com.example.title&quot;,LANGUAGE=&quot;en&quot;, \</span><br><span class="line">    VALUE=&quot;This is an example&quot;</span><br><span class="line">#EXT-X-SESSION-DATA:DATA-ID=&quot;com.example.title&quot;,LANGUAGE=&quot;es&quot;, \</span><br><span class="line">    VALUE=&quot;Este es un ejemplo&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-9-CHARACTERISTICS-Attribute-Containing-Multiple-Characteristics"><a href="#8-9-CHARACTERISTICS-Attribute-Containing-Multiple-Characteristics" class="headerlink" title="8.9. CHARACTERISTICS Attribute Containing Multiple Characteristics"></a>8.9. CHARACTERISTICS Attribute Containing Multiple Characteristics</h3><p>某些特征组合起来是有效的，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CHARACTERISTICS=</span><br><span class="line">&quot;public.accessibility.transcribes-spoken-dialog,public.easy-to-read&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-10-EXT-X-DATERANGE-Carrying-SCTE-35-Tags"><a href="#8-10-EXT-X-DATERANGE-Carrying-SCTE-35-Tags" class="headerlink" title="8.10. EXT-X-DATERANGE Carrying SCTE-35 Tags"></a>8.10. EXT-X-DATERANGE Carrying SCTE-35 Tags</h3><p>此示例显示了两个描述单个日期范围的 <code>EXT-X-DATERANGE</code> 标签，其中 <code>SCTE-35 &quot;out&quot; splice_insert()</code> 命令随后使用 <code>SCTE-35 &quot;in&quot; splice_insert()</code> 命令进行更新。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#EXTM3U</span><br><span class="line">...</span><br><span class="line">#EXT-X-DATERANGE:ID=&quot;splice-6FFFFFF0&quot;,START-DATE=&quot;2014-03-05T11:</span><br><span class="line">15:00Z&quot;,PLANNED-DURATION=59.993,SCTE35-OUT=0xFC002F0000000000FF0</span><br><span class="line">00014056FFFFFF000E011622DCAFF000052636200000000000A0008029896F50</span><br><span class="line">000008700000000</span><br><span class="line"></span><br><span class="line">... Media Segment declarations for 60s worth of media</span><br><span class="line"></span><br><span class="line">#EXT-X-DATERANGE:ID=&quot;splice-6FFFFFF0&quot;,DURATION=59.993,SCTE35-IN=</span><br><span class="line">0xFC002A0000000000FF00000F056FFFFFF000401162802E6100000000000A00</span><br><span class="line">08029896F50000008700000000</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="9-IANA-Considerations"><a href="#9-IANA-Considerations" class="headerlink" title="9. IANA Considerations"></a>9. IANA Considerations</h2><p>IANA 已注册以下媒体类型 <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc2046">RFC2046</a>：</p>
+<p>Type name: application<br>Subtype name: vnd.apple.mpegurl<br>Required parameters: none<br>Optional parameters: none<br>Encoding considerations：编码为 UTF-8，即 8 位文本。此媒体类型可能需要在无法处理 8 位文本的传输上进行编码。有关更多信息，请参阅<a href="#4-playlists">第 4 节</a> 。<br>Security considerations: See <a href="#10-security-considerations">Section 10</a> .<br>Compression: 此媒体类型不采用压缩。</p>
+<p>互操作性注意事项：由于文件是 8 位文本，因此不存在字节顺序问题。应用程序可能会遇到无法识别的标签，这些标签 <em>应该</em> 被忽略。</p>
+<p>已发布的规范：参见 <a href="#4-playlists">第 4 节</a> 。</p>
+<p>使用此媒体类型的应用程序：多媒体应用程序，例如 iOS 3.0 及更高版本中的 iPhone 媒体播放器和 Mac OS X 版本 10.6 及更高版本中的 QuickTime Player。</p>
+<p>片段标识符注意事项：此媒体类型未定义片段标识符。</p>
+<p>附加信息：</p>
+<blockquote>
+<p>此类型的弃用别名：无<br>幻数(magic numbers)：#EXTM3U<br>文件扩展名：.m3u8、.m3u（参见 <a href="#4-playlists">第 4 节</a>）<br>Macintosh 文件类型代码：无  </p>
+</blockquote>
+<p>如需更多信息，请联系以下人员和电子邮件地址：David Singer，<a href="mailto:&#115;&#x69;&#x6e;&#103;&#x65;&#x72;&#64;&#x61;&#x70;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#109;">&#115;&#x69;&#x6e;&#103;&#x65;&#x72;&#64;&#x61;&#x70;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#109;</a>。</p>
+<p>Intended usage: LIMITED USE</p>
+<p>Restrictions on usage: none</p>
+<p>Author: Roger Pantos</p>
+<p>Change Controller: David Singer</p>
+<h2 id="10-Security-Considerations"><a href="#10-Security-Considerations" class="headerlink" title="10. Security Considerations"></a>10. Security Considerations</h2><p>由于该协议通常使用 HTTP 传输数据，因此大多数相同的安全注意事项都适用。请参阅 HTTP [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7230">RFC7230</a>] 的 <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8216#section-15">第 15 节</a>。</p>
+<p>媒体文件解析器通常会受到 <em>模糊测试</em> 攻击。<br>实施者 <em>应该</em> 特别注意解析从服务器接收的数据的代码，并确保正确处理所有可能的输入。</p>
+<p>播放列表文件包含 URI，客户端将使用该 URI 发出任意实体的网络请求。<br>客户端 <em>应该</em> 检查响应的范围以防止缓冲区溢出。<br>另请参阅 “统一资源标识符 (URI)：通用语法” [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc3986">RFC3986</a>] 的安全注意事项部分。</p>
+<p>除了 URL 解析之外，此格式不采用任何形式的主动内容。</p>
+<p>客户端 <em>应该</em> 将每个播放会话限制为合理的并发下载数量（例如四个），以避免导致拒绝服务（dos）攻击。</p>
+<p>HTTP 请求通常包含会话状态（ <code>cookies</code> ），其中可能包含私人用户数据。<br>实现 <em>必须</em> 遵循 “HTTP 状态管理机制” [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc6265">RFC6265</a>] 指定的 cookie 限制和到期规则，以保护自己免受攻击。<br>另请参阅该文档的安全注意事项部分和 “HTTP 状态管理的使用” [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc2964">RFC2964</a>]。</p>
+<p>加密密钥由 URI 指定。<br>这些密钥的传送 <em>应该</em> 通过 HTTP Over TLS [<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc2818">RFC2818</a>]（以前称为 SSL）等机制与安全领域或会话令牌相结合来保护。</p>
+<!-- [COMMON-ENC]: https://datatracker.ietf.org/doc/html/rfc8216#ref-COMMON_ENC -->
+<!-- [H-264]: https://datatracker.ietf.org/doc/html/rfc8216#ref-H_264 -->
+<!-- [ISO-14496]: https://datatracker.ietf.org/doc/html/rfc8216#ref-ISO_14496 -->
+<!-- [AC-3]: https://datatracker.ietf.org/doc/html/rfc8216#ref-AC_3 -->
+<!-- [Sample-Enc]: https://datatracker.ietf.org/doc/html/rfc8216#ref-SampleEnc -->
+<!-- SCTE35 Page Not Found -->
+<!-- [ISO-13818]: https://datatracker.ietf.org/doc/html/rfc8216#ref-ISO_13818 -->
+<!-- [ISO-13818-3]: https://datatracker.ietf.org/doc/html/rfc8216#ref-ISO_13818_3 -->
+<!-- [ISO-13818-7]: https://datatracker.ietf.org/doc/html/rfc8216#ref-ISO_13818_7 -->
+<!-- [ISOBMFF]: https://datatracker.ietf.org/doc/html/rfc8216#ref-ISOBMFF -->
+<!-- [CMAF]: https://datatracker.ietf.org/doc/html/rfc8216#ref-CMAF -->
+<!-- ID3 Not Found -->
+<!-- WebVTT Not Found -->
+<!-- [M3U]: https://datatracker.ietf.org/doc/html/rfc8216#ref-M3U -->
+<!-- M3U Not found, I think this one -->
+<!-- [UNICODE]: https://datatracker.ietf.org/doc/html/rfc8216#ref-UNICODE -->
+<!-- [ISO-8601]: https://datatracker.ietf.org/doc/html/rfc8216#ref-ISO_8601 -->
+<!-- [UTI]: https://datatracker.ietf.org/doc/html/rfc8216#ref-UTI -->
+<!-- [HDCP]: https://datatracker.ietf.org/doc/html/rfc8216#ref-HDCP -->
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://github.com/Guaderxx">Guader</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://guaderxx.github.io/2024/07/29/HTTP-Live-Streaming-ZH/">https://guaderxx.github.io/2024/07/29/HTTP-Live-Streaming-ZH/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="addtoany"><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_wechat"></a><a class="a2a_button_facebook_messenger"></a><a class="a2a_button_email"></a><a class="a2a_button_copy_link"></a><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a></div></div><script async="async" src="https://static.addtoany.com/menu/page.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="../../03/daily/" title="daily"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">daily</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Introduction-to-HTTP-Live-Streaming"><span class="toc-number">1.</span> <span class="toc-text">1. Introduction to HTTP Live Streaming</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Overview"><span class="toc-number">2.</span> <span class="toc-text">2. Overview</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Media-Segments"><span class="toc-number">3.</span> <span class="toc-text">3. Media Segments</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Supported-Media-Segment-Formats"><span class="toc-number">3.1.</span> <span class="toc-text">3.1. Supported Media Segment Formats</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-MPEG-2-Transport-Streams"><span class="toc-number">3.2.</span> <span class="toc-text">3.2. MPEG-2 Transport Streams</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-Fragmented-MPEG-4"><span class="toc-number">3.3.</span> <span class="toc-text">3.3. Fragmented MPEG-4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-Packed-Audio"><span class="toc-number">3.4.</span> <span class="toc-text">3.4. Packed Audio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-WebVTT"><span class="toc-number">3.5.</span> <span class="toc-text">3.5. WebVTT</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Playlists"><span class="toc-number">4.</span> <span class="toc-text">4. Playlists</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Definition-of-a-Playlist"><span class="toc-number">4.1.</span> <span class="toc-text">4.1. Definition of a Playlist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Attribute-Lists"><span class="toc-number">4.2.</span> <span class="toc-text">4.2. Attribute Lists</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Playlist-Tags"><span class="toc-number">4.3.</span> <span class="toc-text">4.3. Playlist Tags</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-1-Basic-Tags"><span class="toc-number">4.3.1.</span> <span class="toc-text">4.3.1. Basic Tags</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-1-1-EXTM3U"><span class="toc-number">4.3.1.1.</span> <span class="toc-text">4.3.1.1. EXTM3U</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-1-2-EXT-X-VERSION"><span class="toc-number">4.3.1.2.</span> <span class="toc-text">4.3.1.2. EXT-X-VERSION</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-2-Media-Segment-Tags"><span class="toc-number">4.3.2.</span> <span class="toc-text">4.3.2. Media Segment Tags</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-2-1-EXTINF"><span class="toc-number">4.3.2.1.</span> <span class="toc-text">4.3.2.1. EXTINF</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-2-2-EXT-X-BYTERANGE"><span class="toc-number">4.3.2.2.</span> <span class="toc-text">4.3.2.2. EXT-X-BYTERANGE</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-2-3-EXT-X-DISCONTINUITY"><span class="toc-number">4.3.2.3.</span> <span class="toc-text">4.3.2.3. EXT-X-DISCONTINUITY</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-2-4-EXT-X-KEY"><span class="toc-number">4.3.2.4.</span> <span class="toc-text">4.3.2.4. EXT-X-KEY</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-2-5-EXT-X-MAP"><span class="toc-number">4.3.2.5.</span> <span class="toc-text">4.3.2.5. EXT-X-MAP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-2-6-EXT-X-PROGRAM-DATE-TIME"><span class="toc-number">4.3.2.6.</span> <span class="toc-text">4.3.2.6. EXT-X-PROGRAM-DATE-TIME</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-2-7-EXT-X-DATERANGE"><span class="toc-number">4.3.2.7.</span> <span class="toc-text">4.3.2.7. EXT-X-DATERANGE</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#4-3-2-7-1-Mapping-SCTE-35-into-EXT-X-DATERANGE"><span class="toc-number">4.3.2.7.1.</span> <span class="toc-text">4.3.2.7.1. Mapping SCTE-35 into EXT-X-DATERANGE</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-3-Media-Playlist-Tags"><span class="toc-number">4.3.3.</span> <span class="toc-text">4.3.3. Media Playlist Tags</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-3-1-EXT-X-TARGETDURATION"><span class="toc-number">4.3.3.1.</span> <span class="toc-text">4.3.3.1. EXT-X-TARGETDURATION</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-3-2-EXT-X-MEDIA-SEQUENCE"><span class="toc-number">4.3.3.2.</span> <span class="toc-text">4.3.3.2. EXT-X-MEDIA-SEQUENCE</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-3-3-EXT-X-DISCONTINUITY-SEQUENCE"><span class="toc-number">4.3.3.3.</span> <span class="toc-text">4.3.3.3. EXT-X-DISCONTINUITY-SEQUENCE</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-3-4-EXT-X-ENDLIST"><span class="toc-number">4.3.3.4.</span> <span class="toc-text">4.3.3.4. EXT-X-ENDLIST</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-3-5-EXT-X-PLAYLIST-TYPE"><span class="toc-number">4.3.3.5.</span> <span class="toc-text">4.3.3.5. EXT-X-PLAYLIST-TYPE</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-3-6-EXT-X-I-FRAMES-ONLY"><span class="toc-number">4.3.3.6.</span> <span class="toc-text">4.3.3.6. EXT-X-I-FRAMES-ONLY</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-4-Master-Playlist-Tags"><span class="toc-number">4.3.4.</span> <span class="toc-text">4.3.4. Master Playlist Tags</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-4-1-EXT-X-MEDIA"><span class="toc-number">4.3.4.1.</span> <span class="toc-text">4.3.4.1. EXT-X-MEDIA</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#4-3-4-1-1-Rendition-Groups"><span class="toc-number">4.3.4.1.1.</span> <span class="toc-text">4.3.4.1.1. Rendition Groups</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-4-2-EXT-X-STREAM-INF"><span class="toc-number">4.3.4.2.</span> <span class="toc-text">4.3.4.2. EXT-X-STREAM-INF</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#4-3-4-2-1-Alternative-Renditions"><span class="toc-number">4.3.4.2.1.</span> <span class="toc-text">4.3.4.2.1. Alternative Renditions</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-4-3-EXT-X-I-FRAME-STREAM-INF"><span class="toc-number">4.3.4.3.</span> <span class="toc-text">4.3.4.3. EXT-X-I-FRAME-STREAM-INF</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-4-4-EXT-X-SESSION-DATA"><span class="toc-number">4.3.4.4.</span> <span class="toc-text">4.3.4.4. EXT-X-SESSION-DATA</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-4-5-EXT-X-SESSION-KEY"><span class="toc-number">4.3.4.5.</span> <span class="toc-text">4.3.4.5. EXT-X-SESSION-KEY</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-5-Media-or-Master-Playlist-Tags"><span class="toc-number">4.3.5.</span> <span class="toc-text">4.3.5. Media or Master Playlist Tags</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-5-1-EXT-X-INDEPENDENT-SEGMENTS"><span class="toc-number">4.3.5.1.</span> <span class="toc-text">4.3.5.1. EXT-X-INDEPENDENT-SEGMENTS</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-5-2-EXT-X-START"><span class="toc-number">4.3.5.2.</span> <span class="toc-text">4.3.5.2. EXT-X-START</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Key-Files"><span class="toc-number">5.</span> <span class="toc-text">5. Key Files</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Structure-of-Key-Files"><span class="toc-number">5.1.</span> <span class="toc-text">5.1. Structure of Key Files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-IV-for-AES-128"><span class="toc-number">5.2.</span> <span class="toc-text">5.2. IV for AES-128</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Client-x2F-Server-Responsibilities"><span class="toc-number">6.</span> <span class="toc-text">6. Client&#x2F;Server Responsibilities</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-Introduction"><span class="toc-number">6.1.</span> <span class="toc-text">6.1. Introduction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-Server-Responsibilities"><span class="toc-number">6.2.</span> <span class="toc-text">6.2. Server Responsibilities</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-1-General-Server-Responsibilities"><span class="toc-number">6.2.1.</span> <span class="toc-text">6.2.1. General Server Responsibilities</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-2-Live-Playlists"><span class="toc-number">6.2.2.</span> <span class="toc-text">6.2.2. Live Playlists</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-3-Encrypting-Media-Segments"><span class="toc-number">6.2.3.</span> <span class="toc-text">6.2.3. Encrypting Media Segments</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-4-Providing-Variant-Streams"><span class="toc-number">6.2.4.</span> <span class="toc-text">6.2.4. Providing Variant Streams</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-Client-Responsibilities"><span class="toc-number">6.3.</span> <span class="toc-text">6.3. Client Responsibilities</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-1-General-Client-Responsibilities"><span class="toc-number">6.3.1.</span> <span class="toc-text">6.3.1. General Client Responsibilities</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-2-Loading-the-Media-Playlist-File"><span class="toc-number">6.3.2.</span> <span class="toc-text">6.3.2. Loading the Media Playlist File</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-3-Playing-the-Media-Playlist-File"><span class="toc-number">6.3.3.</span> <span class="toc-text">6.3.3. Playing the Media Playlist File</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-4-Reloading-the-Media-Playlist-File"><span class="toc-number">6.3.4.</span> <span class="toc-text">6.3.4. Reloading the Media Playlist File</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-5-Determining-the-Next-Segment-to-Load"><span class="toc-number">6.3.5.</span> <span class="toc-text">6.3.5. Determining the Next Segment to Load</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-6-Decrypting-Encrypted-Media-Segments"><span class="toc-number">6.3.6.</span> <span class="toc-text">6.3.6. Decrypting Encrypted Media Segments</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Protocol-Version-Compatibility"><span class="toc-number">7.</span> <span class="toc-text">7. Protocol Version Compatibility</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-Playlist-Examples"><span class="toc-number">8.</span> <span class="toc-text">8. Playlist Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-Simple-Media-Playlist"><span class="toc-number">8.1.</span> <span class="toc-text">8.1. Simple Media Playlist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-Live-Media-Playlist-Using-HTTPS"><span class="toc-number">8.2.</span> <span class="toc-text">8.2. Live Media Playlist Using HTTPS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-Playlist-With-Encrypted-Media-Segments"><span class="toc-number">8.3.</span> <span class="toc-text">8.3. Playlist With Encrypted Media Segments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-Master-Playlist"><span class="toc-number">8.4.</span> <span class="toc-text">8.4. Master Playlist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5-Master-Playlist-with-I-Frames"><span class="toc-number">8.5.</span> <span class="toc-text">8.5. Master Playlist with I-Frames</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-6-Master-Playlist-with-Alternative-Audio"><span class="toc-number">8.6.</span> <span class="toc-text">8.6. Master Playlist with Alternative Audio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-7-Master-Playlist-with-Alternative-Video"><span class="toc-number">8.7.</span> <span class="toc-text">8.7. Master Playlist with Alternative Video</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-8-Session-Data-in-a-Master-Playlist"><span class="toc-number">8.8.</span> <span class="toc-text">8.8. Session Data in a Master Playlist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-9-CHARACTERISTICS-Attribute-Containing-Multiple-Characteristics"><span class="toc-number">8.9.</span> <span class="toc-text">8.9. CHARACTERISTICS Attribute Containing Multiple Characteristics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-10-EXT-X-DATERANGE-Carrying-SCTE-35-Tags"><span class="toc-number">8.10.</span> <span class="toc-text">8.10. EXT-X-DATERANGE Carrying SCTE-35 Tags</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-IANA-Considerations"><span class="toc-number">9.</span> <span class="toc-text">9. IANA Considerations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Security-Considerations"><span class="toc-number">10.</span> <span class="toc-text">10. Security Considerations</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Guader</div><div class="footer_custom_text">The best time to plant a tree was twenty years ago. The second best time is now :)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/utils.min.js"></script><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/main.min.js"></script><script src="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://jsd.012700.xyz/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://jsd.012700.xyz/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(()=>{
+  const getGiscusTheme = theme => {
+    return theme === 'dark' ? 'dark' : 'light'
+  }
+
+  const loadGiscus = () => {
+    const config = Object.assign({
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Guaderxx/Guaderxx.github.io',
+      'data-repo-id': 'R_kgDOJxPT0Q',
+      'data-category-id': 'DIC_kwDOJxPT0c4CXUYG',
+      'data-mapping': 'pathname',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true
+    },null)
+
+    const ele = document.createElement('script')
+    for (let key in config) {
+      ele.setAttribute(key, config[key])
+    }
+    document.getElementById('giscus-wrap').appendChild(ele)
+  }
+
+  const changeGiscusTheme = theme => {
+    const sendMessage = message => {
+      const iframe = document.querySelector('iframe.giscus-frame')
+      if (!iframe) return
+      iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app')
+    }
+
+    sendMessage({
+      setConfig: {
+        theme: getGiscusTheme(theme)
+      }
+    });
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment= loadGiscus
+  }
+})()</script></div><script defer="defer" id="ribbon" src="https://jsd.012700.xyz/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="https://jsd.012700.xyz/npm/busuanzi@2.3.0/bsz.pure.mini.min.js"></script></div></body></html>
