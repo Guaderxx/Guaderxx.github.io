@@ -29,3 +29,12 @@
       link: https://pandas.pydata.org/docs/index.html
       avatar: https://pandas.pydata.org/docs/_static/favicon.ico
       descr: "pandas documentation — pandas 2.0.2 documentation"
+
+- class_name: Tools
+  class_desc: maybe useful
+  link_list:
+    - name: File Format
+      link: https://docs.fileformat.com/ 
+      avatar: https://www.fileformat.com/templates/fileformat/img/fileformat-logo.svg
+      descr: "FileFormat Docs provides detailed format specifications, information about tools &amp; apps that can handle specific file types, and how developers can use this info in developing better applications."
+    
