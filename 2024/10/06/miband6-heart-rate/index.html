@@ -1,0 +1,255 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>miband6-heart-rate | Guader's Blog</title><meta name="author" content="Guader"><meta name="copyright" content="Guader"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="前一阵子看 vtuber 感觉旁边显式的心跳插件挺好玩的。不过当时没找到手环最近找到了，就看了下    设备：小米手环6 (MI Smart Band 6)  关于这个心跳数据，看到了两种方案获取，一种是抓应用的包，一种是抓蓝牙的包。 这里我用的是用蓝牙获取数据。 获取小米手环 AuthKey 对于支持广播的设备，可以直接跳到下面     向小米手环请求随机数 接收到随机数后，使用该手环的 Au">
+<meta property="og:type" content="article">
+<meta property="og:title" content="miband6-heart-rate">
+<meta property="og:url" content="https://guaderxx.github.io/2024/10/06/miband6-heart-rate/index.html">
+<meta property="og:site_name" content="Guader&#39;s Blog">
+<meta property="og:description" content="前一阵子看 vtuber 感觉旁边显式的心跳插件挺好玩的。不过当时没找到手环最近找到了，就看了下    设备：小米手环6 (MI Smart Band 6)  关于这个心跳数据，看到了两种方案获取，一种是抓应用的包，一种是抓蓝牙的包。 这里我用的是用蓝牙获取数据。 获取小米手环 AuthKey 对于支持广播的设备，可以直接跳到下面     向小米手环请求随机数 接收到随机数后，使用该手环的 Au">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://guaderxx.github.io/img/avatar.png">
+<meta property="article:published_time" content="2024-10-06T05:04:08.000Z">
+<meta property="article:modified_time" content="2024-10-06T09:00:14.034Z">
+<meta property="article:author" content="Guader">
+<meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://guaderxx.github.io/img/avatar.png"><link rel="shortcut icon" href="../../../../img/fav.png"><link rel="canonical" href="https://guaderxx.github.io/2024/10/06/miband6-heart-rate/index.html"><link rel="preconnect" href="https://jsd.012700.xyz"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="stylesheet" href="../../../../css/index.css?v=4.13.0"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-9ZF8XKZV7M"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9ZF8XKZV7M');
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":90,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":800},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-right"},
+  infinitegrid: {
+    js: 'https://jsd.012700.xyz/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'miband6-heart-rate',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-06 17:00:14'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="../img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="../archives/"><div class="headline">Articles</div><div class="length-num">36</div></a><a href="../tags/"><div class="headline">Tags</div><div class="length-num">18</div></a><a href="../categories/"><div class="headline">Categories</div><div class="length-num">29</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="../tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="../categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="../link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="../index.html" title="Guader's Blog"><span class="site-name">Guader's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="../index.html"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="../archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="../tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="../categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="../link/"><i class="fa-fw fas fa-link"></i><span> Bookmark</span></a></div><div class="menus_item"><a class="site-page" href="../about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">miband6-heart-rate</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-10-06T05:04:08.000Z" title="Created 2024-10-06 13:04:08">2024-10-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-10-06T09:00:14.034Z" title="Updated 2024-10-06 17:00:14">2024-10-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="../../../../categories/Daily/">Daily</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">911</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>3mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="miband6-heart-rate"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><blockquote>
+<p>前一阵子看 vtuber 感觉旁边显式的心跳插件挺好玩的。<br>不过当时没找到手环<br>最近找到了，就看了下   </p>
+<p>设备：小米手环6 (MI Smart Band 6)</p>
+</blockquote>
+<p>关于这个心跳数据，看到了两种方案获取，一种是抓应用的包，一种是抓蓝牙的包。</p>
+<p>这里我用的是用蓝牙获取数据。</p>
+<h2 id="获取小米手环-AuthKey"><a href="#获取小米手环-AuthKey" class="headerlink" title="获取小米手环 AuthKey"></a>获取小米手环 AuthKey</h2><blockquote>
+<p>对于支持广播的设备，可以直接跳到下面  </p>
+</blockquote>
+<ol>
+<li>向小米手环请求随机数</li>
+<li>接收到随机数后，使用该手环的 Auth Key 对随机数进行 AES 对称加密。</li>
+<li>将加密后的信息发回给手环。</li>
+<li>验证通过。</li>
+</ol>
+<h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><p>首先通过 <a target="_blank" rel="noopener" href="http://www.freemyband.com/">freemyband</a> 页面上的指引，下载魔改后的小米运动APP，打开与手环配对，然后在 <code>/sdcard/freemyband</code> 路径下获取手环的 AuthKey.</p>
+<h3 id="Rooted-IPhone"><a href="#Rooted-IPhone" class="headerlink" title="Rooted IPhone"></a>Rooted IPhone</h3><p>配对好后用 ssh 连接上，在 <code>/var/mobile/Containers/Data/Application/&lt;MiFit_App_UUID&gt;/Documents</code> 下面找到 <code>HMDBDeviceInfoDataBaseV2.sqlite</code> 这样的数据库，然后从 <code>device_info</code> 表中 <code>deviceOauthKey</code> 获取手环的 AuthKey.</p>
+<h3 id="IPhone"><a href="#IPhone" class="headerlink" title="IPhone"></a>IPhone</h3><p>根据 <a target="_blank" rel="noopener" href="https://github.com/argrento/huami-token">huamitoken</a> 这个项目获取 AuthKey.</p>
+<h2 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h2><p><strong>这个方法需要手环连接电脑而不是手机</strong></p>
+<p>感兴趣的可以对照 <a target="_blank" rel="noopener" href="https://github.red/miband-heart-rate/">e99p1ant</a> 这篇文章继续。  </p>
+<p>我使用的是下面的方法。</p>
+<h1 id="通过广播获取"><a href="#通过广播获取" class="headerlink" title="通过广播获取"></a>通过广播获取</h1><p>看到一半的时候我发现这个手环设置里有 <strong>蓝牙广播</strong> 和 <strong>运动心率广播</strong> 。<br>我感觉通过让它广播我再读数据会更简单点。<br>我这是 windows, 所以下载的是微软的 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows-hardware/drivers/bluetooth/testing-btp-setup-package">BTP</a>。  </p>
+<p><em>Mac可以下载 bluetility</em><br><code>brew install --cask bluetility</code>  </p>
+<p>BTP 会自动解压到 <code>C:\BTP\v1.14.0\x86\btvs.exe</code> ，直接双击就行，然后它会打开 Wireshark 进行转包。<br>然后弹窗的 <code>Full Packet Logging</code> 按钮也要记得点击。</p>
+<p>抓包时需要一直打开电脑蓝牙的扫描，也就是 <em>添加设备</em>。<br>且需要打开运动模式，比如 <em>自由训练</em> 。</p>
+<p>会有一些其他的数据也被获取到，可以通过 <code>btcommon.eir_ad.entry.company_id == 0x0157</code> 该过滤器过滤掉不相干的设备。</p>
+<p>通过 Wireshark 的 <code>Bluetooth HCI Event - LE Meta -&gt; Advertising Data -&gt; Manufacturer Specific -&gt; Company ID</code> 获取的过滤器。</p>
+<p>Data 部分是 24 字节，比较多个数据包可以发现，只有第四字节是变动的，因此可以推测，第四字节就是心跳。</p>
+<p>接下来就是写程序验证了。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::error::Error;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> bluest::&#123;Adapter,AdvertisingDevice&#125;;</span><br><span class="line"><span class="keyword">use</span> futures_lite::StreamExt;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[tokio::main]</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">main</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;(), <span class="type">Box</span>&lt;<span class="keyword">dyn</span> Error&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">adapter</span> = Adapter::<span class="title function_ invoke__">default</span>()</span><br><span class="line">        .<span class="keyword">await</span></span><br><span class="line">        .<span class="title function_ invoke__">ok_or</span>(<span class="string">&quot;Bluetooth adapter not found&quot;</span>)?;</span><br><span class="line">    adapter.<span class="title function_ invoke__">wait_available</span>().<span class="keyword">await</span>?;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Starting scan&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">scan</span> = adapter.<span class="title function_ invoke__">scan</span>(&amp;[]).<span class="keyword">await</span>?;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Scan started&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">let</span> <span class="variable">Some</span>(discovered_device) = scan.<span class="title function_ invoke__">next</span>().<span class="keyword">await</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Some</span>(manufacturer_data) = discovered_device.adv_data.manufacturer_data &#123;</span><br><span class="line">            <span class="keyword">if</span> manufacturer_data.company_id != <span class="number">0x0157</span> &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">name</span> = discovered_device</span><br><span class="line">                .device</span><br><span class="line">                .<span class="title function_ invoke__">name</span>()</span><br><span class="line">                .<span class="title function_ invoke__">unwrap_or</span>(<span class="string">&quot;unknown&quot;</span>.<span class="title function_ invoke__">to_string</span>());</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">rssi</span> = discovered_device.rssi.<span class="title function_ invoke__">unwrap_or_default</span>();</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">heart_rate</span> = manufacturer_data.data[<span class="number">3</span>];</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;&#123;name&#125; (&#123;rssi&#125;dBm) Heart Rate: &#123;heart_rate:?&#125;&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="H5-Bluetooth"><a href="#H5-Bluetooth" class="headerlink" title="H5 Bluetooth"></a>H5 Bluetooth</h1><p>顺带看了眼，H5 这还属于实验性吧。能看到设备，但是没连上。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://webbluetoothcg.github.io/web-bluetooth/#introduction-examples</span></span><br><span class="line"><span class="comment">// EXAMPLE 1</span></span><br><span class="line">navigator.<span class="property">bluetooth</span>.<span class="title function_">requestDevice</span>(&#123;</span><br><span class="line">  <span class="attr">filters</span>: [&#123;</span><br><span class="line">    <span class="attr">services</span>: [<span class="string">&#x27;heart_rate&#x27;</span>],</span><br><span class="line">  &#125;]</span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="function"><span class="params">device</span> =&gt;</span> device.<span class="property">gatt</span>.<span class="title function_">connect</span>())</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">server</span> =&gt;</span> server.<span class="title function_">getPrimaryService</span>(<span class="string">&#x27;heart_rate&#x27;</span>))</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">service</span> =&gt;</span> &#123;</span><br><span class="line">  chosenHeartRateService = service;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([</span><br><span class="line">    service.<span class="title function_">getCharacteristic</span>(<span class="string">&#x27;body_sensor_location&#x27;</span>)</span><br><span class="line">      .<span class="title function_">then</span>(handleBodySensorLocationCharacteristic),</span><br><span class="line">    service.<span class="title function_">getCharacteristic</span>(<span class="string">&#x27;heart_rate_measurement&#x27;</span>)</span><br><span class="line">      .<span class="title function_">then</span>(handleHeartRateMeasurementCharacteristic),</span><br><span class="line">  ]);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这段代码里 <code>services: [&#39;heart_rate&#39;]</code> 换成 <code>manufacturerData: [&#123; companyIdentifier: 0x0157 &#125;]</code> 倒是能找到手环。</p>
+<p>然后在 <code>device.gatt.connect</code> 这部分，这里和 <code>https://webbluetoothcg.github.io/web-bluetooth/#dom-bluetoothremotegattserver-connect</code> 这里的内容也有出入。</p>
+<p>总而言之，过阵子再看吧。</p>
+<h2 id="Related-Project"><a href="#Related-Project" class="headerlink" title="Related Project"></a>Related Project</h2><p><a target="_blank" rel="noopener" href="https://github.com/wuhan005/mebeats">wuhanbeat</a>： <a target="_blank" rel="noopener" href="https://github.red/miband-heart-rate/">e99p1ant</a> 这篇文章对应的项目, 在 MacOS 上监听心跳，支持 2,3,4,5,6   Golang<br><a target="_blank" rel="noopener" href="https://github.com/satcar77/miband4">miband4</a>： 一个 4 的连接器  Nodejs<br><a target="_blank" rel="noopener" href="https://github.com/Eryux/miband-heartrate">heartrate</a>：在 windows 上监听心跳，支持 2,3,4  C#</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://github.com/Guaderxx">Guader</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://guaderxx.github.io/2024/10/06/miband6-heart-rate/">https://guaderxx.github.io/2024/10/06/miband6-heart-rate/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../../../../tags/Rust/">Rust</a></div><div class="post_share"><div class="addtoany"><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_wechat"></a><a class="a2a_button_facebook_messenger"></a><a class="a2a_button_email"></a><a class="a2a_button_copy_link"></a><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a></div></div><script async="async" src="https://static.addtoany.com/menu/page.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="../../../08/19/range-over-func/" title="range-over-func"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">range-over-func</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%B0%8F%E7%B1%B3%E6%89%8B%E7%8E%AF-AuthKey"><span class="toc-number">1.</span> <span class="toc-text">获取小米手环 AuthKey</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Android"><span class="toc-number">1.1.</span> <span class="toc-text">Android</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rooted-IPhone"><span class="toc-number">1.2.</span> <span class="toc-text">Rooted IPhone</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPhone"><span class="toc-number">1.3.</span> <span class="toc-text">IPhone</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Note"><span class="toc-number">2.</span> <span class="toc-text">Note</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%B9%BF%E6%92%AD%E8%8E%B7%E5%8F%96"><span class="toc-number"></span> <span class="toc-text">通过广播获取</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#H5-Bluetooth"><span class="toc-number"></span> <span class="toc-text">H5 Bluetooth</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Related-Project"><span class="toc-number">1.</span> <span class="toc-text">Related Project</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Guader</div><div class="footer_custom_text">The best time to plant a tree was twenty years ago. The second best time is now :)</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/utils.min.js"></script><script src="https://jsd.012700.xyz/npm/hexo-theme-butterfly@4.13.0/source/js/main.min.js"></script><script src="https://jsd.012700.xyz/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://jsd.012700.xyz/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://jsd.012700.xyz/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://jsd.012700.xyz/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>(()=>{
+  const getGiscusTheme = theme => {
+    return theme === 'dark' ? 'dark' : 'light'
+  }
+
+  const loadGiscus = () => {
+    const config = Object.assign({
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Guaderxx/Guaderxx.github.io',
+      'data-repo-id': 'R_kgDOJxPT0Q',
+      'data-category-id': 'DIC_kwDOJxPT0c4CXUYG',
+      'data-mapping': 'pathname',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true
+    },null)
+
+    const ele = document.createElement('script')
+    for (let key in config) {
+      ele.setAttribute(key, config[key])
+    }
+    document.getElementById('giscus-wrap').appendChild(ele)
+  }
+
+  const changeGiscusTheme = theme => {
+    const sendMessage = message => {
+      const iframe = document.querySelector('iframe.giscus-frame')
+      if (!iframe) return
+      iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app')
+    }
+
+    sendMessage({
+      setConfig: {
+        theme: getGiscusTheme(theme)
+      }
+    });
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment= loadGiscus
+  }
+})()</script></div><script defer="defer" id="ribbon" src="https://jsd.012700.xyz/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="https://jsd.012700.xyz/npm/busuanzi@2.3.0/bsz.pure.mini.min.js"></script></div></body></html>
