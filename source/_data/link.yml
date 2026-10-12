@@ -3,7 +3,7 @@
   link_list:
     - name: MDN
       link: https://developer.mozilla.org/
-      avatar: https://developer.mozilla.org/apple-touch-icon.6803c6f0.png
+      avatar: https://developer.mozilla.org/apple-touch-icon.png
       descr: The MDN Web Docs site provides information about Open Web technologies including HTML, CSS, and APIs for both Web sites and progressive web apps.
     - name: JavaScript Info
       link: https://javascript.info/

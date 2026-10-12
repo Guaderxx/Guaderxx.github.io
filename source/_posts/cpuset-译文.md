@@ -353,8 +353,8 @@ cat /proc/self/cpuset
 有多种方法可以查询或修改 cpusets：
 - 直接通过 cpuset 文件系统，使用 shell 中的各种 cd、mkdir、echo、cat、rmdir 命令或 C 中的等效命令。
 - 通过 C 库 libcpuset。
-- 通过 C 库 libcgroup。（http://sourceforge.net/projects/libcg/）
-- 通过 python 应用程序 cset。（http://code.google.com/p/cpuset/）
+- 通过 C 库 libcgroup。（<http://sourceforge.net/projects/libcg/>）
+- 通过 python 应用程序 cset。（<http://code.google.com/p/cpuset/>）
 
 
 `sched_setaffinity` 调用也可以在 shell 提示符下使用 SGI 的 runon 或 Robert Love 的任务集来完成。 `mbind` 和 `set_mempolicy` 调用可以在 shell 提示符下使用 numactl 命令（Andi Kleen 的 numa 包的一部分）完成。

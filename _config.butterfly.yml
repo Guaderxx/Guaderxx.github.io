@@ -940,6 +940,12 @@ inject:
     # - <link rel="stylesheet" href="/xxx.css">
   bottom:
     # - <script src="xxxx"></script>
+    # pangu: Butterfly 5 dropped the built-in `pangu` option, which used to
+    # insert a space between Chinese and Latin characters. This restores the
+    # previous behaviour (the old config had `pangu.enable: true`, field: site),
+    # loading the exact same pangu.js build the theme used before.
+    - <script src="https://jsd.012700.xyz/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+    - <script>document.addEventListener('DOMContentLoaded', function () { if (typeof pangu === 'object') pangu.autoSpacingPage() })</script>
 
 # CDN
 # Don't modify the following settings unless you know how they work
