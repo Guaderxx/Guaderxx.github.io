@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+
+# The butterfly theme is a git clone at themes/butterfly (see README).
+# Ignored so its nested .git directory is not recorded as a gitlink here.
+/themes
