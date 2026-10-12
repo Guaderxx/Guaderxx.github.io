@@ -41,7 +41,12 @@ external_link:
 filename_case: 0
 render_drafts: false
 post_asset_folder: true
-relative_link: true
+# NOTE: this was `true`, which is not the Hexo default. With a nested permalink
+# (:year/:month/:day/:title/) `relative_link: true` generated links one level too
+# shallow (e.g. "../archives/" from /2024/04/10/go-slice/ -> /2024/04/10/archives/),
+# so the navbar, sidebar, related posts and prev/next links 404'd on 114 of 120
+# pages. `false` emits root-absolute URLs (/archives/), which resolve correctly.
+relative_link: false
 future: true
 highlight:
   enable: true
